@@ -1,0 +1,13 @@
+syntax: glob
+*.orig
+*~
+*.pyc
+*.db
+*.session
+Thumbs.db
+.directory
+*.kate-swp
+*.~lock*
+_build
+_static
+*.sublime-*
