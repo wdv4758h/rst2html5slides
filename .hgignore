@@ -11,3 +11,4 @@ Thumbs.db
 _build
 _static
 *.sublime-*
+*.egg-info

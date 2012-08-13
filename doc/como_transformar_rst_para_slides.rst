@@ -165,7 +165,193 @@ até outra diretiva ser encontrada, tal como a diretiva ``default-role``.
 
 
 
+Projeto IO-2012-slides
+======================
+
+O script de conversão está no diretório ``scripts/md``.
+O padrão usado é o ``markdown``, que realmente é mais simples que o rst e suficiente para páginas web.
+
+Um documento em ``markdown`` é analisado e inserido em um template em ``jinja``:
+
+.. _io-2012-template:
+
+.. code-block:: html
+    :linenos:
+
+    <!--
+    Google IO 2012 HTML5 Slide Template
+
+    Authors: Eric Bidelman <ebidel@gmail.com>
+             Luke Mahe <lukem@google.com>
+
+    URL: https://code.google.com/p/io-2012-slides
+    -->
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>Google IO 2012</title>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="chrome=1">
+      <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">-->
+      <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+      <!--This one seems to work all the time, but really small on ipad-->
+      <!--<meta name="viewport" content="initial-scale=0.4">-->
+      <meta name="apple-mobile-web-app-capable" content="yes">
+      <link rel="stylesheet" media="all" href="theme/css/default.css">
+      <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="theme/css/phone.css">
+      <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+      <script data-main="js/slides" src="js/require-1.0.8.min.js"></script>
+    </head>
+    <body style="opacity: 0">
+
+    <slides class="layout-widescreen">
+
+    <slide class="logoslide nobackground">
+      <article class="flexbox vcenter">
+        <span><img src="images/google_developers_logo.png"></span>
+      </article>
+    </slide>
+
+    <slide class="title-slide segue nobackground">
+      <aside class="gdbar"><img src="images/google_developers_icon_128.png"></aside>
+      <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+      <hgroup class="auto-fadein">
+        <h1 data-config-title><!-- populated from slide_config.json --></h1>
+        <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
+        <p data-config-presenter><!-- populated from slide_config.json --></p>
+      </hgroup>
+    </slide>
+
+    {% for slide in slides %}
+    <slide class="{{ slide.class }}">
+      <hgroup>
+        <h1>{{ slide.h1 }}</h1>
+        <h2>{{ slide.title }}</h2>
+      </hgroup>
+      <article>
+      {{ slide.content }}
+      </article>
+    </slide>
+    {% endfor %}
+
+    <slide class="backdrop"></slide>
+
+    </slides>
+
+    <!--[if IE]>
+      <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+      <script>CFInstall.check({mode: 'overlay'});</script>
+    <![endif]-->
+    </body>
+    </html>
+
+Em princípio, parece que a transformação não será tão complexa.
+
+1. A especialização de ``rst2html5`` deve mudar o gabarito inicial do html5 gerado tal como o exemplo acima,
+   preenchendo a seção ``<head>``.
+#. o elemento ``document`` corresponde à seção ``slides``
+#. ``section`` --> ``slide``
+
+A transição ``----`` *não* poderá ser usada para indicar um novo slide.
+Isto requereria uma mudança no *parser* que seria muito complicada.
+Melhor criar uma *nova* diretiva ``slide`` para isso.
 
 
+Estrutura de um Slide
+=====================
+
+::
+    Slide
+    +----------------------------------------------+
+    |                                              |
+    |   +--------------------------------------+   |
+    |   | header/hgroup                        |   |
+    |   +--------------------------------------+   |
+    |                                              |
+    |   +--------------------------------------+   |
+    |   | section/article                      |   |
+    |   |                                      |   |
+    |   |                                      |   |
+    |   |                                      |   |
+    |   |                                      |   |
+    |   |                                      |   |
+    |   +--------------------------------------+   |
+    |                                              |
+    |   +--------------------------------------+   |
+    |   | footer: inserido via javascript      |   |
+    |   +--------------------------------------+   |
+    |                                              |
+    +----------------------------------------------+
+
+Será necessário manipular a *doctree* para ajustá-la a uma estrutura mais adequada.
+
+Caso 1
+-------
+
+::
+
+    document
+        section
+            title
+            content
 
 
+para::
+
+    document
+        section
+            header
+                title
+            article
+                content
+
+
+Caso 2
+-------
+
+::
+
+    document
+        section
+            title h1
+            section
+                title h2
+                content
+        ...
+
+para::
+
+    document
+        section
+            header
+                hgroup
+                    title h1
+                    title h2
+            article
+                content
+        ...
+
+Caso 3
+------
+
+::
+
+    document
+        title
+        content
+
+
+para::
+
+    document
+        section
+            header
+                title
+            article
+                content
+
+Ainda Falta
+===========
+
+1. Pra que serve o :code:`<slide class="backdrop"></slide>` ao final do :ref:`gabarito <io-2012-template>`?
+#. como disponibilizar vários temas para o mesmo conjunto de slides?
