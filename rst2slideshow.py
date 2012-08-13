@@ -44,7 +44,7 @@ class SlideShowWriter(HTML5Writer):
     def transform_doctree(cls, document):
 
         def adjust_section(section):
-            terms = section[0].traverse(descend=0, siblings=1)
+            terms = section.children
             section.clear()
             headings = []
             if isinstance(terms[0], nodes.title):
@@ -74,9 +74,22 @@ class SlideShowWriter(HTML5Writer):
             section.append(_contents)
             return
 
-        sections = document[0].traverse(descend=0, siblings=1)
-        for section in sections:
-            adjust_section(section)
+        children = document.children
+        document.clear()
+        group = []
+        while children or group:
+            child = children.pop(0) if children else None
+            if child and not isinstance(child, nodes.section):
+                group.append(child)
+            elif group:
+                forced_section = nodes.section()
+                forced_section.extend(group)
+                group = []
+                children.insert(0, forced_section)
+            else:
+                adjust_section(child)
+                document.append(child)
+
         return document
 
 class SlideShowTranslator(HTML5Translator):

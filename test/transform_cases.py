@@ -99,3 +99,45 @@ Subtitle 2
     'debug': True,
 }
 
+
+lose_nodes = {
+    'rst': '''paragraph
+
+* bullet 1
+* bullet 2''',
+    'out': '''<document source="<string>">
+    <section>
+        <contents>
+            <paragraph>
+                paragraph
+            <bullet_list bullet="*">
+                <list_item>
+                    <paragraph>
+                        bullet 1
+                <list_item>
+                    <paragraph>
+                        bullet 2
+''',
+    'debug': True
+}
+
+
+single_slide = {
+    'rst': '''
+Title 1
+=======
+
+* bullet''',
+    'out': '''<document ids="title-1" names="title\ 1" source="<string>" title="Title 1">
+    <section>
+        <header>
+            <title>
+                Title 1
+        <contents>
+            <bullet_list bullet="*">
+                <list_item>
+                    <paragraph>
+                        bullet
+''',
+    'debug': True,
+}
