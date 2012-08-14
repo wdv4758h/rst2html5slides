@@ -16,9 +16,10 @@ from tempfile import gettempdir
 tmpdir = gettempdir()
 unittest.TestCase.maxDiff = None
 
-def rst_to_slideshow(case, part):
+def rst_to_slideshow_part(case):
     overrides = case.copy()
     rst = overrides.pop('rst')
+    part = overrides.pop('part')
     overrides.pop('out')
     overrides.setdefault('indent_output', False)
     return publish_parts(writer=SlideShowWriter(), source=rst,
@@ -34,47 +35,25 @@ def extract_variables(module):
         if not v.startswith('__') and isinstance(getattr(module, v), dict))
 
 
-# def test_head():
-#     '''
-#     test the head part of a rst2html5 conversion
-#     '''
-#     import head_cases
-#     func = lambda x: rst_to_slideshow(x, 'head')
-#     for test_name, case in extract_variables(head_cases):
-#         yield _test_part, func, test_name, case
-
-
-def test_body():
+def test():
     '''
-    test the body part of a rst2html5 conversion
+    Test cases
     '''
-    import body_cases
-    func = lambda x: rst_to_slideshow(x, 'body')
-    for test_name, case in extract_variables(body_cases):
-        yield _test_part, func, test_name, case
-
-
-
-def test_transform_doctree():
-    '''
-    Test doctree transformation to conform to a html5 Slide
-    '''
-    import transform_cases
+    import cases
     old_stderr = sys.stderr
     sys.stderr = open(os.devnull, 'w')
-    func = lambda x: rst_to_slideshow(x, 'pseudoxml')
     try:
-        for test_name, case in extract_variables(transform_cases):
-            yield _test_part, func, test_name, case
+        for test_name, case in extract_variables(cases):
+            yield _test_part, test_name, case
     finally:
         sys.stderr.close()
         sys.stderr = old_stderr
 
 
-
-def _test_part(func, test_name, case):
+def _test_part(test_name, case):
     try:
-        assert_equals(func(case), case['out'])
+        result = rst_to_slideshow_part(case)
+        assert_equals(result, case['out'])
     except Exception as error:
         '''
         write temp files to help manual testing
@@ -82,7 +61,11 @@ def _test_part(func, test_name, case):
         filename = os.path.join(tmpdir, test_name)
         with codecs.open(filename + '.rst', encoding='utf-8', mode='w') as f:
             f.write(case['rst'])
+        with codecs.open(filename + '.result', encoding='utf-8', mode='w') as f:
+            f.write(result)
+        with codecs.open(filename + '.expected', encoding='utf-8', mode='w') as f:
+            f.write(case['out'])
 
         if isinstance(error, AssertionError):
-            error.args = ('%s: %s' % (test_name, error.message), )
+            error.args = ('%s\n%s' % (test_name, error.message), )
         raise error

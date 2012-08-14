@@ -7,7 +7,6 @@
 from __future__ import unicode_literals
 
 
-
 slides = {
     'rst': '''
 Title 1
@@ -44,6 +43,7 @@ Title 2
 </slides>
 ''',
     'indent_output': True,
+    'part': 'body',
 }
 
 slide_class = {
@@ -87,6 +87,7 @@ Title 2
 </slides>
 ''',
     'indent_output': True,
+    'part': 'body',
 }
 
 
@@ -139,6 +140,7 @@ Subtitle 2
 </slides>
 ''',
     'indent_output': True,
+    'part': 'body',
 }
 
 
@@ -160,7 +162,28 @@ lose_nodes = {
     </slide>
 </slides>
 ''',
-    'indent_output': True
+    'indent_output': True,
+    'part': 'body',
+}
+
+
+lose_nodes_doctree = {
+    'rst': lose_nodes['rst'],
+    'out': '''<document source="<string>">
+    <section>
+        <contents>
+            <paragraph>
+                paragraph
+            <bullet_list bullet="*">
+                <list_item>
+                    <paragraph>
+                        bullet 1
+                <list_item>
+                    <paragraph>
+                        bullet 2
+''',
+    'debug': True,
+    'part': 'pseudoxml',
 }
 
 
@@ -185,4 +208,109 @@ Title 1
 </slides>
 ''',
     'indent_output': True,
+    'part': 'body',
 }
+
+
+single_slide_doctree = {
+    'rst': single_slide['rst'],
+    'out': '''<document ids="title-1" names="title\ 1" source="<string>" title="Title 1">
+    <section>
+        <header>
+            <title>
+                Title 1
+        <contents>
+            <bullet_list bullet="*">
+                <list_item>
+                    <paragraph>
+                        bullet
+''',
+    'debug': True,
+    'part': 'pseudoxml',
+}
+
+
+simple_case = {
+    'rst': '''
+Title 1
+=======
+
+* bullet
+
+Title 2
+=======
+
+* bullet 2''',
+    'out': '''<document source="<string>">
+    <section ids="title-1" names="title\ 1">
+        <header>
+            <title>
+                Title 1
+        <contents>
+            <bullet_list bullet="*">
+                <list_item>
+                    <paragraph>
+                        bullet
+    <section ids="title-2" names="title\ 2">
+        <header>
+            <title>
+                Title 2
+        <contents>
+            <bullet_list bullet="*">
+                <list_item>
+                    <paragraph>
+                        bullet 2
+''',
+    'debug': True,
+    'part': 'pseudoxml',
+}
+
+
+subsection = {
+    'rst': '''
+.. class:: segue dark nobackground
+
+Title 1
+=======
+
+Subtitle
+--------
+
+* bullet
+
+Title 2
+=======
+
+Subtitle 2
+----------
+
+* bullet 2
+''',
+    'out': '''<document source="<string>">
+    <section classes="segue dark nobackground" ids="title-1" names="title\ 1">
+        <header>
+            <title>
+                Title 1
+            <subtitle>
+                Subtitle
+        <contents>
+            <bullet_list bullet="*">
+                <list_item>
+                    <paragraph>
+                        bullet
+    <section ids="title-2" names="title\ 2">
+        <header>
+            <title>
+                Title 2
+            <subtitle>
+                Subtitle 2
+        <contents>
+            <bullet_list bullet="*">
+                <list_item>
+                    <paragraph>
+                        bullet 2
+''',
+    'debug': True,
+    'part': 'pseudoxml',
+}
+
