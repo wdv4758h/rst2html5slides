@@ -8,7 +8,7 @@ with open('README.txt') as f:
 
 setup(
     name='rst2slideshow',
-    version='0.1',
+    version='0.2',
     author='André Felipe Dias',
     author_email='andref.dias@gmail.com',
     setup_requires=['nose >= 1.0'],

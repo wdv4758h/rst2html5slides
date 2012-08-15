@@ -85,8 +85,8 @@ Existem várias bibliotecas para transformar o html em slides S5:
 	* `html5wow <http://www.htmlfivewow.com>`_ | Google IO 2011
 	* `The Web Can Do That <http://www.htmlfivecan.com>`_ | Google IO 2012
 	* `html5slides <http://code.google.com/p/html5slides/>`_ | Modelo 2011
-    * `reveal.js <http://lab.hakim.se/reveal-js>`_ https://github.com/hakimel/reveal.js
 
+* `reveal.js <http://lab.hakim.se/reveal-js>`_ https://github.com/hakimel/reveal.js
 * `DZSlides <http://paulrouget.com/dzslides/>`_
 
 Entretanto, a estrutura do HTML5 sobre as quais operam é relativamente independente,
@@ -257,102 +257,3 @@ A transição ``----`` *não* poderá ser usada para indicar um novo slide.
 Isto requereria uma mudança no *parser* que seria muito complicada.
 Melhor criar uma *nova* diretiva ``slide`` para isso.
 
-
-Estrutura de um Slide
-=====================
-
-::
-    Slide
-    +----------------------------------------------+
-    |                                              |
-    |   +--------------------------------------+   |
-    |   | header/hgroup                        |   |
-    |   +--------------------------------------+   |
-    |                                              |
-    |   +--------------------------------------+   |
-    |   | section/article                      |   |
-    |   |                                      |   |
-    |   |                                      |   |
-    |   |                                      |   |
-    |   |                                      |   |
-    |   |                                      |   |
-    |   +--------------------------------------+   |
-    |                                              |
-    |   +--------------------------------------+   |
-    |   | footer: inserido via javascript      |   |
-    |   +--------------------------------------+   |
-    |                                              |
-    +----------------------------------------------+
-
-Será necessário manipular a *doctree* para ajustá-la a uma estrutura mais adequada.
-
-Caso 1
--------
-
-::
-
-    document
-        section
-            title
-            content
-
-
-para::
-
-    document
-        section
-            header
-                title
-            article
-                content
-
-
-Caso 2
--------
-
-::
-
-    document
-        section
-            title h1
-            section
-                title h2
-                content
-        ...
-
-para::
-
-    document
-        section
-            header
-                hgroup
-                    title h1
-                    title h2
-            article
-                content
-        ...
-
-Caso 3
-------
-
-::
-
-    document
-        title
-        content
-
-
-para::
-
-    document
-        section
-            header
-                title
-            article
-                content
-
-Ainda Falta
-===========
-
-1. Pra que serve o :code:`<slide class="backdrop"></slide>` ao final do :ref:`gabarito <io-2012-template>`?
-#. como disponibilizar vários temas para o mesmo conjunto de slides?
