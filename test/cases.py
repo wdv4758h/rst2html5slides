@@ -171,7 +171,7 @@ lose_nodes_doctree = {
     'rst': lose_nodes['rst'],
     'out': '''<document source="<string>">
     <section>
-        <contents>
+        <slide_contents>
             <paragraph>
                 paragraph
             <bullet_list bullet="*">
@@ -219,7 +219,7 @@ single_slide_doctree = {
         <header>
             <title>
                 Title 1
-        <contents>
+        <slide_contents>
             <bullet_list bullet="*">
                 <list_item>
                     <paragraph>
@@ -246,7 +246,7 @@ Title 2
         <header>
             <title>
                 Title 1
-        <contents>
+        <slide_contents>
             <bullet_list bullet="*">
                 <list_item>
                     <paragraph>
@@ -255,7 +255,7 @@ Title 2
         <header>
             <title>
                 Title 2
-        <contents>
+        <slide_contents>
             <bullet_list bullet="*">
                 <list_item>
                     <paragraph>
@@ -293,7 +293,7 @@ Subtitle 2
                 Title 1
             <subtitle>
                 Subtitle
-        <contents>
+        <slide_contents>
             <bullet_list bullet="*">
                 <list_item>
                     <paragraph>
@@ -304,7 +304,7 @@ Subtitle 2
                 Title 2
             <subtitle>
                 Subtitle 2
-        <contents>
+        <slide_contents>
             <bullet_list bullet="*">
                 <list_item>
                     <paragraph>
@@ -314,3 +314,111 @@ Subtitle 2
     'part': 'pseudoxml',
 }
 
+
+transition_to_section = {
+    'rst': '''paragraph
+
+----
+
+* bullet''',
+    'out': '''
+<slides class="layout-widescreen">
+    <slide>
+        <section>paragraph</section>
+    </slide>
+    <slide>
+        <section>
+            <ul>
+                <li>bullet</li>
+            </ul>
+        </section>
+    </slide>
+</slides>
+''',
+    'indent_output': True,
+    'part': 'body',
+}
+
+
+transition_to_section_doctree = {
+    'rst': transition_to_section['rst'],
+    'out': '''<document source="<string>">
+    <section>
+        <slide_contents>
+            <paragraph>
+                paragraph
+    <section>
+        <slide_contents>
+            <bullet_list bullet="*">
+                <list_item>
+                    <paragraph>
+                        bullet
+''',
+    'debug': True,
+    'part': 'pseudoxml',
+}
+
+
+transition_2 = {
+    'rst': '''Title
+=====
+
+paragraph
+
+----
+
+another slide''',
+    'out': '''<document ids="title" names="title" source="<string>" title="Title">
+    <section>
+        <header>
+            <title>
+                Title
+        <slide_contents>
+            <paragraph>
+                paragraph
+    <section>
+        <slide_contents>
+            <paragraph>
+                another slide
+''',
+    'debug': True,
+    'part': 'pseudoxml',
+}
+
+transition_3 = {
+    'rst': '''Title
+=====
+
+paragraph
+
+----
+
+another slide
+
+Title 2
+=======
+
+slide 3''',
+    'out': '''<document source="<string>">
+    <section ids="title" names="title">
+        <header>
+            <title>
+                Title
+        <slide_contents>
+            <paragraph>
+                paragraph
+    <section>
+        <slide_contents>
+            <paragraph>
+                another slide
+    <section ids="title-2" names="title\ 2">
+        <header>
+            <title>
+                Title 2
+        <slide_contents>
+            <paragraph>
+                slide 3
+''',
+    'debug': True,
+    'part': 'pseudoxml',
+}

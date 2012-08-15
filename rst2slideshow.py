@@ -17,7 +17,83 @@ from genshi.builder import tag
 from rst2html5 import HTML5Writer, HTML5Translator
 
 
-class contents(nodes.container): pass
+class slide_contents(nodes.section): pass
+
+
+class SlideShowTransformer(object):
+    '''
+    State Machine to transform default doctree to one with slideshow structure:
+    section, header, hgroup, contents.
+    '''
+
+    def transform(self, document):
+        self.state = self.make_content
+        self.contents = []
+        self.header = []
+        self.children = []
+        self.section = None
+        self.curr_children = document.children
+        document.clear()
+
+        # import pdb
+        # pdb.set_trace()
+
+        while self.curr_children:
+            node = self.curr_children.pop(0)
+            self.state(node)
+        self.close_section()
+        document.extend(self.children)
+        return document
+
+    def close_section(self):
+        if not (self.contents or self.header):
+            return
+        if not self.section:
+            self.section = nodes.section()
+        if self.header:
+            header = nodes.header()
+            header.extend(self.header)
+            self.section.append(header)
+            self.header = []
+        if self.contents:
+            contents = slide_contents()
+            contents.extend(self.contents)
+            self.contents = []
+            self.section.append(contents)
+        self.children.append(self.section)
+        return
+
+    def check_subsection(self, node):
+        '''
+        Make the header of the slide. If more than one title is found, there will be a hgroup
+        '''
+        if isinstance(node, nodes.section): # subsection
+            '''
+            insert subsection in curr_children
+            '''
+            self.curr_children = node.children + self.curr_children
+        else:
+            self.state = self.make_content
+            self.state(node)
+        return
+
+    def make_content(self, node):
+        if isinstance(node, (nodes.transition, nodes.section)):
+            self.close_section()
+            self.section = nodes.section()
+            self.section.update_basic_atts(node)
+            self.curr_children = node.children + self.curr_children
+        elif isinstance(node, (nodes.title, nodes.subtitle)):
+            elem = nodes.subtitle() if len(self.header) else nodes.title()
+            elem.update_basic_atts(node)
+            elem.extend(node.children)
+            self.header.append(elem)
+            self.state = self.check_subsection
+        else:
+            self.contents.append(node)
+        return
+
+
 
 class SlideShowWriter(HTML5Writer):
 
@@ -42,61 +118,15 @@ class SlideShowWriter(HTML5Writer):
 
     @classmethod
     def transform_doctree(cls, document):
-
-        def adjust_section(section):
-            terms = section.children
-            section.clear()
-            headings = []
-            if isinstance(terms[0], nodes.title):
-                headings.append(terms.pop(0))
-                if len(terms) and isinstance(terms[0], nodes.section):
-                    '''
-                    Title             title
-                    =====             section
-                                         title
-                    Subtitle                ...
-                    --------             contents...
-
-                    contents
-                    '''
-                    subsection = terms.pop()[0].traverse(descend=0, siblings=1)
-                    subsection_title = subsection.pop(0)
-                    subtitle = nodes.subtitle()
-                    subtitle.update_basic_atts(subsection_title)
-                    subtitle.extend(subsection_title.children)
-                    headings.append(subtitle)
-                    terms.extend(subsection)
-                header = nodes.header()
-                header.extend(headings)
-                section.append(header)
-            _contents = contents()
-            _contents.extend(terms)
-            section.append(_contents)
-            return
-
-        children = document.children
-        document.clear()
-        group = []
-        while children or group:
-            child = children.pop(0) if children else None
-            if child and not isinstance(child, nodes.section):
-                group.append(child)
-            elif group:
-                forced_section = nodes.section()
-                forced_section.extend(group)
-                group = []
-                children.insert(0, forced_section)
-            else:
-                adjust_section(child)
-                document.append(child)
-
-        return document
+        transformer = SlideShowTransformer()
+        return transformer.transform(document)
 
 class SlideShowTranslator(HTML5Translator):
 
     def __init__(self, *args):
         self.rst_terms['section'] = ('slide', 'visit_section', 'depart_section')
-        self.rst_terms['contents'] = ('section', 'default_visit', 'default_departure')
+        self.rst_terms['slide_contents'] = ('section', 'default_visit', 'default_departure')
+        self.rst_terms['hgroup'] = (None, 'default_visit', 'default_departure')
         HTML5Translator.__init__(self, *args)
         self.head.append(tag.meta(**{'http-equiv':"X-UA-Compatible", 'content':"chrome=1"}))
         self.head.append(tag.base(target="_blank"))
