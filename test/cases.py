@@ -416,3 +416,43 @@ slide 3''',
     'debug': True,
     'part': 'pseudoxml',
 }
+
+transition_with_class = {
+        'rst': '''Title
+=====
+
+paragraph
+
+.. class:: special
+
+----
+
+another slide
+
+Title 2
+=======
+
+slide 3''',
+    'out': '''<document source="<string>">
+    <section ids="title" names="title">
+        <header>
+            <title>
+                Title
+        <slide_contents>
+            <paragraph>
+                paragraph
+    <section classes="special">
+        <slide_contents>
+            <paragraph>
+                another slide
+    <section ids="title-2" names="title\ 2">
+        <header>
+            <title>
+                Title 2
+        <slide_contents>
+            <paragraph>
+                slide 3
+''',
+    'debug': True,
+    'part': 'pseudoxml',
+}
