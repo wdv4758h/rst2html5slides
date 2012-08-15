@@ -42,7 +42,6 @@ Title 2
     </slide>
 </slides>
 ''',
-    'indent_output': True,
     'part': 'body',
 }
 
@@ -86,7 +85,6 @@ Title 2
     </slide>
 </slides>
 ''',
-    'indent_output': True,
     'part': 'body',
 }
 
@@ -139,7 +137,6 @@ Subtitle 2
     </slide>
 </slides>
 ''',
-    'indent_output': True,
     'part': 'body',
 }
 
@@ -162,7 +159,6 @@ lose_nodes = {
     </slide>
 </slides>
 ''',
-    'indent_output': True,
     'part': 'body',
 }
 
@@ -207,7 +203,6 @@ Title 1
     </slide>
 </slides>
 ''',
-    'indent_output': True,
     'part': 'body',
 }
 
@@ -335,7 +330,6 @@ transition_to_section = {
     </slide>
 </slides>
 ''',
-    'indent_output': True,
     'part': 'body',
 }
 

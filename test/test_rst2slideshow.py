@@ -21,7 +21,7 @@ def rst_to_slideshow_part(case):
     rst = overrides.pop('rst')
     part = overrides.pop('part')
     overrides.pop('out')
-    overrides.setdefault('indent_output', False)
+    overrides.setdefault('indent_output', True)
     return publish_parts(writer=SlideShowWriter(), source=rst,
                           settings_overrides=overrides)[part]
 
