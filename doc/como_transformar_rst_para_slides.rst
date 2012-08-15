@@ -85,6 +85,7 @@ Existem várias bibliotecas para transformar o html em slides S5:
 	* `html5wow <http://www.htmlfivewow.com>`_ | Google IO 2011
 	* `The Web Can Do That <http://www.htmlfivecan.com>`_ | Google IO 2012
 	* `html5slides <http://code.google.com/p/html5slides/>`_ | Modelo 2011
+    * `reveal.js <http://lab.hakim.se/reveal-js>`_ https://github.com/hakimel/reveal.js
 
 * `DZSlides <http://paulrouget.com/dzslides/>`_
 
