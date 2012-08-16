@@ -471,6 +471,19 @@ slide_directive_1 = {
     'part': 'pseudoxml',
 }
 
+
+slide_directive_1_slideshow = {
+    'rst': slide_directive_1['rst'],
+    'out': '''
+<slides class="layout-widescreen">
+    <slide>
+        <section>paragraph</section>
+    </slide>
+</slides>
+''',
+    'part': 'body',
+}
+
 slide_directive_2 = {
     'rst': '''.. slide::
     :class: special
@@ -492,6 +505,26 @@ slide_directive_2 = {
     'debug': True,
     'part': 'pseudoxml',
 }
+
+
+slide_directive_2_slideshow = {
+    'rst': slide_directive_2['rst'],
+    'out': '''
+<slides class="layout-widescreen">
+    <slide class="special">
+        <header>
+            <hgroup>
+                <h1>Teste 1</h1>
+                <h2>Subtitle</h2>
+            </hgroup>
+        </header>
+        <section>paragraph</section>
+    </slide>
+</slides>
+''',
+    'part': 'body',
+}
+
 
 slide_directive_in_the_middle = {
      'rst': '''Title
