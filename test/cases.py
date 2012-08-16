@@ -456,3 +456,116 @@ slide 3''',
     'debug': True,
     'part': 'pseudoxml',
 }
+
+slide_directive_1 = {
+    'rst': '''.. slide::
+
+    paragraph''',
+    'out': '''<document source="<string>">
+    <section>
+        <slide_contents>
+            <paragraph>
+                paragraph
+''',
+    'debug': True,
+    'part': 'pseudoxml',
+}
+
+slide_directive_2 = {
+    'rst': '''.. slide::
+    :class: special
+    :title: Teste 1
+    :subtitle: Subtitle
+
+    paragraph''',
+    'out': '''<document source="<string>">
+    <section classes="special">
+        <header>
+            <title>
+                Teste 1
+            <subtitle>
+                Subtitle
+        <slide_contents>
+            <paragraph>
+                paragraph
+''',
+    'debug': True,
+    'part': 'pseudoxml',
+}
+
+slide_directive_in_the_middle = {
+     'rst': '''Title
+=====
+
+paragraph 1
+
+.. slide::
+    :class: special
+    :title: Teste 1
+    :subtitle: Subtitle
+
+    paragraph''',
+    'out': '''<document ids="title" names="title" source="<string>" title="Title">
+    <section>
+        <header>
+            <title>
+                Title
+        <slide_contents>
+            <paragraph>
+                paragraph 1
+    <section classes="special">
+        <header>
+            <title>
+                Teste 1
+            <subtitle>
+                Subtitle
+        <slide_contents>
+            <paragraph>
+                paragraph
+''',
+    'debug': True,
+    'part': 'pseudoxml',
+}
+
+everything_together = {
+    'rst': '''
+Title
+=====
+
+some test
+
+-----
+
+slide without title
+
+.. slide::
+    :title: Slide
+    :subtitle: Directive
+
+    slide_contents
+''',
+    'out': '''<document ids="title" names="title" source="<string>" title="Title">
+    <section>
+        <header>
+            <title>
+                Title
+        <slide_contents>
+            <paragraph>
+                some test
+    <section>
+        <slide_contents>
+            <paragraph>
+                slide without title
+    <section>
+        <header>
+            <title>
+                Slide
+            <subtitle>
+                Directive
+        <slide_contents>
+            <paragraph>
+                slide_contents
+''',
+    'debug': True,
+    'part': 'pseudoxml',
+}

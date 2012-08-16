@@ -13,11 +13,48 @@ __docformat__ = 'reStructuredText'
 
 from docutils import nodes, frontend
 from docutils.core import publish_from_doctree
+from docutils.parsers.rst import Directive, directives
 from genshi.builder import tag
 from rst2html5 import HTML5Writer, HTML5Translator
 
 
+class slide_section(nodes.Element): pass
+'''
+nodes.section is not suited for this class because it must always have a title node as first child.
+However, a nodes.Element class does not have this restriction.
+'''
+
 class slide_contents(nodes.section): pass
+
+
+class Slide(Directive):
+    '''
+    This directive creates a new slide_section node.
+    The node doesn't need to be promoted to a document section because the SlideShowTransformer
+    serializes all sections automatically.
+    '''
+    required_arguments = 0
+    optional_arguments = 0
+    final_argument_whitespace = True
+    option_spec = {
+        'class': directives.class_option,
+        'title': directives.unchanged,
+        'subtitle': directives.unchanged,
+    }
+    has_content = True
+
+    def run(self):
+        slide = slide_section(classes=self.options.get('class', []))
+        if 'title' in self.options:
+            title = nodes.title(text=self.options.get('title', ''))
+            slide.append(title)
+            if 'subtitle' in self.options:
+                subtitle = nodes.subtitle(text=self.options['subtitle'])
+                slide.append(subtitle)
+        self.state.nested_parse(self.content, self.content_offset, slide)
+        return [slide]
+
+directives.register_directive('slide', Slide)
 
 
 class SlideShowTransformer(object):
@@ -34,10 +71,6 @@ class SlideShowTransformer(object):
         self.section = None
         self.curr_children = document.children
         document.clear()
-
-        # import pdb
-        # pdb.set_trace()
-
         while self.curr_children:
             node = self.curr_children.pop(0)
             self.state(node)
@@ -78,7 +111,7 @@ class SlideShowTransformer(object):
         return
 
     def make_content(self, node):
-        if isinstance(node, (nodes.transition, nodes.section)):
+        if isinstance(node, (nodes.transition, nodes.section, slide_section)):
             self.close_section()
             self.section = nodes.section()
             self.section.update_basic_atts(node)
@@ -126,7 +159,7 @@ class SlideShowTranslator(HTML5Translator):
     def __init__(self, *args):
         self.rst_terms['section'] = ('slide', 'visit_section', 'depart_section')
         self.rst_terms['slide_contents'] = ('section', 'default_visit', 'default_departure')
-        self.rst_terms['hgroup'] = (None, 'default_visit', 'default_departure')
+        self.rst_terms['slide_section'] = ('section', 'default_visit', 'default_departure')
         HTML5Translator.__init__(self, *args)
         self.head.append(tag.meta(**{'http-equiv':"X-UA-Compatible", 'content':"chrome=1"}))
         self.head.append(tag.base(target="_blank"))
