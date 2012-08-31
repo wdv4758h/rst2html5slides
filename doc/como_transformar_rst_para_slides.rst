@@ -73,51 +73,6 @@ https://github.com/astraw/burst_s5/blob/master/burst_s5/video_directive.py
 docutils com HTML5: https://github.com/eegg/docutils-html5-writer
 
 
-Estrutura dos Slides
-====================
-
-Existem várias bibliotecas para transformar o html em slides S5:
-
-* `S6 <https://github.com/geraldb/s6>`_
-* Apresentações do Google IO têm versões diferentes.
-
-	* `io 2012 slides <http://io-2012-slides.googlecode.com>`_ | Google IO 2012
-	* `html5wow <http://www.htmlfivewow.com>`_ | Google IO 2011
-	* `The Web Can Do That <http://www.htmlfivecan.com>`_ | Google IO 2012
-	* `html5slides <http://code.google.com/p/html5slides/>`_ | Modelo 2011
-
-* `reveal.js <http://lab.hakim.se/reveal-js>`_ https://github.com/hakimel/reveal.js
-* `DZSlides <http://paulrouget.com/dzslides/>`_
-
-Entretanto, a estrutura do HTML5 sobre as quais operam é relativamente independente,
-com cada slide em uma seção.
-Atributos de classe da seção mudam as transições e outras características do slide.
-
-.. code-block:: html
-    :linenos:
-
-    <slides class="layout-widescreen">
-
-        <slide class="estilos">
-            <header>
-                Título
-            </header>
-            <section>
-                texto
-            </section>
-        </slide>
-
-        <slide class="lista de estilos">
-            <header>
-                Título
-            </header>
-            <section class="estilos">
-                texto
-            </section>
-        </slide>
-
-    </slides>
-
 
 Estrutura do Slide em reStructuredText
 ======================================

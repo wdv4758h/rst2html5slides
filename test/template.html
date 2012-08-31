@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta content="chrome=1" http-equiv="X-UA-Compatible" />
+    <base target="_blank" />
+    <link rel="stylesheet" media="all" href="../css/default.css">
+    <script src="../js/slides.js"></script>
+    <script>
+        var slidedeck;
+        window.onload = function() {
+            slidedeck = new SlideDeck();
+        }
+    </script>
+</head>
+<body>
+<slides class="layout-widescreen">
+    <slide>
+        <section>
+            <img src="images/google_developers_logo.png" alt="image0" />
+            <img src="images/google_developers_icon_128.png" alt="image1" />
+        </section>
+    </slide>
+    <slide>
+        <header>
+            <h1>Slide with Bullets</h1>
+        </header>
+        <section>
+            <ul>
+                <li>Titles are formatted as Open Sans with bold applied and font size is set at 45</li>
+                <li>
+                    <p>Title capitalization is title case</p>
+                    <ul>
+                        <li>Subtitle capitalization is title case</li>
+                    </ul>
+                </li>
+                <li>Subtitle capitalization is title case</li>
+                <li>Titles and subtitles should never have a period at the end</li>
+            </ul>
+        </section>
+    </slide>
+    <slide>
+        <header>
+            <hgroup>
+                <h1>Slide with Bullets that Build</h1>
+                <h2>Subtitle Placeholder</h2>
+            </hgroup>
+        </header>
+        <section>
+            <p>A list where items build:</p>
+            <ul>
+                <li>Pressing 'h' highlights code snippets</li>
+                <li>Pressing 'p' toggles speaker notes (if they're on the current slide)</li>
+                <li>Pressing 'f' toggles fullscreen viewing</li>
+                <li>Pressing 'w' toggles widescreen</li>
+                <li>Pressing 'o' toggles overview mode</li>
+                <li>Pressing 'ESC' toggles off these goodies</li>
+            </ul>
+            <p>Another list, but items fade as they build:</p>
+            <ul>
+                <li>Hover over me!</li>
+                <li>Hover over me!</li>
+                <li>Hover over me!</li>
+            </ul>
+        </section>
+    </slide>
+    <slide>
+        <header>
+            <h1>Slide with (Smaller Font)</h1>
+        </header>
+        <section>
+            <ul>
+                <li>All <a href="http://google.com">links</a> open in new tabs.</li>
+                <li>To change that this, add <code>target=&#34;_self&#34;</code> to the link.</li>
+            </ul>
+            <p>Hidden slides are left out of the presentation.</p>
+        </section>
+    </slide>
+    <slide>
+        <header>
+            <hgroup>
+                <h1>Code Slide (with Subtitle Placeholder)</h1>
+                <h2>Subtitle Placeholder</h2>
+            </hgroup>
+        </header>
+        <section>
+            <p>Press 'h' to highlight important sections of code (wrapped in <code>&lt;b&gt;</code>).</p>
+            <pre>&lt;script type='text/javascript'&gt;
+  // Say hello world until the user starts questioning
+  // the meaningfulness of their existence.
+  function helloWorld(world) {
+    for (var i = 42; --i &gt;= 0;) {
+      alert('Hello ' + String(world));
+    }
+  }
+&lt;/script&gt;</pre>
+        </section>
+    </slide>
+    <slide>
+        <header>
+            <h1>Code Slide (Smaller Font)</h1>
+        </header>
+        <section>
+            <pre>// Say hello world until the user starts questioning
+// the meaningfulness of their existence.
+function helloWorld(world) {
+  for (var i = 42; --i &gt;= 0;) {
+    alert('Hello ' + String(world));
+  }
+}</pre>
+            <pre>&lt;style&gt;
+  p { color: pink }
+  b { color: blue }
+&lt;/style&gt;</pre>
+            <pre>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt;My Awesome Page&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;p&gt;Hello world&lt;/p&gt;
+&lt;body&gt;
+&lt;/html&gt;</pre>
+            <ul>
+                <li>Point I wanted to make #1</li>
+                <li>Point I wanted to make #2</li>
+                <li>Point I wanted to make #3</li>
+                <li>Example <a href="#">link</a> in notes.</li>
+            </ul>
+            <p><strong>Remember to say this tag line!</strong></p>
+        </section>
+    </slide>
+    <slide>
+        <header>
+            <h1>Slide with Speaker Notes</h1>
+        </header>
+        <section>
+            <p>Press 'p' to toggle speaker notes.</p>
+            <ul>
+                <li>
+                    <div>
+                        <h1>System Message: WARNING/2 (/tmp/template.rst line 104) <a href="#id2">id2</a></h1>
+                        <p>Duplicate explicit target name: "link".</p>
+                    </div>
+                    <p>See this amazing link: <a href="http://www.google.com">link</a>.</p>
+                </li>
+            </ul>
+            <p><strong>Remember to say this tag line!</strong></p>
+        </section>
+    </slide>
+    <slide>
+        <header>
+            <h1>Presenter Mode</h1>
+        </header>
+        <section>
+            <p>Add <code>?presentme=true</code> to the URL to enabled presenter mode. This setting is sticky, meaning refreshing the page will persist presenter mode.</p>
+            <p>Hit <code>?presentme=false</code> to disable presenter mode.</p>
+        </section>
+    </slide>
+    <slide>
+        <header>
+            <h1>Slide with Image</h1>
+        </header>
+        <section>
+            <img src="images/chart.png" alt="Description" />
+         source: place source info here</section>
+    </slide>
+    <slide>
+        <header>
+            <h1>Slide with Image (Centered horz/vert)</h1>
+        </header>
+        <section>
+            <img src="images/barchart.png" alt="image3" />
+         source: place source info here</section>
+    </slide>
+    <slide>
+        <header>
+            <hgroup>
+                <h1>Table Option A</h1>
+                <h2>Subtitle Placeholder</h2>
+            </hgroup>
+        </header>
+        <section>
+            <table>
+                <col />
+                <col />
+                <col />
+                <col />
+                <col />
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Column 1</th>
+                        <th>Column 2</th>
+                        <th>Column 3</th>
+                        <th>Column 4</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Row 1</td>
+                        <td>placeholder</td>
+                        <td>placeholder</td>
+                        <td>placeholder</td>
+                        <td>placeholder</td>
+                    </tr>
+                    <tr>
+                        <td>Row 2</td>
+                        <td>placeholder</td>
+                        <td>placeholder</td>
+                        <td>placeholder</td>
+                        <td>placeholder</td>
+                    </tr>
+                    <tr>
+                        <td>Row 3</td>
+                        <td>placeholder</td>
+                        <td>placeholder</td>
+                        <td>placeholder</td>
+                        <td>placeholder</td>
+                    </tr>
+                    <tr>
+                        <td>Row 4</td>
+                        <td>placeholder</td>
+                        <td>placeholder</td>
+                        <td>placeholder</td>
+                        <td>placeholder</td>
+                    </tr>
+                    <tr>
+                        <td>Row 5</td>
+                        <td>placeholder</td>
+                        <td>placeholder</td>
+                        <td>placeholder</td>
+                        <td>placeholder</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </slide>
+    <slide>
+        <header>
+            <hgroup>
+                <h1>Table Option A (Smaller Text)</h1>
+                <h2>Subtitle Placeholder</h2>
+            </hgroup>
+        </header>
+        <section>
+            <table>
+                <col />
+                <col />
+                <col />
+                <col />
+                <col />
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Column 1</th>
+                        <th>Column 2</th>
+                        <th>Column 3</th>
+                        <th>Column 4</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Row 1</td>
+                        <td>placeholder</td>
+                        <td>placeholder</td>
+                        <td>placeholder</td>
+                        <td>placeholder</td>
+                    </tr>
+                    <tr>
+                        <td>Row 2</td>
+                        <td>placeholder</td>
+                        <td>placeholder</td>
+                        <td>placeholder</td>
+                        <td>placeholder</td>
+                    </tr>
+                    <tr>
+                        <td>Row 3</td>
+                        <td>placeholder</td>
+                        <td>placeholder</td>
+                        <td>placeholder</td>
+                        <td>placeholder</td>
+                    </tr>
+                    <tr>
+                        <td>Row 4</td>
+                        <td>placeholder</td>
+                        <td>placeholder</td>
+                        <td>placeholder</td>
+                        <td>placeholder</td>
+                    </tr>
+                    <tr>
+                        <td>Row 5</td>
+                        <td>placeholder</td>
+                        <td>placeholder</td>
+                        <td>placeholder</td>
+                        <td>placeholder</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </slide>
+    <slide>
+        <header>
+            <hgroup>
+                <h1>Table Option B</h1>
+                <h2>Subtitle Placeholder</h2>
+            </hgroup>
+        </header>
+        <section>
+            <p>Header 1</p>
+            <p>placeholder</p>
+            <p>placeholder</p>
+            <p>placeholder</p>
+            <p>Header 2</p>
+            <p>placeholder</p>
+            <p>placeholder</p>
+            <p>placeholder</p>
+            <p>Header 3</p>
+            <p>placeholder</p>
+            <p>placeholder</p>
+            <p>placeholder</p>
+            <p>Header 4</p>
+            <p>placeholder</p>
+            <p>placeholder</p>
+            <p>placeholder</p>
+            <p>Header 5</p>
+            <p>placeholder</p>
+            <p>placeholder</p>
+            <p>placeholder</p>
+        </section>
+    </slide>
+    <slide>
+        <header>
+            <h1>Slide Styles</h1>
+        </header>
+        <section>
+            <ul>
+                <li>class="red"</li>
+                <li>class="red2"</li>
+                <li>class="red3"</li>
+                <li>class="blue"</li>
+                <li>class="blue2"</li>
+                <li>class="blue3"</li>
+                <li>class="green"</li>
+                <li>class="green2"</li>
+                <li>class="green3"</li>
+                <li>class="yellow"</li>
+                <li>class="yellow2"</li>
+                <li>class="yellow3"</li>
+                <li>class="gray"</li>
+                <li>class="gray2"</li>
+                <li>class="gray3"</li>
+                <li>class="gray4"</li>
+            </ul>
+            <p>I am centered text with a Button and Disabled button.</p>
+            <figure align="center">
+                <img src="images/google_developers_icon_128.png" />
+            </figure>
+        </section>
+    </slide>
+    <slide>
+        <header>
+            <hgroup>
+                <hgroup>
+                <h1>Segue Slide</h1>
+                <h2>Subtitle Placeholder</h2>
+            </hgroup>
+                <h2>Full Image (with Optional Header)</h2>
+            </hgroup>
+        </header>
+        <section>
+            <p><a href="mailto:www.flickr.com/photos/25797459@N06/5438799763/">www.flickr.com/photos/25797459@N06/5438799763/</a>
+                <img src="images/google_developers_icon_128.png" alt="image4" />
+             This is an example of quote text.</p>
+            <dl>
+                <dt>Name</dt>
+                <dd>Company</dd>
+            </dl>
+        </section>
+    </slide>
+    <slide>
+        <header>
+            <h1>Slide with Iframe</h1>
+        </header>
+        <section>
+            <figure align="center">
+                <img src="images/google_developers_icon_128.png" />
+            </figure>
+        </section>
+    </slide>
+    <slide>
+        <header>
+            <h1>&lt;Thank You!&gt;</h1>
+        </header>
+        <section>
+            <p>Important contact information goes here.</p>
+            <figure align="center">
+                <img src="images/google_developers_logo_white.png" />
+            </figure>
+        </section>
+    </slide>
+</slides>
+</body>
+</html>
