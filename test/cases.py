@@ -526,6 +526,116 @@ slide_directive_2_slideshow = {
 }
 
 
+slide_directive_3 = {
+    'rst': '''.. slide::
+    :class: special
+    :title: Teste 1
+    :subtitle: Subtitle
+    :contents_class: flexbox vcenter
+
+    paragraph''',
+    'out': '''<document source="<string>">
+    <section classes="special">
+        <header>
+            <title>
+                Teste 1
+            <subtitle>
+                Subtitle
+        <slide_contents classes="flexbox vcenter">
+            <paragraph>
+                paragraph
+''',
+    'debug': True,
+    'part': 'pseudoxml',
+}
+
+slide_directive_3_slideshow = {
+    'rst': slide_directive_3['rst'],
+    'out': '''
+<slides class="layout-widescreen">
+    <slide class="special">
+        <header>
+            <hgroup>
+                <h1>Teste 1</h1>
+                <h2>Subtitle</h2>
+            </hgroup>
+        </header>
+        <section class="flexbox vcenter">paragraph</section>
+    </slide>
+</slides>
+''',
+    'part': 'body',
+}
+
+slide_directive_4 = {
+    'rst': '''.. slide::
+    :class: segue dark quote nobackground
+    :contents_class: flexbox vleft auto-fadein
+
+.. epigraph::
+
+    This is an
+    example of quote text.''',
+    'out': '''<document source="<string>">
+    <section classes="segue dark quote nobackground">
+        <slide_contents classes="flexbox vleft auto-fadein">
+            <block_quote classes="epigraph">
+                <paragraph>
+                    This is an
+                    example of quote text.
+''',
+    'debug': True,
+    'part': 'pseudoxml',
+}
+
+slide_directive_4_slideshow = {
+    'rst': slide_directive_4['rst'],
+    'out': '''
+<slides class="layout-widescreen">
+    <slide class="segue dark quote nobackground">
+        <section class="flexbox vleft auto-fadein">
+            <blockquote class="epigraph">
+                <p>This is an example of quote text.</p>
+            </blockquote>
+        </section>
+    </slide>
+</slides>
+''',
+    'part': 'body',
+}
+
+slide_directive_5 = {
+    'rst': '''.. slide::
+    :class: special
+    :title: Code Slide (Smaller Font)
+    :contents_class: smaller
+
+.. code-block:: javascript
+
+    function helloWorld(world) {
+        alert('Hello ' + String(world));
+    }''',
+    'out': '''
+<slides class="layout-widescreen">
+    <slide class="special">
+        <header>
+            <h1>Code Slide (Smaller Font)</h1>
+        </header>
+        <section class="smaller">
+            <pre><code class="javascript"><span class="kd">function</span> \
+<span class="nx">helloWorld</span><span class="p">(</span><span class="nx">world</span>\
+<span class="p">)</span> <span class="p">{</span>
+    <span class="nx">alert</span><span class="p">(</span><span class="s1">'Hello '</span> \
+<span class="o">+</span> <span class="nb">String</span><span class="p">(</span><span class="nx">\
+world</span><span class="p">));</span>
+<span class="p">}</span></code></pre>
+        </section>
+    </slide>
+</slides>
+''',
+    'part': 'body',
+}
+
 slide_directive_in_the_middle = {
      'rst': '''Title
 =====
@@ -598,6 +708,61 @@ slide without title
         <slide_contents>
             <paragraph>
                 slide_contents
+''',
+    'debug': True,
+    'part': 'pseudoxml',
+}
+
+empty_slides = {
+    'rst': '''.. slide::
+    :class: special
+
+..
+
+----
+
+..
+
+Title
+=====
+
+paragraph''',
+    'out': '''
+<slides class="layout-widescreen">
+    <slide class="special">
+        <section></section>
+    </slide>
+    <slide>
+        <section></section>
+    </slide>
+    <slide>
+        <header>
+            <h1>Title</h1>
+        </header>
+        <section>paragraph</section>
+    </slide>
+</slides>
+''',
+    'part': 'body',
+}
+
+
+empty_slides_pseudoxml = {
+    'rst': empty_slides['rst'],
+    'out': '''<document source="<string>">
+    <section classes="special">
+        <slide_contents>
+            <comment xml:space="preserve">
+    <section>
+        <slide_contents>
+            <comment xml:space="preserve">
+    <section ids="title" names="title">
+        <header>
+            <title>
+                Title
+        <slide_contents>
+            <paragraph>
+                paragraph
 ''',
     'debug': True,
     'part': 'pseudoxml',

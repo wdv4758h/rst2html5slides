@@ -24,7 +24,7 @@ nodes.section is not suited for this class because it must always have a title n
 However, a nodes.Element class does not have this restriction.
 '''
 
-class slide_contents(nodes.section): pass
+class slide_contents(nodes.Element): pass
 
 
 class Slide(Directive):
@@ -32,6 +32,8 @@ class Slide(Directive):
     This directive creates a new slide_section node.
     The node doesn't need to be promoted to a document section because the SlideShowTransformer
     serializes all sections automatically.
+
+    See test/cases.py for examples.
     '''
     required_arguments = 0
     optional_arguments = 0
@@ -40,6 +42,7 @@ class Slide(Directive):
         'class': directives.class_option,
         'title': directives.unchanged,
         'subtitle': directives.unchanged,
+        'contents_class': directives.class_option,
     }
     has_content = True
 
@@ -51,7 +54,9 @@ class Slide(Directive):
             if 'subtitle' in self.options:
                 subtitle = nodes.subtitle(text=self.options['subtitle'])
                 slide.append(subtitle)
-        self.state.nested_parse(self.content, self.content_offset, slide)
+        content = slide_contents(classes=self.options.get('contents_class', []))
+        self.state.nested_parse(self.content, self.content_offset, content)
+        slide.append(content)
         return [slide]
 
 directives.register_directive('slide', Slide)
@@ -66,6 +71,7 @@ class SlideShowTransformer(object):
     def transform(self, document):
         self.state = self.make_content
         self.contents = []
+        self.contents_classes = []
         self.header = []
         self.children = []
         self.section = None
@@ -89,9 +95,10 @@ class SlideShowTransformer(object):
             self.section.append(header)
             self.header = []
         if self.contents:
-            contents = slide_contents()
+            contents = slide_contents(classes=self.contents_classes)
             contents.extend(self.contents)
             self.contents = []
+            self.contents_classes = []
             self.section.append(contents)
         self.children.append(self.section)
         return
@@ -122,6 +129,11 @@ class SlideShowTransformer(object):
             elem.extend(node.children)
             self.header.append(elem)
             self.state = self.check_subsection
+        elif isinstance(node, slide_contents):
+            self.contents_classes = node['classes']
+            if node.children:
+                self.contents = node.children
+                self.close_section()
         else:
             self.contents.append(node)
         return
@@ -163,8 +175,11 @@ class SlideShowTranslator(HTML5Translator):
         HTML5Translator.__init__(self, *args)
         self.head.append(tag.meta(**{'http-equiv':"X-UA-Compatible", 'content':"chrome=1"}))
         self.head.append(tag.base(target="_blank"))
-        # incluir links para stylesheets
-        # incluir scripts
+        self.head.append(tag.link(rel="stylesheet", media="all", href="../css/pygments-default.css"))
+        self.head.append(tag.link(rel="stylesheet", media="all", href="../css/default.css"))
+        self.head.append(tag.script(src="../js/slides.js"))
+        self.head.append(tag.script(src="../js/code.js"))
+        self.head.append(tag.script(src="../js/init.js"))
 
     def visit_section(self, node):
         node['ids'] = ''
