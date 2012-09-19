@@ -24,10 +24,9 @@
 
     document.onkeydown = this.keydown.bind(this);
     window.onhashchange = this.hashchange.bind(this);
+    document.body.classList.add('loaded');
     this.showSlide(this.slides[0]);
  }
-
-
 
 
 /**
@@ -83,7 +82,6 @@ SlideDeck.prototype.keydown = function(event) {
 }
 
 
-
 /**
  *
  */
@@ -100,12 +98,12 @@ SlideDeck.prototype.goToSlide = function(number) {
 
 SlideDeck.prototype.showSlide = function(slide) {
     if (!slide) return;
-    slide.style.display = 'block';
+    slide.classList.add('current');
 }
 
 SlideDeck.prototype.hideSlide = function(slide) {
     if (!slide) {return;}
-    slide.style.display = '';
+    slide.classList.remove('current');
 }
 
 SlideDeck.prototype.hashchange = function(event) {
