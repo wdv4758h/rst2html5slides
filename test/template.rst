@@ -1,4 +1,15 @@
-|image0| |image1|
+.. role:: raw-html(raw)
+    :format: html
+
+.. class:: title-slide segue nobackground
+
+Title goes here :raw-html:`<br />` Up two lines
+-----------------------------------------------
+
+Subtitle goes here
+~~~~~~~~~~~~~~~~~~~
+
+..
 
 Slide with Bullets
 ------------------
@@ -36,7 +47,7 @@ Another list, but items fade as they build:
 Slide with (Smaller Font)
 -------------------------
 
--  All `links <http://google.com>`_ open in new tabs.
+-  All `links <http://www.google.com>`_ open in new tabs.
 -  To change that this, add ``target="_self"`` to the link.
 
 Hidden slides are left out of the presentation.
@@ -49,7 +60,7 @@ Subtitle Placeholder
 
 Press 'h' to highlight important sections of code (wrapped in ``<b>``).
 
-::
+.. code-block:: javascript
 
     <script type='text/javascript'>
       // Say hello world until the user starts questioning
@@ -61,10 +72,12 @@ Press 'h' to highlight important sections of code (wrapped in ``<b>``).
       }
     </script>
 
-Code Slide (Smaller Font)
--------------------------
 
-::
+.. slide::
+    :title: Code Slide (Smaller Font)
+    :contents_class: smaller
+
+.. code-block:: javascript
 
     // Say hello world until the user starts questioning
     // the meaningfulness of their existence.
@@ -74,59 +87,36 @@ Code Slide (Smaller Font)
       }
     }
 
-::
+.. code-block:: css
 
     <style>
       p { color: pink }
       b { color: blue }
     </style>
 
-::
+.. code-block:: html
 
     <!DOCTYPE html>
     <html>
-    <head>
-      <title>My Awesome Page</title>
-    </head>
-    <body>
-      <p>Hello world</p>
-    <body>
+        <head>
+            <title>My Awesome Page</title>
+        </head>
+        <body>
+            <p>Hello world</p>
+        <body>
     </html>
 
--  Point I wanted to make #1
--  Point I wanted to make #2
--  Point I wanted to make #3
--  Example `link <#>`_ in notes.
-
-**Remember to say this tag line!**
-
-Slide with Speaker Notes
-------------------------
-
-Press 'p' to toggle speaker notes.
-
--  See this amazing link: `link <http://www.google.com>`_.
-
-**Remember to say this tag line!**
-
-Presenter Mode
---------------
-
-Add ``?presentme=true`` to the URL to enabled presenter mode. This
-setting is sticky, meaning refreshing the page will persist presenter
-mode.
-
-Hit ``?presentme=false`` to disable presenter mode.
 
 Slide with Image
 ----------------
 
-|Description| source: place source info here
+.. image:: chart.png
 
-Slide with Image (Centered horz/vert)
--------------------------------------
+.. slide::
+    :title: Slide with Image (Centered horz/vert)
+    :contents_class: flexbox vcenter
 
-|image3| source: place source info here
+.. image:: barchart.png
 
 Table Option A
 --------------
@@ -134,25 +124,30 @@ Table Option A
 Subtitle Placeholder
 ~~~~~~~~~~~~~~~~~~~~
 
-+---------+---------------+---------------+---------------+---------------+
-|         | Column 1      | Column 2      | Column 3      | Column 4      |
-+=========+===============+===============+===============+===============+
-| Row 1   | placeholder   | placeholder   | placeholder   | placeholder   |
-+---------+---------------+---------------+---------------+---------------+
-| Row 2   | placeholder   | placeholder   | placeholder   | placeholder   |
-+---------+---------------+---------------+---------------+---------------+
-| Row 3   | placeholder   | placeholder   | placeholder   | placeholder   |
-+---------+---------------+---------------+---------------+---------------+
-| Row 4   | placeholder   | placeholder   | placeholder   | placeholder   |
-+---------+---------------+---------------+---------------+---------------+
-| Row 5   | placeholder   | placeholder   | placeholder   | placeholder   |
-+---------+---------------+---------------+---------------+---------------+
+.. role:: highlight
+    :class: highlight
+
++---------+---------------+---------------+--------------------------+---------------+
+|         | Column 1      | Column 2      | Column 3                 | Column 4      |
++=========+===============+===============+==========================+===============+
+| Row 1   | placeholder   | placeholder   | :highlight:`placeholder` | placeholder   |
++---------+---------------+---------------+--------------------------+---------------+
+| Row 2   | placeholder   | placeholder   | placeholder              | placeholder   |
++---------+---------------+---------------+--------------------------+---------------+
+| Row 3   | placeholder   | placeholder   | placeholder              | placeholder   |
++---------+---------------+---------------+--------------------------+---------------+
+| Row 4   | placeholder   | placeholder   | placeholder              | placeholder   |
++---------+---------------+---------------+--------------------------+---------------+
+| Row 5   | placeholder   | placeholder   | placeholder              | placeholder   |
++---------+---------------+---------------+--------------------------+---------------+
 
 Table Option A (Smaller Text)
 -----------------------------
 
 Subtitle Placeholder
 ~~~~~~~~~~~~~~~~~~~~
+
+.. class:: smaller
 
 +---------+---------------+---------------+---------------+---------------+
 |         | Column 1      | Column 2      | Column 3      | Column 4      |
@@ -174,72 +169,48 @@ Table Option B
 Subtitle Placeholder
 ~~~~~~~~~~~~~~~~~~~~
 
-Header 1
+.. csv-table::
+    :stub-columns: 1
+    :class: rows
 
-placeholder
+    Header 1, placeholder, :highlight:`placeholder`, placeholder
+    Header 2, placeholder, placeholder, placeholder
+    Header 3, placeholder, placeholder, placeholder
+    Header 4, placeholder, placeholder, placeholder
+    Header 5, placeholder, placeholder, placeholder
 
-placeholder
-
-placeholder
-
-Header 2
-
-placeholder
-
-placeholder
-
-placeholder
-
-Header 3
-
-placeholder
-
-placeholder
-
-placeholder
-
-Header 4
-
-placeholder
-
-placeholder
-
-placeholder
-
-Header 5
-
-placeholder
-
-placeholder
-
-placeholder
 
 Slide Styles
 ------------
 
--  class="red"
--  class="red2"
--  class="red3"
--  class="blue"
--  class="blue2"
--  class="blue3"
--  class="green"
--  class="green2"
+.. role:: red
+    :class: red
 
--  class="green3"
--  class="yellow"
--  class="yellow2"
--  class="yellow3"
--  class="gray"
--  class="gray2"
--  class="gray3"
--  class="gray4"
+.. role:: green
+    :class: green
+
+.. role:: yellow
+    :class: yellow
+
+.. role:: blue
+    :class: blue
+
+.. role:: gray
+    :class: gray:
+
+-  :red:`class="red"`
+-  :blue:`class="blue"`
+-  :green:`class="green"`
+-  :yellow:`class="yellow"`
+-  :gray:`class="gray"`
 
 I am centered text with a Button and Disabled button.
 
 .. figure:: images/google_developers_icon_128.png
    :align: center
-   :alt: 
+   :alt:
+
+.. class:: segue dark nobackground
 
 Segue Slide
 -----------
@@ -247,33 +218,44 @@ Segue Slide
 Subtitle Placeholder
 ~~~~~~~~~~~~~~~~~~~~
 
-Full Image (with Optional Header)
----------------------------------
+.. slide::
+    :class: fill nobackground
+    :title: Full Image (with Optional Header)
 
-www.flickr.com/photos/25797459@N06/5438799763/ |image4| This is an
-example of quote text.
+www.flickr.com/photos/25797459@N06/5438799763/
 
-Name
- Company
+.. slide::
+    :class: segue dark quote nobackground
+    :contents_class: flexbox vleft auto-fadein
 
-Slide with Iframe
------------------
+.. epigraph::
+
+    This is an
+    example of quote text.
+
+
+.. slide::
+    :class: thank-you-slide segue nobackground
+    :title: Thank You!
 
 .. figure:: images/google_developers_icon_128.png
    :align: center
-   :alt: 
+   :alt:
 
-<Thank You!>
-------------
+Contato:
 
-Important contact information goes here.
+.. csv-table::
+    :stub-columns: 1
+    :class: contact
+
+    g+, plus.google.com/1234567890
+    twitter, @yourhandle
+    www, www.you.com
+    github, github.com/you
 
 .. figure:: images/google_developers_logo_white.png
    :align: center
-   :alt: 
+   :alt:
 
-.. |image0| image:: images/google_developers_logo.png
-.. |image1| image:: images/google_developers_icon_128.png
-.. |Description| image:: images/chart.png
-.. |image3| image:: images/barchart.png
-.. |image4| image:: images/google_developers_icon_128.png
+.. |Description| image:: chart.png
+.. |image3| image:: barchart.png

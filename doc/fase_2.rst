@@ -178,8 +178,10 @@ Comparação entre javascript loaders
 requirejs_ e headjs_ são javascript loaders famosos, mas outros existem.
 Particularmente, o yepnopejs_ parece ser bem interessante.
 
+* http://www.netmagazine.com/features/essential-javascript-top-five-script-loaders
 * http://www.peterbe.com/plog/requirejs-vs-headjs
 * http://webification.com/12-javascript-loaders-to-speed-up-your-web-applications
+
 
 
 Passos
@@ -193,6 +195,7 @@ Passos
     * Painel de controle
     * Impressão
     * Miniaturas
+    * Novo estilo para o Pygments
 
 #. Otimização e Portabilidade
 
@@ -200,6 +203,7 @@ Passos
     * Modernizr
     * Touch Screen
     * Celulares, Tablets etc.
+    * Fonts
 
 #. Testes Automatizados??
 
