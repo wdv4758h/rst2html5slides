@@ -25,10 +25,6 @@ body {
   line-height: 1;
 }
 
-/* line 22, ../../../../../../Library/Ruby/Gems/1.8/gems/compass-0.12.1/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
-ol, ul {
-  list-style: none;
-}
 
 /* line 24, ../../../../../../Library/Ruby/Gems/1.8/gems/compass-0.12.1/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 table {
@@ -86,11 +82,11 @@ body {
   -moz-font-smoothing: antialiased;
   -ms-font-smoothing: antialiased;
   -o-font-smoothing: antialiased;
-  -webkit-transition: opacity 800ms ease-in 100ms;
-  -moz-transition: opacity 800ms ease-in 100ms;
-  -ms-transition: opacity 800ms ease-in 100ms;
-  -o-transition: opacity 800ms ease-in 100ms;
-  transition: opacity 800ms ease-in 100ms;
+  -webkit-transition: opacity 500ms ease-in 100ms;
+  -moz-transition: opacity 500ms ease-in 100ms;
+  -ms-transition: opacity 500ms ease-in 100ms;
+  -o-transition: opacity 500ms ease-in 100ms;
+  transition: opacity 500ms ease-in 100ms;
 }
 /* line 69, ../scss/_base.scss */
 body.loaded {
@@ -142,96 +138,10 @@ slides > slide {
   box-sizing: border-box;
 }
 
-/* Slide styles */
-/*section.fill iframe {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-
-  border: 0;
-  margin: 0;
-
-  @include border-radius(10px);
-
-  z-index: -1;
-}
-
-slide.fill {
-  background-repeat: no-repeat;
-  @include background-size(cover);
-}
-
-slide.fill img {
-  position: absolute;
-  left: 0;
-  top: 0;
-  min-width: 100%;
-  min-height: 100%;
-
-  z-index: -1;
-}
-*/
-/**
- * Theme Styles
- */
-/* line 58, ../scss/default.scss */
-::selection {
-  color: white;
-  background-color: #ffd14d;
-  text-shadow: none;
-}
-
-/* line 64, ../scss/default.scss */
-::-webkit-scrollbar {
-  height: 16px;
-  overflow: visible;
-  width: 16px;
-}
-
-/* line 69, ../scss/default.scss */
-::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0.1);
-  background-clip: padding-box;
-  border: solid transparent;
-  min-height: 28px;
-  padding: 100px 0 0;
-  -webkit-box-shadow: inset 1px 1px 0 rgba(0, 0, 0, 0.1), inset 0 -1px 0 rgba(0, 0, 0, 0.07);
-  -moz-box-shadow: inset 1px 1px 0 rgba(0, 0, 0, 0.1), inset 0 -1px 0 rgba(0, 0, 0, 0.07);
-  box-shadow: inset 1px 1px 0 rgba(0, 0, 0, 0.1), inset 0 -1px 0 rgba(0, 0, 0, 0.07);
-  border-width: 1px 1px 1px 6px;
-}
-
-/* line 78, ../scss/default.scss */
-::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(0, 0, 0, 0.5);
-}
-
-/* line 81, ../scss/default.scss */
-::-webkit-scrollbar-button {
-  height: 0;
-  width: 0;
-}
-
-/* line 85, ../scss/default.scss */
-::-webkit-scrollbar-track {
-  background-clip: padding-box;
-  border: solid transparent;
-  border-width: 0 0 0 4px;
-}
-
-/* line 90, ../scss/default.scss */
-::-webkit-scrollbar-corner {
-  background: transparent;
-}
-
-/* line 94, ../scss/default.scss */
 body {
   background: black;
 }
 
-/* line 98, ../scss/default.scss */
 slides > slide {
   display: none;
   background-color: white;
@@ -486,14 +396,14 @@ h2 {
 }
 
 /* line 331, ../scss/default.scss */
-ul {
+ol, ul {
   margin-left: 1.2em;
   margin-bottom: 1em;
   position: relative;
 }
 /* line 336, ../scss/default.scss */
-ul li {
-  margin-bottom: 1.25em;
+ol li, ul li {
+  margin-bottom: 1em;
   font-size: 1.25em;
 }
 /* line 339, ../scss/default.scss */
@@ -501,18 +411,7 @@ ul li ul {
   margin-left: 2em;
   margin-bottom: 0;
 }
-/* line 343, ../scss/default.scss */
-ul li ul li:before {
-  content: '-';
-  font-weight: 600;
-}
-/* line 350, ../scss/default.scss */
-ul > li:before {
-  content: '·';
-  margin-left: -1em;
-  position: absolute;
-  font-weight: 600;
-}
+
 /* line 357, ../scss/default.scss */
 ul ul {
   margin-top: .5em;
@@ -692,7 +591,7 @@ table {
   border-bottom: 1px solid #797979;
 }
 /* line 515, ../scss/default.scss */
-table tr > td:first-child, table th {
+table th {
   font-weight: 600;
   color: #515151;
 }
@@ -710,6 +609,7 @@ table th {
   background: -o-linear-gradient(top, #4387fd 40%, #2a7cdf 80%) no-repeat;
   background: -ms-linear-gradient(top, #4387fd 40%, #2a7cdf 80%) no-repeat;
   background: linear-gradient(top, #4387fd 40%, #2a7cdf 80%) no-repeat;
+  background-color: #2a7cdf;
 }
 /* line 530, ../scss/default.scss */
 table td, table th {
@@ -1237,6 +1137,10 @@ table.smaller  td, table.smaller th {
   line-height: 1.3;
 }
 
+.thank-you-slide a {
+    color: white;
+}
+
 /* line 884, ../scss/default.scss */
 aside.gdbar {
   height: 97px;
@@ -1380,13 +1284,7 @@ aside.gdbar img {
   slides slide {
     display: block !important;
     position: relative;
-    background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ffffff), color-stop(85%, #ffffff), color-stop(100%, #e6e6e6));
-    background: -webkit-linear-gradient(#ffffff, #ffffff 85%, #e6e6e6);
-    background: -moz-linear-gradient(#ffffff, #ffffff 85%, #e6e6e6);
-    background: -o-linear-gradient(#ffffff, #ffffff 85%, #e6e6e6);
-    background: -ms-linear-gradient(#ffffff, #ffffff 85%, #e6e6e6);
-    background: linear-gradient(#ffffff, #ffffff 85%, #e6e6e6);
-    background-color: white;
+    background-color: white !important;
     -webkit-transform: none !important;
     -moz-transform: none !important;
     -ms-transform: none !important;
@@ -1400,10 +1298,9 @@ aside.gdbar img {
     margin-top: 0 !important;
     margin-left: 0 !important;
     opacity: 1 !important;
-    color: #555;
+    -webkit-print-color-adjust:exact;
   }
-  /* line 1034, ../scss/default.scss */
-  slides slide.far-past, slides slide.past, slides slide.next, slides slide.far-next, slides slide.far-past, slides slide.current {
+  slides slide.current {
     opacity: 1 !important;
     display: block !important;
   }
@@ -1419,14 +1316,6 @@ aside.gdbar img {
   slides slide .build .to-build,
   slides slide .build .build-fade {
     opacity: 1;
-  }
-  /* line 1050, ../scss/default.scss */
-  slides slide .auto-fadein {
-    opacity: 1 !important;
-  }
-  /* line 1054, ../scss/default.scss */
-  slides slide.backdrop {
-    display: none !important;
   }
   /* line 1058, ../scss/default.scss */
   slides slide table.rows {

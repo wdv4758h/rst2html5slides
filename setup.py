@@ -11,7 +11,6 @@ setup(
     version='0.2',
     author='André Felipe Dias',
     author_email='andref.dias@gmail.com',
-    setup_requires=['nose >= 1.0'],
     keywords='restructuredText slide docutils',
     description='',
     install_requires=['rst2html5'],

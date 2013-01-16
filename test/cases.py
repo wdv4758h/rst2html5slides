@@ -209,7 +209,8 @@ Title 1
 
 single_slide_doctree = {
     'rst': single_slide['rst'],
-    'out': '''<document ids="title-1" names="title\ 1" source="<string>" title="Title 1">
+    'out': '''<document ids="title-1" names="title\ 1" source="<string>" \
+title="Title 1">
     <section>
         <header>
             <title>
@@ -362,7 +363,8 @@ paragraph
 ----
 
 another slide''',
-    'out': '''<document ids="title" names="title" source="<string>" title="Title">
+    'out': '''<document ids="title" names="title" source="<string>" \
+title="Title">
     <section>
         <header>
             <title>
@@ -418,7 +420,7 @@ slide 3''',
 }
 
 transition_with_class = {
-        'rst': '''Title
+    'rst': '''Title
 =====
 
 paragraph
@@ -623,10 +625,11 @@ slide_directive_5 = {
         </header>
         <section class="smaller">
             <pre><code class="javascript"><span class="kd">function</span> \
-<span class="nx">helloWorld</span><span class="p">(</span><span class="nx">world</span>\
-<span class="p">)</span> <span class="p">{</span>
-    <span class="nx">alert</span><span class="p">(</span><span class="s1">'Hello '</span> \
-<span class="o">+</span> <span class="nb">String</span><span class="p">(</span><span class="nx">\
+<span class="nx">helloWorld</span><span class="p">(</span><span class="nx">\
+world</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">alert</span><span class="p">(</span>\
+<span class="s1">'Hello '</span> <span class="o">+</span> \
+<span class="nb">String</span><span class="p">(</span><span class="nx">\
 world</span><span class="p">));</span>
 <span class="p">}</span></code></pre>
         </section>
@@ -637,7 +640,7 @@ world</span><span class="p">));</span>
 }
 
 slide_directive_in_the_middle = {
-     'rst': '''Title
+    'rst': '''Title
 =====
 
 paragraph 1
@@ -648,7 +651,8 @@ paragraph 1
     :subtitle: Subtitle
 
     paragraph''',
-    'out': '''<document ids="title" names="title" source="<string>" title="Title">
+    'out': '''<document ids="title" names="title" source="<string>" \
+title="Title">
     <section>
         <header>
             <title>
@@ -687,7 +691,8 @@ slide without title
 
     slide_contents
 ''',
-    'out': '''<document ids="title" names="title" source="<string>" title="Title">
+    'out': '''<document ids="title" names="title" source="<string>" \
+title="Title">
     <section>
         <header>
             <title>

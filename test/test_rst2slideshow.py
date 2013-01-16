@@ -9,12 +9,13 @@ import codecs
 import unittest
 
 from rst2slideshow import SlideShowWriter
-from docutils.core import publish_parts, publish_doctree, publish_from_doctree
+from docutils.core import publish_parts
 from nose.tools import assert_equals
 from tempfile import gettempdir
 
 tmpdir = gettempdir()
 unittest.TestCase.maxDiff = None
+
 
 def rst_to_slideshow_part(case):
     overrides = case.copy()
@@ -23,7 +24,8 @@ def rst_to_slideshow_part(case):
     overrides.pop('out')
     overrides.setdefault('indent_output', True)
     return publish_parts(writer=SlideShowWriter(), source=rst,
-                          settings_overrides=overrides)[part]
+                         settings_overrides=overrides)[part]
+
 
 def extract_variables(module):
     '''
@@ -31,8 +33,10 @@ def extract_variables(module):
     Variables should be a dict().
     For example, {'rst': rst, 'out':out, ...}
     '''
-    return ((v, getattr(module, v)) for v in dir(module)
-        if not v.startswith('__') and isinstance(getattr(module, v), dict))
+    return (
+        (v, getattr(module, v)) for v in dir(module)
+        if not v.startswith('__') and isinstance(getattr(module, v), dict)
+    )
 
 
 def test():
@@ -51,8 +55,8 @@ def test():
 
 
 def _test_part(test_name, case):
+    result = rst_to_slideshow_part(case)
     try:
-        result = rst_to_slideshow_part(case)
         assert_equals(result, case['out'])
     except Exception as error:
         '''
@@ -61,9 +65,11 @@ def _test_part(test_name, case):
         filename = os.path.join(tmpdir, test_name)
         with codecs.open(filename + '.rst', encoding='utf-8', mode='w') as f:
             f.write(case['rst'])
-        with codecs.open(filename + '.result', encoding='utf-8', mode='w') as f:
+        with codecs.open(filename + '.result', encoding='utf-8',
+                         mode='w') as f:
             f.write(result)
-        with codecs.open(filename + '.expected', encoding='utf-8', mode='w') as f:
+        with codecs.open(filename + '.expected', encoding='utf-8',
+                         mode='w') as f:
             f.write(case['out'])
 
         if isinstance(error, AssertionError):

@@ -11,27 +11,31 @@ Translates a restructuredText document to a HTML5 slideshow
 
 __docformat__ = 'reStructuredText'
 
-from docutils import nodes, frontend
+from docutils import nodes
 from docutils.core import publish_from_doctree
 from docutils.parsers.rst import Directive, directives
 from genshi.builder import tag
 from rst2html5 import HTML5Writer, HTML5Translator
 
 
-class slide_section(nodes.Element): pass
-'''
-nodes.section is not suited for this class because it must always have a title node as first child.
-However, a nodes.Element class does not have this restriction.
-'''
+class slide_section(nodes.Element):
+    '''
+    nodes.section is not suited for this class because it must always
+    have a title node as first child. However, a nodes.Element class does not
+    have this restriction.
+    '''
+    pass
 
-class slide_contents(nodes.Element): pass
+
+class slide_contents(nodes.Element):
+    pass
 
 
 class Slide(Directive):
     '''
     This directive creates a new slide_section node.
-    The node doesn't need to be promoted to a document section because the SlideShowTransformer
-    serializes all sections automatically.
+    The node doesn't need to be promoted to a document section because
+    the SlideShowTransformer serializes all sections automatically.
 
     See test/cases.py for examples.
     '''
@@ -54,7 +58,8 @@ class Slide(Directive):
             if 'subtitle' in self.options:
                 subtitle = nodes.subtitle(text=self.options['subtitle'])
                 slide.append(subtitle)
-        content = slide_contents(classes=self.options.get('contents_class', []))
+        content = slide_contents(classes=self.options.get('contents_class',
+                                                          []))
         self.state.nested_parse(self.content, self.content_offset, content)
         slide.append(content)
         return [slide]
@@ -105,9 +110,10 @@ class SlideShowTransformer(object):
 
     def check_subsection(self, node):
         '''
-        Make the header of the slide. If more than one title is found, there will be a hgroup
+        Make the header of the slide. If more than one title is found,
+        there will be a hgroup
         '''
-        if isinstance(node, nodes.section): # subsection
+        if isinstance(node, nodes.section):  # subsection
             '''
             insert subsection in curr_children
             '''
@@ -139,7 +145,6 @@ class SlideShowTransformer(object):
         return
 
 
-
 class SlideShowWriter(HTML5Writer):
 
     def __init__(self):
@@ -166,17 +171,24 @@ class SlideShowWriter(HTML5Writer):
         transformer = SlideShowTransformer()
         return transformer.transform(document)
 
+
 class SlideShowTranslator(HTML5Translator):
 
     def __init__(self, *args):
-        self.rst_terms['section'] = ('slide', 'visit_section', 'depart_section')
-        self.rst_terms['slide_contents'] = ('section', 'default_visit', 'default_departure')
-        self.rst_terms['slide_section'] = ('section', 'default_visit', 'default_departure')
+        self.rst_terms['section'] = ('slide', 'visit_section',
+                                     'depart_section')
+        self.rst_terms['slide_contents'] = ('section', 'default_visit',
+                                            'default_departure')
+        self.rst_terms['slide_section'] = ('section', 'default_visit',
+                                           'default_departure')
         HTML5Translator.__init__(self, *args)
-        self.head.append(tag.meta(**{'http-equiv':"X-UA-Compatible", 'content':"chrome=1"}))
+        self.head.append(tag.meta(http_equiv="X-UA-Compatible",
+                                  content="chrome=1"))
         self.head.append(tag.base(target="_blank"))
-        self.head.append(tag.link(rel="stylesheet", media="all", href="../css/pygments-default.css"))
-        self.head.append(tag.link(rel="stylesheet", media="all", href="../css/default.css"))
+        self.head.append(tag.link(rel="stylesheet", media="all",
+                                  href="../css/pygments-default.css"))
+        self.head.append(tag.link(rel="stylesheet", media="all",
+                                  href="../css/default.css"))
         self.head.append(tag.script(src="../js/slides.js"))
         self.head.append(tag.script(src="../js/code.js"))
         self.head.append(tag.script(src="../js/init.js"))
@@ -203,11 +215,12 @@ class SlideShowTranslator(HTML5Translator):
         self.context.stack = ['\n', slides, '\n']
         return
 
+
 def main():
     from docutils.core import publish_cmdline, default_description
 
-    description = ('Translates a restructuredText document to a HTML5 slideshow.  ' +
-                    default_description)
+    description = ('Translates a restructuredText document to a HTML5 '
+                   'slideshow.  ' + default_description)
     publish_cmdline(writer=SlideShowWriter(), description=description)
     return
 

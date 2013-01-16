@@ -12,3 +12,7 @@ _build
 _static
 *.sublime-*
 *.egg-info
+env
+build
+metrics
+.coverage
