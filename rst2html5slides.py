@@ -175,20 +175,15 @@ class SlideShowWriter(HTML5Writer):
 class SlideShowTranslator(HTML5Translator):
 
     def __init__(self, *args):
-        self.rst_terms['section'] = ('slide', 'visit_section',
-                                     'depart_section')
-        self.rst_terms['slide_contents'] = ('section', 'default_visit',
-                                            'default_departure')
-        self.rst_terms['slide_section'] = ('section', 'default_visit',
-                                           'default_departure')
+        self.rst_terms['section'] = ('slide', 'visit_section', 'depart_section')
+        self.rst_terms['slide_contents'] = ('section', 'default_visit', 'default_departure')
+        self.rst_terms['slide_section'] = ('section', 'default_visit', 'default_departure')
         HTML5Translator.__init__(self, *args)
-        self.head.append(tag.meta(http_equiv="X-UA-Compatible",
-                                  content="chrome=1"))
+        self.head.append(tag.meta(http_equiv="X-UA-Compatible", content="chrome=1"))
         self.head.append(tag.base(target="_blank"))
         self.head.append(tag.link(rel="stylesheet", media="all",
                                   href="../css/pygments-default.css"))
-        self.head.append(tag.link(rel="stylesheet", media="all",
-                                  href="../css/default.css"))
+        self.head.append(tag.link(rel="stylesheet", media="all", href="../css/default.css"))
         self.head.append(tag.script(src="../js/slides.js"))
         self.head.append(tag.script(src="../js/code.js"))
         self.head.append(tag.script(src="../js/init.js"))
@@ -219,8 +214,8 @@ class SlideShowTranslator(HTML5Translator):
 def main():
     from docutils.core import publish_cmdline, default_description
 
-    description = ('Translates a restructuredText document to a HTML5 '
-                   'slideshow.  ' + default_description)
+    description = ('Translates a restructuredText document to a HTML5 slideshow.  ' +
+                   default_description)
     publish_cmdline(writer=SlideShowWriter(), description=description)
     return
 

@@ -8,7 +8,7 @@ import sys
 import codecs
 import unittest
 
-from rst2slideshow import SlideShowWriter
+from rst2html5slides import SlideShowWriter
 from docutils.core import publish_parts
 from nose.tools import assert_equals
 from tempfile import gettempdir
@@ -17,7 +17,7 @@ tmpdir = gettempdir()
 unittest.TestCase.maxDiff = None
 
 
-def rst_to_slideshow_part(case):
+def rst_to_html5slides_part(case):
     overrides = case.copy()
     rst = overrides.pop('rst')
     part = overrides.pop('part')
@@ -48,6 +48,7 @@ def test():
     sys.stderr = open(os.devnull, 'w')
     try:
         for test_name, case in extract_variables(cases):
+            _test_part.description = test_name
             yield _test_part, test_name, case
     finally:
         sys.stderr.close()
@@ -55,7 +56,7 @@ def test():
 
 
 def _test_part(test_name, case):
-    result = rst_to_slideshow_part(case)
+    result = rst_to_html5slides_part(case)
     try:
         assert_equals(result, case['out'])
     except Exception as error:
@@ -65,11 +66,9 @@ def _test_part(test_name, case):
         filename = os.path.join(tmpdir, test_name)
         with codecs.open(filename + '.rst', encoding='utf-8', mode='w') as f:
             f.write(case['rst'])
-        with codecs.open(filename + '.result', encoding='utf-8',
-                         mode='w') as f:
+        with codecs.open(filename + '.result', encoding='utf-8', mode='w') as f:
             f.write(result)
-        with codecs.open(filename + '.expected', encoding='utf-8',
-                         mode='w') as f:
+        with codecs.open(filename + '.expected', encoding='utf-8', mode='w') as f:
             f.write(case['out'])
 
         if isinstance(error, AssertionError):
