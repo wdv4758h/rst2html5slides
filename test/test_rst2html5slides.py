@@ -8,7 +8,7 @@ import sys
 import codecs
 import unittest
 
-from rst2html5slides import SlideShowWriter
+from rst2html5slides import SlideWriter
 from docutils.core import publish_parts
 from nose.tools import assert_equals
 from tempfile import gettempdir
@@ -23,7 +23,7 @@ def rst_to_html5slides_part(case):
     part = overrides.pop('part')
     overrides.pop('out')
     overrides.setdefault('indent_output', True)
-    return publish_parts(writer=SlideShowWriter(), source=rst,
+    return publish_parts(writer=SlideWriter(), source=rst,
                          settings_overrides=overrides)[part]
 
 

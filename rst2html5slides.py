@@ -13,6 +13,7 @@ __docformat__ = 'reStructuredText'
 
 from docutils import nodes
 from docutils.core import publish_from_doctree
+from docutils.transforms import Transform
 from docutils.parsers.rst import Directive, directives
 from genshi.builder import tag
 from rst2html5 import HTML5Writer, HTML5Translator
@@ -35,7 +36,7 @@ class Slide(Directive):
     '''
     This directive creates a new slide_section node.
     The node doesn't need to be promoted to a document section because
-    the SlideShowTransformer serializes all sections automatically.
+    the SlideTransformer serializes all sections automatically.
 
     See test/cases.py for examples.
     '''
@@ -67,27 +68,28 @@ class Slide(Directive):
 directives.register_directive('slide', Slide)
 
 
-class SlideShowTransformer(object):
+class SlideTransform(Transform):
     '''
     State Machine to transform default doctree to one with slideshow structure:
-    section, header, hgroup, contents.
+    section, header, contents.
     '''
 
-    def transform(self, document):
+    default_priority = 851
+
+    def apply(self):
         self.state = self.make_content
         self.contents = []
         self.contents_classes = []
         self.header = []
         self.children = []
         self.section = None
-        self.curr_children = document.children
-        document.clear()
+        self.curr_children = self.document.children
+        self.document.clear()
         while self.curr_children:
             node = self.curr_children.pop(0)
             self.state(node)
         self.close_section()
-        document.extend(self.children)
-        return document
+        self.document.extend(self.children)
 
     def close_section(self):
         if not (self.contents or self.header):
@@ -110,8 +112,7 @@ class SlideShowTransformer(object):
 
     def check_subsection(self, node):
         '''
-        Make the header of the slide. If more than one title is found,
-        there will be a hgroup
+        Make the header of the slide
         '''
         if isinstance(node, nodes.section):  # subsection
             '''
@@ -145,34 +146,21 @@ class SlideShowTransformer(object):
         return
 
 
-class SlideShowWriter(HTML5Writer):
+class SlideWriter(HTML5Writer):
 
     def __init__(self):
         HTML5Writer.__init__(self)
-        self.translator_class = SlideShowTranslator
+        self.translator_class = SlideTranslator
 
     def translate(self):
-        self.transform_doctree(self.document)
-        if not self.document.settings.debug:
-            HTML5Writer.translate(self)
-            self.pseudoxml = ''
-        else:
-            self.pseudoxml = self.output = publish_from_doctree(self.document)
-            self.head = self.body = ''
-        return
+        self.parts['pseudoxml'] = self.document.pformat()  # get pseudoxml before HTML5.translate
+        HTML5Writer.translate(self)
 
-    def assemble_parts(self):
-        HTML5Writer.assemble_parts(self)
-        self.parts['pseudoxml'] = self.pseudoxml
-        return
-
-    @classmethod
-    def transform_doctree(cls, document):
-        transformer = SlideShowTransformer()
-        return transformer.transform(document)
+    def get_transforms(self):
+        return HTML5Writer.get_transforms(self) + [SlideTransform]
 
 
-class SlideShowTranslator(HTML5Translator):
+class SlideTranslator(HTML5Translator):
 
     def __init__(self, *args):
         self.rst_terms['section'] = ('slide', 'visit_section', 'depart_section')
@@ -216,7 +204,7 @@ def main():
 
     description = ('Translates a restructuredText document to a HTML5 slideshow.  ' +
                    default_description)
-    publish_cmdline(writer=SlideShowWriter(), description=description)
+    publish_cmdline(writer=SlideWriter(), description=description)
     return
 
 

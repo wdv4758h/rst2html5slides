@@ -89,58 +89,6 @@ Title 2
 }
 
 
-hgroup = {
-    'rst': '''
-Title 1
-=======
-
-Subtitle
---------
-
-* bullet
-
-Title 2
-=======
-
-Subtitle 2
-----------
-
-* bullet 2
-''',
-    'out': '''
-<slides class="layout-widescreen">
-    <slide>
-        <header>
-            <hgroup>
-                <h1>Title 1</h1>
-                <h2>Subtitle</h2>
-            </hgroup>
-        </header>
-        <section>
-            <ul>
-                <li>bullet</li>
-            </ul>
-        </section>
-    </slide>
-    <slide>
-        <header>
-            <hgroup>
-                <h1>Title 2</h1>
-                <h2>Subtitle 2</h2>
-            </hgroup>
-        </header>
-        <section>
-            <ul>
-                <li>bullet 2</li>
-            </ul>
-        </section>
-    </slide>
-</slides>
-''',
-    'part': 'body',
-}
-
-
 lose_nodes = {
     'rst': '''paragraph
 
@@ -178,7 +126,6 @@ lose_nodes_doctree = {
                     <paragraph>
                         bullet 2
 ''',
-    'debug': True,
     'part': 'pseudoxml',
 }
 
@@ -221,7 +168,6 @@ title="Title 1">
                     <paragraph>
                         bullet
 ''',
-    'debug': True,
     'part': 'pseudoxml',
 }
 
@@ -257,7 +203,6 @@ Title 2
                     <paragraph>
                         bullet 2
 ''',
-    'debug': True,
     'part': 'pseudoxml',
 }
 
@@ -306,7 +251,6 @@ Subtitle 2
                     <paragraph>
                         bullet 2
 ''',
-    'debug': True,
     'part': 'pseudoxml',
 }
 
@@ -349,7 +293,6 @@ transition_to_section_doctree = {
                     <paragraph>
                         bullet
 ''',
-    'debug': True,
     'part': 'pseudoxml',
 }
 
@@ -377,7 +320,6 @@ title="Title">
             <paragraph>
                 another slide
 ''',
-    'debug': True,
     'part': 'pseudoxml',
 }
 
@@ -415,7 +357,6 @@ slide 3''',
             <paragraph>
                 slide 3
 ''',
-    'debug': True,
     'part': 'pseudoxml',
 }
 
@@ -455,7 +396,6 @@ slide 3''',
             <paragraph>
                 slide 3
 ''',
-    'debug': True,
     'part': 'pseudoxml',
 }
 
@@ -469,7 +409,6 @@ slide_directive_1 = {
             <paragraph>
                 paragraph
 ''',
-    'debug': True,
     'part': 'pseudoxml',
 }
 
@@ -504,7 +443,6 @@ slide_directive_2 = {
             <paragraph>
                 paragraph
 ''',
-    'debug': True,
     'part': 'pseudoxml',
 }
 
@@ -515,10 +453,8 @@ slide_directive_2_slideshow = {
 <slides class="layout-widescreen">
     <slide class="special">
         <header>
-            <hgroup>
-                <h1>Teste 1</h1>
-                <h2>Subtitle</h2>
-            </hgroup>
+            <h1>Teste 1</h1>
+            <h2>Subtitle</h2>
         </header>
         <section>paragraph</section>
     </slide>
@@ -547,7 +483,6 @@ slide_directive_3 = {
             <paragraph>
                 paragraph
 ''',
-    'debug': True,
     'part': 'pseudoxml',
 }
 
@@ -557,10 +492,8 @@ slide_directive_3_slideshow = {
 <slides class="layout-widescreen">
     <slide class="special">
         <header>
-            <hgroup>
-                <h1>Teste 1</h1>
-                <h2>Subtitle</h2>
-            </hgroup>
+            <h1>Teste 1</h1>
+            <h2>Subtitle</h2>
         </header>
         <section class="flexbox vcenter">paragraph</section>
     </slide>
@@ -586,7 +519,6 @@ slide_directive_4 = {
                     This is an
                     example of quote text.
 ''',
-    'debug': True,
     'part': 'pseudoxml',
 }
 
@@ -670,7 +602,6 @@ title="Title">
             <paragraph>
                 paragraph
 ''',
-    'debug': True,
     'part': 'pseudoxml',
 }
 
@@ -691,8 +622,7 @@ slide without title
 
     slide_contents
 ''',
-    'out': '''<document ids="title" names="title" source="<string>" \
-title="Title">
+    'out': '''<document ids="title" names="title" source="<string>" title="Title">
     <section>
         <header>
             <title>
@@ -714,7 +644,6 @@ title="Title">
             <paragraph>
                 slide_contents
 ''',
-    'debug': True,
     'part': 'pseudoxml',
 }
 
@@ -769,6 +698,5 @@ empty_slides_pseudoxml = {
             <paragraph>
                 paragraph
 ''',
-    'debug': True,
     'part': 'pseudoxml',
 }
