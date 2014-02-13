@@ -1,6 +1,6 @@
-======================
-Fase 1 - rst2slideshow
-======================
+========================
+Fase 1 - rst2html5slides
+========================
 
 Transformar o restructuredText em slideshow
 
@@ -15,7 +15,7 @@ Estrutura de um Slide
     +----------------------------------------------+
     |                                              |
     |   +--------------------------------------+   |
-    |   | header/hgroup                        |   |
+    |   | header                               |   |
     |   +--------------------------------------+   |
     |                                              |
     |   +--------------------------------------+   |
@@ -57,7 +57,7 @@ para::
 
 
 Caso 2: Slide com subseção
--------
+--------------------------
 
 ::
 
@@ -74,9 +74,8 @@ para::
     document
         slide
             header
-                hgroup
-                    title h1
-                    title h2
+                title h1
+                title h2
             section
                 content
         ...
@@ -159,12 +158,11 @@ O pseudoxml gerado é o seguinte:
                         item 2
 
 Essa característica foi aproveitada para traduzir nós do tipo ``section``
-diretemante para o marcador ``<slide>`` em html5 no resultado final.
+diretamante para o marcador ``<slide>`` em html5 no resultado final.
 O título será agrupado em um ``<header>`` e o conteúdo do slide em uma ``<section>``,
 conforme planejado inicialmente para a `estrutura do slide`_.
 
-O slide pode ter um subtítulo.
-Nesse caso, o título e o subtítulo são agrupados em um elemento ``<hgroup>``:
+O slide pode ter um subtítulo:
 
 .. code-block:: rst
 
@@ -184,16 +182,19 @@ Resultando em HTML5:
 
     <slide>
         <header>
-            <hgroup>
-                <h1>Título</h1>
-                <h2>Subtítulo</h2>
-            </hgroup>
+            <h1>Título</h1>
+            <h2>Subtítulo</h2>
         </header>
         <section>
             <p>parágrafo 1</p>
             <p>parágrafo 2</p>
         </section>
     </slide>
+
+.. note::
+
+    A ideia inicial era usar um agrupamento em torno de ``<hgroup>``
+    mas essa tag foi excluída do padrão HTML5.
 
 
 Slides Delimitados por uma Linha Horizontal
@@ -202,7 +203,6 @@ Slides Delimitados por uma Linha Horizontal
 Uma linha horizontal é uma sequência formada por 4 ou mais caracteres de pontuação
 (`ref <http://docutils.sourceforge.net/docs/user/rst/quickref.html#transitions>`_),
 que corresponde a um nó do tipo ``transition``.
-
 Originalmente, a linha horizontal corresponde em HTML5 ao elemento ``<hr />``,
 mas foi aproveitado para indicar o limite entre um slide e outro:
 
@@ -220,7 +220,7 @@ mas foi aproveitado para indicar o limite entre um slide e outro:
 
     slide 3 com atributo class="segue contexto"
 
-A linha horizontal é indicado para os casos de slides que não têm Título.
+A linha horizontal é indicada para os casos de slides que não têm Título.
 
 
 Slides Delimmitados pela Diretiva ``slide``

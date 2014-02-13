@@ -10,6 +10,7 @@ Referências
 #. https://github.com/paulrouget/dzslides Muito interessante. Mas ainda não sei quais as semelhanças
    e diferenças em relação ao S6
 
+* Ótima aplicação web para criar e compartilhar slides: https://slid.es/
 
 O que já está definido
 ======================
