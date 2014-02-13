@@ -5,7 +5,6 @@ from __future__ import unicode_literals
 
 import os
 import sys
-import codecs
 import unittest
 
 from rst2html5slides import SlideWriter
@@ -51,7 +50,6 @@ def test():
             _test_part.description = test_name
             yield _test_part, test_name, case
     finally:
-        sys.stderr.close()
         sys.stderr = old_stderr
 
 
@@ -64,11 +62,11 @@ def _test_part(test_name, case):
         write temp files to help manual testing
         '''
         filename = os.path.join(tmpdir, test_name)
-        with codecs.open(filename + '.rst', encoding='utf-8', mode='w') as f:
+        with open(filename + '.rst', encoding='utf-8', mode='w') as f:
             f.write(case['rst'])
-        with codecs.open(filename + '.result', encoding='utf-8', mode='w') as f:
+        with open(filename + '.result', encoding='utf-8', mode='w') as f:
             f.write(result)
-        with codecs.open(filename + '.expected', encoding='utf-8', mode='w') as f:
+        with open(filename + '.expected', encoding='utf-8', mode='w') as f:
             f.write(case['out'])
 
         if isinstance(error, AssertionError):

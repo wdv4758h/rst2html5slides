@@ -41,6 +41,6 @@ find . -name "*.py" | egrep -v '^./(env|doc|metrics|build)' \
 
 echo clonedigger...
 clonedigger -o ./metrics/clonedigger.xml --ignore-dir=env \
-    --ignore-dir=build --ignore-dir=doc --ignore-dir=tests --cpd-output .
+    --ignore-dir=build --ignore-dir=doc --ignore-dir=test --cpd-output .
 
 deactivate

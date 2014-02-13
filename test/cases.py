@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# This file contains test data to rst2slideshow in the form:
+# This file contains test data to rst2html5slides in the form:
 # case = {'rst': rst_text, 'out': expected_output, ...}
 
 from __future__ import unicode_literals
