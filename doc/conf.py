@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# rst2slideshow documentation build configuration file, created by
+# rst2html5slides documentation build configuration file, created by
 # sphinx-quickstart on Wed Aug 15 10:43:15 2012.
 #
 # This file is execfile()d with the current directory set to its containing dir.
@@ -40,7 +40,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'rst2slideshow'
+project = u'rst2html5slides'
 copyright = u'2012, André Felipe Dias'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -164,7 +164,7 @@ html_static_path = ['_static']
 #html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'rst2slideshowdoc'
+htmlhelp_basename = 'rst2html5slidesdoc'
 
 
 # -- Options for LaTeX output --------------------------------------------------
@@ -183,7 +183,7 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'rst2slideshow.tex', u'rst2slideshow Documentation',
+  ('index', 'rst2html5slides.tex', u'rst2html5slides Documentation',
    u'André Felipe Dias', 'manual'),
 ]
 
@@ -213,7 +213,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'rst2slideshow', u'rst2slideshow Documentation',
+    ('index', 'rst2html5slides', u'rst2html5slides Documentation',
      [u'André Felipe Dias'], 1)
 ]
 
@@ -227,8 +227,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'rst2slideshow', u'rst2slideshow Documentation',
-   u'André Felipe Dias', 'rst2slideshow', 'One line description of project.',
+  ('index', 'rst2html5slides', u'rst2html5slides Documentation',
+   u'André Felipe Dias', 'rst2html5slides', 'One line description of project.',
    'Miscellaneous'),
 ]
 
