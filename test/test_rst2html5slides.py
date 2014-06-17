@@ -11,6 +11,7 @@ from rst2html5slides import SlideWriter
 from docutils.core import publish_parts
 from nose.tools import assert_equals
 from tempfile import gettempdir
+from io import open
 
 tmpdir = gettempdir()
 unittest.TestCase.maxDiff = None

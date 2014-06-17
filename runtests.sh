@@ -11,14 +11,15 @@ if [ -d metrics ]; then
     rm -rf metrics
 fi
 mkdir metrics
-if [ ${1:-''} == 'keep-env' ] && [ -d $WORKSPACE/env ]; then
+
+if [ ${1:-''} != 'new-env' ] && [ -d "$WORKSPACE/env" ]; then
     . $WORKSPACE/env/bin/activate
 else
-    if [ -d env ]; then
-        rm -rf env
+    if [ -d "$WORKSPACE/env" ]; then
+        rm -rf "$WORKSPACE/env"
     fi
-    virtualenv env
-    . $WORKSPACE/env/bin/activate
+    virtualenv "$WORKSPACE/env"
+    . "$WORKSPACE/env/bin/activate"
     pip install -M -r requirements.txt
     pip install -M -r test_requirements.txt
 fi
