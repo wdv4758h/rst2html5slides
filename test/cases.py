@@ -19,7 +19,7 @@ Title 2
 
 * bullet 2''',
     'out': '''
-<slides class="layout-widescreen">
+<slides>
     <slide>
         <header>
             <h1>Title 1</h1>
@@ -62,7 +62,7 @@ Title 2
     * bullet 2
 ''',
     'out': '''
-<slides class="layout-widescreen">
+<slides>
     <slide class="segue dark nobackground">
         <header>
             <h1>Title 1</h1>
@@ -95,7 +95,7 @@ lose_nodes = {
 * bullet 1
 * bullet 2''',
     'out': '''
-<slides class="layout-widescreen">
+<slides>
     <slide>
         <section>
             <p>paragraph</p>
@@ -137,7 +137,7 @@ Title 1
 
 * bullet''',
     'out': '''
-<slides class="layout-widescreen">
+<slides>
     <slide>
         <header>
             <h1>Title 1</h1>
@@ -262,7 +262,7 @@ transition_to_section = {
 
 * bullet''',
     'out': '''
-<slides class="layout-widescreen">
+<slides>
     <slide>
         <section>paragraph</section>
     </slide>
@@ -416,7 +416,7 @@ slide_directive_1 = {
 slide_directive_1_slideshow = {
     'rst': slide_directive_1['rst'],
     'out': '''
-<slides class="layout-widescreen">
+<slides>
     <slide>
         <section>paragraph</section>
     </slide>
@@ -450,7 +450,7 @@ slide_directive_2 = {
 slide_directive_2_slideshow = {
     'rst': slide_directive_2['rst'],
     'out': '''
-<slides class="layout-widescreen">
+<slides>
     <slide class="special">
         <header>
             <h1>Teste 1</h1>
@@ -489,7 +489,7 @@ slide_directive_3 = {
 slide_directive_3_slideshow = {
     'rst': slide_directive_3['rst'],
     'out': '''
-<slides class="layout-widescreen">
+<slides>
     <slide class="special">
         <header>
             <h1>Teste 1</h1>
@@ -525,7 +525,7 @@ slide_directive_4 = {
 slide_directive_4_slideshow = {
     'rst': slide_directive_4['rst'],
     'out': '''
-<slides class="layout-widescreen">
+<slides>
     <slide class="segue dark quote nobackground">
         <section class="flexbox vleft auto-fadein">
             <blockquote class="epigraph">
@@ -550,7 +550,7 @@ slide_directive_5 = {
         alert('Hello ' + String(world));
     }''',
     'out': '''
-<slides class="layout-widescreen">
+<slides>
     <slide class="special">
         <header>
             <h1>Code Slide (Smaller Font)</h1>
@@ -662,7 +662,7 @@ Title
 
 paragraph''',
     'out': '''
-<slides class="layout-widescreen">
+<slides>
     <slide class="special">
         <section></section>
     </slide>

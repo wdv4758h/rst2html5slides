@@ -194,7 +194,7 @@ class SlideTranslator(HTML5Translator):
         self.heading_level += 1
 
     def depart_document(self, node):
-        slides = tag.slides(*self.context.stack[0], class_="layout-widescreen")
+        slides = tag.slides(*self.context.stack[0])
         self.context.stack = ['\n', slides, '\n']
         return
 
