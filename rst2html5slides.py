@@ -48,19 +48,29 @@ class Slide(Directive):
         'title': directives.unchanged,
         'subtitle': directives.unchanged,
         'contents_class': directives.class_option,
+        # impress.js attributes
+        'x': directives.unchanged,
+        'y': directives.unchanged,
+        'z': directives.unchanged,
+        'rotate': directives.unchanged,
+        'rotate-x': directives.unchanged,
+        'rotate-y': directives.unchanged,
+        'rotate-z': directives.unchanged,
+        'scale': directives.unchanged,
     }
     has_content = True
 
     def run(self):
-        slide = slide_section(classes=self.options.get('class', []))
+        attrs = {'data-' + key: value for key, value in self.options.iteritems()
+                 if key not in ('class', 'title', 'subtitle', 'contents_class')}
+        slide = slide_section(classes=self.options.get('class', []), **attrs)
         if 'title' in self.options:
             title = nodes.title(text=self.options.get('title', ''))
             slide.append(title)
             if 'subtitle' in self.options:
                 subtitle = nodes.subtitle(text=self.options['subtitle'])
                 slide.append(subtitle)
-        content = slide_contents(classes=self.options.get('contents_class',
-                                                          []))
+        content = slide_contents(classes=self.options.get('contents_class', []))
         self.state.nested_parse(self.content, self.content_offset, content)
         slide.append(content)
         return [slide]
@@ -128,11 +138,11 @@ class SlideTransform(Transform):
         if isinstance(node, (nodes.transition, nodes.section, slide_section)):
             self.close_section()
             self.section = nodes.section()
-            self.section.update_basic_atts(node)
+            self.section.update_all_atts(node)
             self.curr_children = node.children + self.curr_children
         elif isinstance(node, (nodes.title, nodes.subtitle)):
             elem = nodes.subtitle() if len(self.header) else nodes.title()
-            elem.update_basic_atts(node)
+            elem.update_all_atts(node)
             elem.extend(node.children)
             self.header.append(elem)
             self.state = self.check_subsection
