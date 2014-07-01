@@ -40,10 +40,10 @@ class Slide(Directive):
 
     See test/cases.py for examples.
     '''
-    required_arguments = 0
-    optional_arguments = 0
     final_argument_whitespace = True
+    has_content = True
     option_spec = {
+        'id': directives.unchanged,
         'class': directives.class_option,
         'title': directives.unchanged,
         'subtitle': directives.unchanged,
@@ -52,17 +52,27 @@ class Slide(Directive):
         'x': directives.unchanged,
         'y': directives.unchanged,
         'z': directives.unchanged,
+        'r': directives.unchanged,
+        'phi': directives.unchanged,
         'rotate': directives.unchanged,
         'rotate-x': directives.unchanged,
         'rotate-y': directives.unchanged,
         'rotate-z': directives.unchanged,
         'scale': directives.unchanged,
+        'delegate': directives.unchanged,
+        'src': directives.unchanged,
+        'exclude': directives.unchanged,
+        'next': directives.unchanged,
+        'prev': directives.unchanged,
+        'template': directives.unchanged,
+        'jmpress': directives.unchanged,
     }
-    has_content = True
 
     def run(self):
         attrs = {'data-' + key: value for key, value in self.options.iteritems()
-                 if key not in ('class', 'title', 'subtitle', 'contents_class')}
+                 if key not in ('id', 'class', 'title', 'subtitle', 'contents_class')}
+        if 'id' in self.options:
+            attrs['id'] = [self.options['id']]
         slide = slide_section(classes=self.options.get('class', []), **attrs)
         if 'title' in self.options:
             title = nodes.title(text=self.options.get('title', ''))
@@ -178,7 +188,6 @@ class SlideTranslator(HTML5Translator):
         self.rst_terms['slide_section'] = ('section', 'default_visit', 'default_departure')
         HTML5Translator.__init__(self, *args)
         self.head.append(tag.base(target="_blank"))
-
 
     def visit_section(self, node):
         node['ids'] = ''

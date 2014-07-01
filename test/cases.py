@@ -573,6 +573,7 @@ world</span><span class="p">));</span>
 
 slide_impress_1 = {
     'rst': '''.. slide::
+    :id: paragraph
     :class: special
     :x: 1000
     :y: -200
@@ -581,7 +582,7 @@ slide_impress_1 = {
 ''',
     'part': 'pseudoxml',
     'out': '''<document source="<string>">
-    <section classes="special" data-x="1000" data-y="-200">
+    <section classes="special" data-x="1000" data-y="-200" id="paragraph">
         <slide_contents>
             <paragraph>
                 paragraph
@@ -593,7 +594,7 @@ slide_impress_1_slideshow = {
     'part': 'body',
     'out': '''
 <slides>
-    <slide data-y="-200" data-x="1000" class="special">
+    <slide data-y="-200" data-x="1000" class="special" id="paragraph">
         <section>paragraph</section>
     </slide>
 </slides>
