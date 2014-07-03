@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>impress</title>
+    <meta charset="utf-8" />
+    <base target="_blank" />
+    <meta content="width=device-width, maximum-scale=1.0, initial-scale=1.0, user-scalable=yes" name="viewport" />
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:regular,semibold,italic,italicsemibold|PT+Sans:400,700,400italic,700italic|PT+Serif:400,700,400italic,700italic" rel="stylesheet" />
+    <link href="impress.css" rel="stylesheet" />
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="jmpress.js"></script>
+</head>
+<body>
+<deck>
+    <slide>
+        <section></section>
+    </slide>
+    <slide data-y="-1500" data-x="-1000" class="slide" id="bored">
+        <section>Aren't you just <strong>bored</strong> with all those slides-based presentations?</section>
+    </slide>
+    <slide data-y="-1500" data-x="0" class="slide">
+        <section>Don't you think that presentations given in <strong>modern browsers</strong> shouldn't <strong>copy the limits</strong> of 'classic' slide decks?</section>
+    </slide>
+    <slide data-y="-1500" data-x="1000" class="slide">
+        <section>Would you like to <strong>impress your audience</strong> with <strong>stunning visualization</strong> of your talk?</section>
+    </slide>
+    <slide data-y="0" data-x="0" id="title" data-scale="4">
+        <section>
+            <p><span class="try">then you should try</span></p>
+            <p>impress.js <sup>*</sup></p>
+        </section>
+    </slide>
+    <slide data-y="3000" data-x="850" data-scale="5" id="its" data-rotate="90">
+        <section>It's a <strong>presentation tool</strong> inspired by the idea behind <a href="http://prezi.com">prezi.com</a> and based on the <strong>power of CSS3 transforms and transitions</strong> in modern browsers.</section>
+    </slide>
+    <slide data-y="2100" data-x="3500" data-scale="6" id="big" data-rotate="180">
+        <section>visualize your <strong>big</strong> <span class="thoughts">thoughts</span></section>
+    </slide>
+    <slide data-scale="1" data-y="2325" data-x="2825" data-z="-3000" data-rotate="300" id="tiny">
+        <section>and <strong>tiny</strong> ideas</section>
+    </slide>
+    <slide data-y="-850" data-x="3500" data-scale="6" id="ing" data-rotate="270">
+        <section>by <span class="positioning">positioning</span>, <span class="rotating">rotating</span> and <span class="scaling">scaling</span> them on an infinite canvas</section>
+    </slide>
+    <slide data-y="-300" data-x="6700" id="imagination" data-scale="6">
+        <section>the only <strong>limit</strong> is your <span class="imagination">imagination</span></section>
+    </slide>
+    <slide data-y="2000" data-x="6300" data-scale="4" id="source" data-rotate="20">
+        <section>want to know more? <a href="http://github.com/bartaz/impress.js">use the source</a>, Luke!</section>
+    </slide>
+    <slide data-y="4000" data-x="6000" id="one-more-thing" data-scale="2">
+        <section>one more thing...</section>
+    </slide>
+    <slide data-scale="2" data-y="4300" data-x="6200" data-z="-100" data-rotate-x="-40" data-rotate-y="10" id="its-in-3d">
+        <section><span class="have">have</span> <span class="you">you</span> <span class="noticed">noticed</span> <span class="its">it's</span> in <strong>3D</strong><sup>*</sup>? <span class="footnote">* beat that, prezi :)</span></section>
+    </slide>
+    <slide data-y="1500" data-x="3000" id="overview" data-scale="10">
+        <section></section>
+    </slide>
+</deck>
+<script>
+$(function() {
+    $('deck').jmpress({
+        stepSelector: 'slide'
+    });
+});
+</script>
+</body>
+</html>

@@ -19,7 +19,7 @@ Title 2
 
 * bullet 2''',
     'out': '''
-<slides>
+<deck>
     <slide>
         <header>
             <h1>Title 1</h1>
@@ -40,7 +40,7 @@ Title 2
             </ul>
         </section>
     </slide>
-</slides>
+</deck>
 ''',
     'part': 'body',
 }
@@ -62,7 +62,7 @@ Title 2
     * bullet 2
 ''',
     'out': '''
-<slides>
+<deck>
     <slide class="segue dark nobackground">
         <header>
             <h1>Title 1</h1>
@@ -83,7 +83,7 @@ Title 2
             </ul>
         </section>
     </slide>
-</slides>
+</deck>
 ''',
     'part': 'body',
 }
@@ -95,7 +95,7 @@ lose_nodes = {
 * bullet 1
 * bullet 2''',
     'out': '''
-<slides>
+<deck>
     <slide>
         <section>
             <p>paragraph</p>
@@ -105,7 +105,7 @@ lose_nodes = {
             </ul>
         </section>
     </slide>
-</slides>
+</deck>
 ''',
     'part': 'body',
 }
@@ -137,7 +137,7 @@ Title 1
 
 * bullet''',
     'out': '''
-<slides>
+<deck>
     <slide>
         <header>
             <h1>Title 1</h1>
@@ -148,7 +148,7 @@ Title 1
             </ul>
         </section>
     </slide>
-</slides>
+</deck>
 ''',
     'part': 'body',
 }
@@ -262,7 +262,7 @@ transition_to_section = {
 
 * bullet''',
     'out': '''
-<slides>
+<deck>
     <slide>
         <section>paragraph</section>
     </slide>
@@ -273,7 +273,7 @@ transition_to_section = {
             </ul>
         </section>
     </slide>
-</slides>
+</deck>
 ''',
     'part': 'body',
 }
@@ -416,11 +416,11 @@ slide_directive_1 = {
 slide_directive_1_slideshow = {
     'rst': slide_directive_1['rst'],
     'out': '''
-<slides>
+<deck>
     <slide>
         <section>paragraph</section>
     </slide>
-</slides>
+</deck>
 ''',
     'part': 'body',
 }
@@ -450,7 +450,7 @@ slide_directive_2 = {
 slide_directive_2_slideshow = {
     'rst': slide_directive_2['rst'],
     'out': '''
-<slides>
+<deck>
     <slide class="special">
         <header>
             <h1>Teste 1</h1>
@@ -458,7 +458,7 @@ slide_directive_2_slideshow = {
         </header>
         <section>paragraph</section>
     </slide>
-</slides>
+</deck>
 ''',
     'part': 'body',
 }
@@ -489,7 +489,7 @@ slide_directive_3 = {
 slide_directive_3_slideshow = {
     'rst': slide_directive_3['rst'],
     'out': '''
-<slides>
+<deck>
     <slide class="special">
         <header>
             <h1>Teste 1</h1>
@@ -497,7 +497,7 @@ slide_directive_3_slideshow = {
         </header>
         <section class="flexbox vcenter">paragraph</section>
     </slide>
-</slides>
+</deck>
 ''',
     'part': 'body',
 }
@@ -525,7 +525,7 @@ slide_directive_4 = {
 slide_directive_4_slideshow = {
     'rst': slide_directive_4['rst'],
     'out': '''
-<slides>
+<deck>
     <slide class="segue dark quote nobackground">
         <section class="flexbox vleft auto-fadein">
             <blockquote class="epigraph">
@@ -533,7 +533,7 @@ slide_directive_4_slideshow = {
             </blockquote>
         </section>
     </slide>
-</slides>
+</deck>
 ''',
     'part': 'body',
 }
@@ -550,7 +550,7 @@ slide_directive_5 = {
         alert('Hello ' + String(world));
     }''',
     'out': '''
-<slides>
+<deck>
     <slide class="special">
         <header>
             <h1>Code Slide (Smaller Font)</h1>
@@ -566,7 +566,7 @@ world</span><span class="p">));</span>
 <span class="p">}</span></code></pre>
         </section>
     </slide>
-</slides>
+</deck>
 ''',
     'part': 'body',
 }
@@ -593,11 +593,11 @@ slide_impress_1_slideshow = {
     'rst': slide_impress_1['rst'],
     'part': 'body',
     'out': '''
-<slides>
+<deck>
     <slide data-y="-200" data-x="1000" class="special" id="paragraph">
         <section>paragraph</section>
     </slide>
-</slides>
+</deck>
 ''',
 }
 
@@ -693,7 +693,7 @@ Title
 
 paragraph''',
     'out': '''
-<slides>
+<deck>
     <slide class="special">
         <section></section>
     </slide>
@@ -706,7 +706,7 @@ paragraph''',
         </header>
         <section>paragraph</section>
     </slide>
-</slides>
+</deck>
 ''',
     'part': 'body',
 }

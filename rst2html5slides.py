@@ -15,8 +15,11 @@ from docutils import nodes
 from docutils.core import publish_from_doctree
 from docutils.transforms import Transform
 from docutils.parsers.rst import Directive, directives
+from docutils.parsers.rst.directives.html import MetaBody as Meta
 from genshi.builder import tag
 from rst2html5 import HTML5Writer, HTML5Translator
+
+import impress
 
 
 class slide_section(nodes.Element):
@@ -86,6 +89,7 @@ class Slide(Directive):
         return [slide]
 
 directives.register_directive('slide', Slide)
+directives.register_directive('impress', impress.Impress)
 
 
 class SlideTransform(Transform):
@@ -95,6 +99,8 @@ class SlideTransform(Transform):
     '''
 
     default_priority = 851
+
+    skip_classes = (Meta.meta,)
 
     def apply(self):
         self.state = self.make_content
@@ -107,6 +113,9 @@ class SlideTransform(Transform):
         self.document.clear()
         while self.curr_children:
             node = self.curr_children.pop(0)
+            if isinstance(node, self.skip_classes):
+                self.children.append(node)
+                continue
             self.state(node)
         self.close_section()
         self.document.extend(self.children)
@@ -182,12 +191,29 @@ class SlideWriter(HTML5Writer):
 
 class SlideTranslator(HTML5Translator):
 
+    slide_script_init = '''\n<script>
+$(function() {
+    $('deck').jmpress({
+        stepSelector: 'slide'
+    });
+});
+</script>\n'''
+
+    default_template = '<!DOCTYPE html>\n<html{html_attr}>\n' \
+                       '<head>{head}</head>\n<body>{body}{script}</body>\n</html>'
+
     def __init__(self, *args):
         self.rst_terms['section'] = ('slide', 'visit_section', 'depart_section')
         self.rst_terms['slide_contents'] = ('section', 'default_visit', 'default_departure')
         self.rst_terms['slide_section'] = ('section', 'default_visit', 'default_departure')
         HTML5Translator.__init__(self, *args)
-        self.head.append(tag.base(target="_blank"))
+        self.metatags.append(tag.base(target="_blank"))
+        return
+
+    def _get_template_values(self):
+        result = HTML5Translator._get_template_values(self)
+        result['script'] = self.slide_script_init
+        return result
 
     def visit_section(self, node):
         node['ids'] = ''
@@ -207,8 +233,15 @@ class SlideTranslator(HTML5Translator):
         self.heading_level += 1
 
     def depart_document(self, node):
-        slides = tag.slides(*self.context.stack[0])
-        self.context.stack = ['\n', slides, '\n']
+        if not len(self.context.stack[0]):
+            return
+        from genshi.builder import Element
+        slides = [elem for item in self.context.stack[0] for elem in item if isinstance(elem, Element)]
+        distribution = impress.Impress.opts['distribution']
+        func = getattr(impress, distribution)
+        func(slides)
+        deck = tag.deck(*self.context.stack[0])
+        self.context.stack = ['\n', deck, '\n']
         return
 
 
