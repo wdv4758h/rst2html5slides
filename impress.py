@@ -3,29 +3,38 @@
 import math
 from docutils.parsers.rst import Directive, directives
 
-INCR_X = 1240
+INCR_X = 1500
 INCR_Y = 800
 
-class Impress(Directive):
+class Distribution(Directive):
     '''
-    Set impress global options
+    Set distribution global options
     '''
-    final_argument_whitespace = True
+    required_arguments = 1
+    final_argument_whitespace = False
     has_content = False
     option_spec = {
-        'distribution': directives.unchanged,
         'incr_x': int,
         'incr_y': int,
     }
-
-    opts = {
+    _default_opts = {
         'distribution': 'manual',
         'incr_x': INCR_X,
         'incr_y': INCR_Y,
     }
+    opts = _default_opts.copy()
+    slides_distribution = 'manual'
+
+    @classmethod
+    def reset(cls):
+        Distribution.opts = Distribution._default_opts.copy()
+        Distribution.slides_distribution = 'manual'
+        return
 
     def run(self):
-        Impress.opts.update(self.options)
+        self.reset()
+        Distribution.slides_distribution = self.arguments[0]
+        Distribution.opts.update(self.options)
         return []
 
 
@@ -37,15 +46,14 @@ def linear(slides):
     Linear distribution
     '''
     x = 0
-    incr_x = Impress.opts['incr_x']
+    incr_x = Distribution.opts['incr_x']
     for slide in slides:
         slide(data_x=x)
         x += incr_x
 
-
 def square(slides, amount=4):
-    incr_x = Impress.opts['incr_x']
-    incr_y = Impress.opts['incr_y']
+    incr_x = Distribution.opts['incr_x']
+    incr_y = Distribution.opts['incr_y']
     x = 0
     y = -incr_y
     for index, slide in enumerate(slides):
@@ -55,28 +63,27 @@ def square(slides, amount=4):
         slide(data_x=x, data_y=y)
         x += incr_x
 
-
 def square2(slides, amount=4):
-    incr_x = -Impress.opts['incr_x']
-    incr_y = Impress.opts['incr_y']
+    incr_x = -Distribution.opts['incr_x']
+    incr_y = Distribution.opts['incr_y']
     x = 0
     y = -incr_y
-    rotate_z = 180
+    rotate_z = 179.9  # jmpress doesn't rotate clockwise when it is 180
     for index, slide in enumerate(slides):
         if not index % amount:
-            incr_x = -incr_x
+            x += incr_x
             y += incr_y
-            rotate_z = rotate_z == 0 and 180 or 0
-        slide(data_x=x, data_y=y, data_rotate_z=rotate_z)
+            incr_x = -incr_x
+            rotate_z = rotate_z == 0 and 179.9 or 0
         x += incr_x
-
+        slide(data_x=x, data_y=y, data_rotate_z=rotate_z)
 
 def spiral(slides, radius=1200):
-    incr_rotate = (radius / 180. * math.pi)
+    incr_rotate = int(radius / 180. * math.pi)
     rotate = -incr_rotate
     for index, slide in enumerate(slides):
-        x = math.cos(index) * radius
-        y = math.sin(index) * radius
-        z = math.log(index) * radius
+        x = int(math.cos(index) * radius)
+        y = int(math.sin(index) * radius)
+        z = int(math.log(index + 1) * radius)
         rotate += incr_rotate
-        slide(data_x=x, data_y=y, data_z=z, data_rotate_x=rotate, data_rotate_y=rotate, data_rotate_z=rotate)
+        slide(data_x=x, data_y=y, data_z=z, data_rotate_x=rotate, data_rotate_y=(rotate + incr_rotate), data_rotate_z=33)

@@ -16,7 +16,7 @@ from docutils.core import publish_from_doctree
 from docutils.transforms import Transform
 from docutils.parsers.rst import Directive, directives
 from docutils.parsers.rst.directives.html import MetaBody as Meta
-from genshi.builder import tag
+from genshi.builder import tag, Element
 from rst2html5 import HTML5Writer, HTML5Translator
 
 import impress
@@ -89,7 +89,7 @@ class Slide(Directive):
         return [slide]
 
 directives.register_directive('slide', Slide)
-directives.register_directive('impress', impress.Impress)
+directives.register_directive('slides_distribution', impress.Distribution)
 
 
 class SlideTransform(Transform):
@@ -232,16 +232,18 @@ $(function() {
         HTML5Translator.depart_subtitle(self, node)
         self.heading_level += 1
 
-    def depart_document(self, node):
-        if not len(self.context.stack[0]):
-            return
-        from genshi.builder import Element
+    def _distribute_slides_jmpress(self):
         slides = [elem for item in self.context.stack[0] for elem in item if isinstance(elem, Element)]
-        distribution = impress.Impress.opts['distribution']
+        distribution = impress.Distribution.slides_distribution
         func = getattr(impress, distribution)
         func(slides)
-        deck = tag.deck(*self.context.stack[0])
-        self.context.stack = ['\n', deck, '\n']
+        impress.Distribution.reset()
+
+    def depart_document(self, node):
+        self._distribute_slides_jmpress()
+        if len(self.context.stack[0]):
+            deck = tag.deck(*self.context.stack[0])
+            self.context.stack = ['\n', deck, '\n']
         return
 
 

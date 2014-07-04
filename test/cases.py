@@ -731,3 +731,285 @@ empty_slides_pseudoxml = {
 ''',
     'part': 'pseudoxml',
 }
+
+meta_h = {
+    'rst': '''.. meta::
+    :author: André Felipe Dias
+    :http-equiv=X-UA-Compatible: chrome=1
+''',
+    'out': '''
+    <meta charset="utf-8" />
+    <base target="_blank" />
+    <meta content="André Felipe Dias" name="author" />
+    <meta content="chrome=1" http-equiv="X-UA-Compatible" />
+    <link href="impress.css" rel="stylesheet" />
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="impress.css"></script>
+''',
+    'part': 'head',
+    'script': [
+        ('http://code.jquery.com/jquery-latest.min.js', None),
+        ('impress.css', None),
+    ],
+    'stylesheet': ('impress.css',),
+}
+
+meta_h2 = {
+    'rst': meta_h['rst'],
+    'out': '',
+    'part': 'body',
+}
+
+_rst_example = '''Title 1
+=======
+
+* Bullet
+
+Title 2
+=======
+
+* Bullet
+
+Title 3
+=======
+
+* Bullet
+
+Title 4
+=======
+
+* Bullet
+
+Title 5
+=======
+
+* Bullet
+
+Title 6
+=======
+
+* Bullet
+'''
+
+linear = {
+    'rst': '''.. slides_distribution:: linear
+
+''' + _rst_example,
+    'part': 'body',
+    'out': '''
+<deck>
+    <slide data-x="0">
+        <header>
+            <h1>Title 1</h1>
+        </header>
+        <section>
+            <ul>
+                <li>Bullet</li>
+            </ul>
+        </section>
+    </slide>
+    <slide data-x="1500">
+        <header>
+            <h1>Title 2</h1>
+        </header>
+        <section>
+            <ul>
+                <li>Bullet</li>
+            </ul>
+        </section>
+    </slide>
+    <slide data-x="3000">
+        <header>
+            <h1>Title 3</h1>
+        </header>
+        <section>
+            <ul>
+                <li>Bullet</li>
+            </ul>
+        </section>
+    </slide>
+    <slide data-x="4500">
+        <header>
+            <h1>Title 4</h1>
+        </header>
+        <section>
+            <ul>
+                <li>Bullet</li>
+            </ul>
+        </section>
+    </slide>
+    <slide data-x="6000">
+        <header>
+            <h1>Title 5</h1>
+        </header>
+        <section>
+            <ul>
+                <li>Bullet</li>
+            </ul>
+        </section>
+    </slide>
+    <slide data-x="7500">
+        <header>
+            <h1>Title 6</h1>
+        </header>
+        <section>
+            <ul>
+                <li>Bullet</li>
+            </ul>
+        </section>
+    </slide>
+</deck>
+''',
+}
+
+square = {
+    'rst': '''.. slides_distribution:: square
+
+''' + _rst_example,
+    'part': 'body',
+    'out': '''
+<deck>
+    <slide data-y="0" data-x="0">
+        <header>
+            <h1>Title 1</h1>
+        </header>
+        <section>
+            <ul>
+                <li>Bullet</li>
+            </ul>
+        </section>
+    </slide>
+    <slide data-y="0" data-x="1500">
+        <header>
+            <h1>Title 2</h1>
+        </header>
+        <section>
+            <ul>
+                <li>Bullet</li>
+            </ul>
+        </section>
+    </slide>
+    <slide data-y="0" data-x="3000">
+        <header>
+            <h1>Title 3</h1>
+        </header>
+        <section>
+            <ul>
+                <li>Bullet</li>
+            </ul>
+        </section>
+    </slide>
+    <slide data-y="0" data-x="4500">
+        <header>
+            <h1>Title 4</h1>
+        </header>
+        <section>
+            <ul>
+                <li>Bullet</li>
+            </ul>
+        </section>
+    </slide>
+    <slide data-y="800" data-x="0">
+        <header>
+            <h1>Title 5</h1>
+        </header>
+        <section>
+            <ul>
+                <li>Bullet</li>
+            </ul>
+        </section>
+    </slide>
+    <slide data-y="800" data-x="1500">
+        <header>
+            <h1>Title 6</h1>
+        </header>
+        <section>
+            <ul>
+                <li>Bullet</li>
+            </ul>
+        </section>
+    </slide>
+</deck>
+''',
+}
+
+square2 = {
+    'rst': '''.. slides_distribution:: square2
+
+''' + _rst_example,
+    'part': 'body',
+    'out': '''
+<deck>
+    <slide data-rotate-z="0" data-y="0" data-x="0">
+        <header>
+            <h1>Title 1</h1>
+        </header>
+        <section>
+            <ul>
+                <li>Bullet</li>
+            </ul>
+        </section>
+    </slide>
+    <slide data-rotate-z="0" data-y="0" data-x="1500">
+        <header>
+            <h1>Title 2</h1>
+        </header>
+        <section>
+            <ul>
+                <li>Bullet</li>
+            </ul>
+        </section>
+    </slide>
+    <slide data-rotate-z="0" data-y="0" data-x="3000">
+        <header>
+            <h1>Title 3</h1>
+        </header>
+        <section>
+            <ul>
+                <li>Bullet</li>
+            </ul>
+        </section>
+    </slide>
+    <slide data-rotate-z="0" data-y="0" data-x="4500">
+        <header>
+            <h1>Title 4</h1>
+        </header>
+        <section>
+            <ul>
+                <li>Bullet</li>
+            </ul>
+        </section>
+    </slide>
+    <slide data-rotate-z="179.9" data-y="800" data-x="4500">
+        <header>
+            <h1>Title 5</h1>
+        </header>
+        <section>
+            <ul>
+                <li>Bullet</li>
+            </ul>
+        </section>
+    </slide>
+    <slide data-rotate-z="179.9" data-y="800" data-x="3000">
+        <header>
+            <h1>Title 6</h1>
+        </header>
+        <section>
+            <ul>
+                <li>Bullet</li>
+            </ul>
+        </section>
+    </slide>
+</deck>
+''',
+}
+
+# spiral = {
+#     'rst': '''.. slides_distribution::
+#     :distribution: spiral
+
+# ''' + _rst_example,
+#     'part': 'body',
+#     'out': '''
+# ''',
+# }
