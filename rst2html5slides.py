@@ -35,6 +35,20 @@ class slide_contents(nodes.Element):
     pass
 
 
+class AnyOptionsDict(dict):
+    '''
+    This dict subclass is supposed to be used as a option_spec attribute
+    to allow the directive to receive any number of options,
+    with some of them defined previously
+    '''
+    def __getitem__(self, key):
+        try:
+            item = dict.__getitem__(self, key)
+        except KeyError:
+            item = directives.unchanged
+        return item
+
+
 class Slide(Directive):
     '''
     This directive creates a new slide_section node.
@@ -42,40 +56,23 @@ class Slide(Directive):
     the SlideTransformer serializes all sections automatically.
 
     See test/cases.py for examples.
+
+    All non-defined options that are defined in the declaration are automatically
+    added as slide attributes such as :data-x:, :data-y: or :data-scale:
     '''
     final_argument_whitespace = True
     has_content = True
-    option_spec = {
+    option_spec = AnyOptionsDict({
         'id': directives.unchanged,
         'class': directives.class_option,
         'title': directives.unchanged,
         'subtitle': directives.unchanged,
         'contents_class': directives.class_option,
-        # impress.js attributes
-        'x': directives.unchanged,
-        'y': directives.unchanged,
-        'z': directives.unchanged,
-        'r': directives.unchanged,
-        'phi': directives.unchanged,
-        'rotate': directives.unchanged,
-        'rotate-x': directives.unchanged,
-        'rotate-y': directives.unchanged,
-        'rotate-z': directives.unchanged,
-        'scale': directives.unchanged,
-        'delegate': directives.unchanged,
-        'src': directives.unchanged,
-        'exclude': directives.unchanged,
-        'next': directives.unchanged,
-        'prev': directives.unchanged,
-        'template': directives.unchanged,
-        'jmpress': directives.unchanged,
-    }
+    })
 
     def run(self):
-        attrs = {'data-' + key: value for key, value in self.options.iteritems()
-                 if key not in ('id', 'class', 'title', 'subtitle', 'contents_class')}
-        if 'id' in self.options:
-            attrs['id'] = [self.options['id']]
+        attrs = {key: value for key, value in self.options.iteritems()
+                 if key not in ('class', 'title', 'subtitle', 'contents_class')}
         slide = slide_section(classes=self.options.get('class', []), **attrs)
         if 'title' in self.options:
             title = nodes.title(text=self.options.get('title', ''))
@@ -87,6 +84,7 @@ class Slide(Directive):
         self.state.nested_parse(self.content, self.content_offset, content)
         slide.append(content)
         return [slide]
+
 
 directives.register_directive('slide', Slide)
 directives.register_directive('slides_distribution', impress.Distribution)

@@ -6,16 +6,16 @@
 .. slide::
     :id: bored
     :class: slide
-    :x: -1000
-    :y: -1500
+    :data-x: -1000
+    :data-y: -1500
 
     Aren't you just **bored** with all those slides-based presentations?
 
 
 .. slide::
     :class: slide
-    :x: 0
-    :y: -1500
+    :data-x: 0
+    :data-y: -1500
 
     Don't you think that presentations given in **modern browsers** shouldn't
     **copy the limits** of 'classic' slide decks?
@@ -23,8 +23,8 @@
 
 .. slide::
     :class: slide
-    :x: 1000
-    :y: -1500
+    :data-x: 1000
+    :data-y: -1500
 
     Would you like to **impress your audience** with
     **stunning visualization** of your talk?
@@ -33,9 +33,9 @@
 
 .. slide::
     :id: title
-    :x: 0
-    :y: 0
-    :scale: 4
+    :data-x: 0
+    :data-y: 0
+    :data-scale: 4
 
     :try:`then you should try`
 
@@ -44,10 +44,10 @@
 
 .. slide::
     :id: its
-    :x: 850
-    :y: 3000
-    :rotate: 90
-    :scale: 5
+    :data-x: 850
+    :data-y: 3000
+    :data-rotate: 90
+    :data-scale: 5
 
     It's a **presentation tool**
     inspired by the idea behind `prezi.com <http://prezi.com>`_
@@ -58,20 +58,20 @@
 
 .. slide::
     :id: big
-    :x: 3500
-    :y: 2100
-    :rotate: 180
-    :scale: 6
+    :data-x: 3500
+    :data-y: 2100
+    :data-rotate: 180
+    :data-scale: 6
 
     visualize your **big** :thoughts:`thoughts`
 
 .. slide::
     :id: tiny
-    :x: 2825
-    :y: 2325
-    :z: -3000
-    :rotate: 300
-    :scale: 1
+    :data-x: 2825
+    :data-y: 2325
+    :data-z: -3000
+    :data-rotate: 300
+    :data-scale: 1
 
     and **tiny** ideas
 
@@ -82,10 +82,10 @@
 
 .. slide::
     :id: ing
-    :x: 3500
-    :y: -850
-    :rotate: 270
-    :scale: 6
+    :data-x: 3500
+    :data-y: -850
+    :data-rotate: 270
+    :data-scale: 6
 
     by :positioning:`positioning`, :rotating:`rotating` and :scaling:`scaling`
     them on an infinite canvas
@@ -95,27 +95,27 @@
 
 .. slide::
     :id: imagination
-    :x: 6700
-    :y: -300
-    :scale: 6
+    :data-x: 6700
+    :data-y: -300
+    :data-scale: 6
 
     the only **limit** is your :imagination:`imagination`
 
 .. slide::
     :id: source
-    :x: 6300
-    :y: 2000
-    :rotate: 20
-    :scale: 4
+    :data-x: 6300
+    :data-y: 2000
+    :data-rotate: 20
+    :data-scale: 4
 
     want to know more?
     `use the source <http://github.com/bartaz/impress.js>`_, Luke!
 
 .. slide::
     :id: one-more-thing
-    :x: 6000
-    :y: 4000
-    :scale: 2
+    :data-x: 6000
+    :data-y: 4000
+    :data-scale: 2
 
     one more thing...
 
@@ -128,20 +128,20 @@
 
 .. slide::
     :id: its-in-3d
-    :x: 6200
-    :y: 4300
-    :z: -100
+    :data-x: 6200
+    :data-y: 4300
+    :data-z: -100
     :rotate-x: -40
     :rotate-y: 10
-    :scale: 2
+    :data-scale: 2
 
     :have:`have` :you:`you` :noticed:`noticed` :its:`it's` in **3D**:sup:`*`?
     :footnote:`* beat that, prezi :)`
 
 .. slide::
     :id: overview
-    :x: 3000
-    :y: 1500
-    :scale: 10
+    :data-x: 3000
+    :data-y: 1500
+    :data-scale: 10
 
     .. empty comment

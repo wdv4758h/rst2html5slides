@@ -575,14 +575,16 @@ slide_impress_1 = {
     'rst': '''.. slide::
     :id: paragraph
     :class: special
-    :x: 1000
-    :y: -200
+    :data-x: 1000
+    :data-y: -200
+    :data-scale: 4
+    :no-sense-attr: xyz
 
     paragraph
 ''',
     'part': 'pseudoxml',
     'out': '''<document source="<string>">
-    <section classes="special" data-x="1000" data-y="-200" id="paragraph">
+    <section classes="special" data-scale="4" data-x="1000" data-y="-200" id="paragraph" no-sense-attr="xyz">
         <slide_contents>
             <paragraph>
                 paragraph
@@ -594,13 +596,12 @@ slide_impress_1_slideshow = {
     'part': 'body',
     'out': '''
 <deck>
-    <slide data-y="-200" data-x="1000" class="special" id="paragraph">
+    <slide no-sense-attr="xyz" class="special" data-y="-200" data-x="1000" data-scale="4" id="paragraph">
         <section>paragraph</section>
     </slide>
 </deck>
 ''',
 }
-
 
 slide_directive_in_the_middle = {
     'rst': '''Title
