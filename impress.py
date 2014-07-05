@@ -16,6 +16,7 @@ class Distribution(Directive):
     option_spec = {
         'incr_x': int,
         'incr_y': int,
+        'parameter': int,
     }
     _default_opts = {
         'distribution': 'manual',
@@ -38,10 +39,10 @@ class Distribution(Directive):
         return []
 
 
-def manual(slides):
+def manual(slides, parameter):
     pass
 
-def linear(slides):
+def linear(slides, parameter):
     '''
     Linear distribution
     '''
@@ -51,7 +52,8 @@ def linear(slides):
         slide(data_x=x)
         x += incr_x
 
-def square(slides, amount=4):
+def square(slides, amount=None):
+    amount = amount or 4
     incr_x = Distribution.opts['incr_x']
     incr_y = Distribution.opts['incr_y']
     x = 0
@@ -63,7 +65,8 @@ def square(slides, amount=4):
         slide(data_x=x, data_y=y)
         x += incr_x
 
-def square2(slides, amount=4):
+def square2(slides, amount=None):
+    amount = amount or 4
     incr_x = -Distribution.opts['incr_x']
     incr_y = Distribution.opts['incr_y']
     x = 0
@@ -78,7 +81,11 @@ def square2(slides, amount=4):
         x += incr_x
         slide(data_x=x, data_y=y, data_rotate_z=rotate_z)
 
-def spiral(slides, radius=1200):
+def spiral(slides, radius=None):
+    '''
+    not working yet
+    '''
+    radius = radius or 1200
     incr_rotate = int(radius / 180. * math.pi)
     rotate = -incr_rotate
     for index, slide in enumerate(slides):

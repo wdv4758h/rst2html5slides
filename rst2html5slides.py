@@ -233,8 +233,9 @@ $(function() {
     def _distribute_slides_jmpress(self):
         slides = [elem for item in self.context.stack[0] for elem in item if isinstance(elem, Element)]
         distribution = impress.Distribution.slides_distribution
+        parameter = impress.Distribution.opts.get('parameter', None)
         func = getattr(impress, distribution)
-        func(slides)
+        func(slides, parameter)
         impress.Distribution.reset()
 
     def depart_document(self, node):

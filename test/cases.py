@@ -785,11 +785,6 @@ Title 5
 =======
 
 * Bullet
-
-Title 6
-=======
-
-* Bullet
 '''
 
 linear = {
@@ -849,22 +844,13 @@ linear = {
             </ul>
         </section>
     </slide>
-    <slide data-x="7500">
-        <header>
-            <h1>Title 6</h1>
-        </header>
-        <section>
-            <ul>
-                <li>Bullet</li>
-            </ul>
-        </section>
-    </slide>
 </deck>
 ''',
 }
 
 square = {
     'rst': '''.. slides_distribution:: square
+    :parameter: 2
 
 ''' + _rst_example,
     'part': 'body',
@@ -890,7 +876,7 @@ square = {
             </ul>
         </section>
     </slide>
-    <slide data-y="0" data-x="3000">
+    <slide data-y="800" data-x="0">
         <header>
             <h1>Title 3</h1>
         </header>
@@ -900,7 +886,7 @@ square = {
             </ul>
         </section>
     </slide>
-    <slide data-y="0" data-x="4500">
+    <slide data-y="800" data-x="1500">
         <header>
             <h1>Title 4</h1>
         </header>
@@ -910,19 +896,9 @@ square = {
             </ul>
         </section>
     </slide>
-    <slide data-y="800" data-x="0">
+    <slide data-y="1600" data-x="0">
         <header>
             <h1>Title 5</h1>
-        </header>
-        <section>
-            <ul>
-                <li>Bullet</li>
-            </ul>
-        </section>
-    </slide>
-    <slide data-y="800" data-x="1500">
-        <header>
-            <h1>Title 6</h1>
         </header>
         <section>
             <ul>
@@ -936,6 +912,7 @@ square = {
 
 square2 = {
     'rst': '''.. slides_distribution:: square2
+    :parameter: 2
 
 ''' + _rst_example,
     'part': 'body',
@@ -961,7 +938,7 @@ square2 = {
             </ul>
         </section>
     </slide>
-    <slide data-rotate-z="0" data-y="0" data-x="3000">
+    <slide data-rotate-z="179.9" data-y="800" data-x="1500">
         <header>
             <h1>Title 3</h1>
         </header>
@@ -971,7 +948,7 @@ square2 = {
             </ul>
         </section>
     </slide>
-    <slide data-rotate-z="0" data-y="0" data-x="4500">
+    <slide data-rotate-z="179.9" data-y="800" data-x="0">
         <header>
             <h1>Title 4</h1>
         </header>
@@ -981,19 +958,9 @@ square2 = {
             </ul>
         </section>
     </slide>
-    <slide data-rotate-z="179.9" data-y="800" data-x="4500">
+    <slide data-rotate-z="0" data-y="1600" data-x="0">
         <header>
             <h1>Title 5</h1>
-        </header>
-        <section>
-            <ul>
-                <li>Bullet</li>
-            </ul>
-        </section>
-    </slide>
-    <slide data-rotate-z="179.9" data-y="800" data-x="3000">
-        <header>
-            <h1>Title 6</h1>
         </header>
         <section>
             <ul>
