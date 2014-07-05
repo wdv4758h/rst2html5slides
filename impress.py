@@ -39,6 +39,13 @@ class Distribution(Directive):
         return []
 
 
+def _apply_data(slide, **kwargs):
+    attribs = unicode(slide.attrib)
+    if 'data-' not in attribs:
+        slide(**kwargs)
+    return
+
+
 def manual(slides, parameter):
     pass
 
@@ -62,7 +69,7 @@ def square(slides, amount=None):
         if not index % amount:
             x = 0
             y += incr_y
-        slide(data_x=x, data_y=y)
+        _apply_data(slide, data_x=x, data_y=y)
         x += incr_x
 
 def square2(slides, amount=None):
@@ -79,7 +86,7 @@ def square2(slides, amount=None):
             incr_x = -incr_x
             rotate_z = rotate_z == 0 and 179.9 or 0
         x += incr_x
-        slide(data_x=x, data_y=y, data_rotate_z=rotate_z)
+        _apply_data(slide, data_x=x, data_y=y, data_rotate_z=rotate_z)
 
 def spiral(slides, radius=None):
     '''
@@ -93,4 +100,5 @@ def spiral(slides, radius=None):
         y = int(math.sin(index) * radius)
         z = int(math.log(index + 1) * radius)
         rotate += incr_rotate
-        slide(data_x=x, data_y=y, data_z=z, data_rotate_x=rotate, data_rotate_y=(rotate + incr_rotate), data_rotate_z=33)
+        _apply_data(slide, data_x=x, data_y=y, data_z=z, data_rotate_x=rotate,
+            data_rotate_y=(rotate + incr_rotate), data_rotate_z=33)

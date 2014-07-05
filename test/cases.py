@@ -981,3 +981,102 @@ square2 = {
 #     'out': '''
 # ''',
 # }
+
+
+distribution_slide_with_data = {
+    'rst': '''.. slides_distribution:: square
+    :parameter: 2
+
+.. slide::
+    :id: opening
+    :class: cover
+    :data-x: -1000
+    :data-y: -500
+    :data-scale: 5
+
+    Welcome
+
+Title 1
+=======
+
+* Bullet
+
+Title 2
+=======
+
+* Bullet
+
+Title 3
+=======
+
+* Bullet
+
+.. slide::
+    :data-y: -1500
+    :data-rotate: 180
+    :data-scale: 7
+
+    * Bullet
+
+Title 5
+=======
+
+* Bullet
+''',
+    'part': 'body',
+    'out': '''
+<deck>
+    <slide data-y="-500" data-x="-1000" data-scale="5" id="opening" class="cover">
+        <section>Welcome</section>
+    </slide>
+    <slide data-y="0" data-x="1500">
+        <header>
+            <h1>Title 1</h1>
+        </header>
+        <section>
+            <ul>
+                <li>Bullet</li>
+            </ul>
+        </section>
+    </slide>
+    <slide data-y="800" data-x="0">
+        <header>
+            <h1>Title 2</h1>
+        </header>
+        <section>
+            <ul>
+                <li>Bullet</li>
+            </ul>
+        </section>
+    </slide>
+    <slide data-y="800" data-x="1500">
+        <header>
+            <h1>Title 3</h1>
+        </header>
+        <section>
+            <ul>
+                <li>Bullet</li>
+            </ul>
+        </section>
+    </slide>
+    <slide data-y="-1500" data-scale="7" data-rotate="180">
+        <section>
+            <ul>
+                <li>Bullet</li>
+            </ul>
+        </section>
+    </slide>
+    <slide data-y="1600" data-x="1500">
+        <header>
+            <h1>Title 5</h1>
+        </header>
+        <section>
+            <ul>
+                <li>Bullet</li>
+            </ul>
+        </section>
+    </slide>
+</deck>
+''',
+}
+
