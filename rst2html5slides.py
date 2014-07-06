@@ -19,7 +19,7 @@ from docutils.parsers.rst.directives.html import MetaBody as Meta
 from genshi.builder import tag, Element
 from rst2html5 import HTML5Writer, HTML5Translator
 
-import impress
+import distribution
 
 
 class slide_section(nodes.Element):
@@ -87,7 +87,7 @@ class Slide(Directive):
 
 
 directives.register_directive('slide', Slide)
-directives.register_directive('slides_distribution', impress.Distribution)
+directives.register_directive('slides_distribution', distribution.Distribution)
 
 
 class SlideTransform(Transform):
@@ -232,11 +232,11 @@ $(function() {
 
     def _distribute_slides_jmpress(self):
         slides = [elem for item in self.context.stack[0] for elem in item if isinstance(elem, Element)]
-        distribution = impress.Distribution.slides_distribution
-        parameter = impress.Distribution.opts.get('parameter', None)
-        func = getattr(impress, distribution)
+        func_name = distribution.Distribution.slides_distribution
+        parameter = distribution.Distribution.opts.get('parameter', None)
+        func = getattr(distribution, func_name)
         func(slides, parameter)
-        impress.Distribution.reset()
+        distribution.Distribution.reset()
 
     def depart_document(self, node):
         self._distribute_slides_jmpress()
