@@ -189,17 +189,6 @@ class SlideWriter(HTML5Writer):
 
 class SlideTranslator(HTML5Translator):
 
-    slide_script_init = '''\n<script>
-$(function() {
-    $('deck').jmpress({
-        stepSelector: 'slide'
-    });
-});
-</script>\n'''
-
-    default_template = '<!DOCTYPE html>\n<html{html_attr}>\n' \
-                       '<head>{head}</head>\n<body>{body}{script}</body>\n</html>'
-
     def __init__(self, *args):
         self.rst_terms['section'] = ('slide', 'visit_section', 'depart_section')
         self.rst_terms['slide_contents'] = ('section', 'default_visit', 'default_departure')
@@ -207,11 +196,6 @@ $(function() {
         HTML5Translator.__init__(self, *args)
         self.metatags.append(tag.base(target="_blank"))
         return
-
-    def _get_template_values(self):
-        result = HTML5Translator._get_template_values(self)
-        result['script'] = self.slide_script_init
-        return result
 
     def visit_section(self, node):
         node['ids'] = ''

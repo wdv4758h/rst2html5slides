@@ -9,12 +9,10 @@
     <link href="impress.css" rel="stylesheet" />
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script src="jmpress.js"></script>
+    <script src="jmpress_init.js" defer="defer"></script>
 </head>
 <body>
 <deck>
-    <slide>
-        <section></section>
-    </slide>
     <slide data-y="-1500" data-x="-1000" class="slide" id="bored">
         <section>Aren't you just <strong>bored</strong> with all those slides-based presentations?</section>
     </slide>
@@ -51,19 +49,12 @@
     <slide data-y="4000" data-x="6000" id="one-more-thing" data-scale="2">
         <section>one more thing...</section>
     </slide>
-    <slide data-scale="2" data-y="4300" data-x="6200" data-z="-100" data-rotate-x="-40" data-rotate-y="10" id="its-in-3d">
+    <slide data-scale="2" data-y="4300" data-x="6200" data-z="-100" rotate-x="-40" rotate-y="10" id="its-in-3d">
         <section><span class="have">have</span> <span class="you">you</span> <span class="noticed">noticed</span> <span class="its">it's</span> in <strong>3D</strong><sup>*</sup>? <span class="footnote">* beat that, prezi :)</span></section>
     </slide>
     <slide data-y="1500" data-x="3000" id="overview" data-scale="10">
         <section></section>
     </slide>
 </deck>
-<script>
-$(function() {
-    $('deck').jmpress({
-        stepSelector: 'slide'
-    });
-});
-</script>
 </body>
 </html>
