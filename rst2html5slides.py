@@ -11,6 +11,7 @@ Translates a restructuredText document to a HTML5 slideshow
 
 __docformat__ = 'reStructuredText'
 
+from collections import defaultdict
 from docutils import nodes
 from docutils.core import publish_from_doctree
 from docutils.transforms import Transform
@@ -35,20 +36,6 @@ class slide_contents(nodes.Element):
     pass
 
 
-class AnyOptionsDict(dict):
-    '''
-    This dict subclass is supposed to be used as a option_spec attribute
-    to allow the directive to receive any number of options,
-    with some of them defined previously
-    '''
-    def __getitem__(self, key):
-        try:
-            item = dict.__getitem__(self, key)
-        except KeyError:
-            item = directives.unchanged
-        return item
-
-
 class Slide(Directive):
     '''
     This directive creates a new slide_section node.
@@ -62,7 +49,7 @@ class Slide(Directive):
     '''
     final_argument_whitespace = True
     has_content = True
-    option_spec = AnyOptionsDict({
+    option_spec = defaultdict(lambda: directives.unchanged, {
         'id': directives.unchanged,
         'class': directives.class_option,
         'title': directives.unchanged,
