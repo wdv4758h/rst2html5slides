@@ -181,7 +181,7 @@ class SlideTranslator(HTML5Translator):
         self.rst_terms['slide_contents'] = ('section', 'default_visit', 'default_departure')
         self.rst_terms['slide_section'] = ('section', 'default_visit', 'default_departure')
         HTML5Translator.__init__(self, *args)
-        self.metatags.append(tag.base(target="_blank"))
+        # self.metatags.append(tag.base(target="_blank"))
         return
 
     def visit_section(self, node):

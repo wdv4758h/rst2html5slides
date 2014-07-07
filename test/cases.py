@@ -740,7 +740,6 @@ meta_h = {
 ''',
     'out': '''
     <meta charset="utf-8" />
-    <base target="_blank" />
     <meta content="André Felipe Dias" name="author" />
     <meta content="chrome=1" http-equiv="X-UA-Compatible" />
     <link href="impress.css" rel="stylesheet" />
