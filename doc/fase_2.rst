@@ -124,7 +124,7 @@ Pontos Negativos
 
 * Algumas operações não ficaram muito claras tais como o "overview".
 * Algumas configurações estão definidas no código e não podem ser mudadas externamente,
-tais como a referência ao IO GoogleCode 2012.
+  tais como a referência ao IO GoogleCode 2012.
 
 Reveal.js
 =========
@@ -144,7 +144,8 @@ Negativos
 
 * Permite que slides tenham outros slides internamente,
   resultando em uma navegação bidimensional.
-  Contudo, acho que isso torna a navegação mais confusa e menos linear.
+  Isso torna a navegação mais confusa e menos linear.
+
 
 DZSlides
 ========
@@ -158,7 +159,6 @@ Ideias Interessantes
 * Uma tela para o apresentador e outra para o público.
   A tela do apresentador contém um relógio, as notas, o slide atual e o próximo. onstage.html
 * Resize através da transformação *scale*
-
 
 
 Pontos Negativos

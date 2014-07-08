@@ -8,15 +8,15 @@ except ImportError:
     distribute_setup.use_setuptools()
     from setuptools import setup
 
-with open('README.txt') as f:
+with open('README.rst') as f:
     long_description = f.read()
 
 setup(
     name='rst2html5slides',
-    version='0.2',
+    version='1.0',
     author='André Felipe Dias',
     author_email='andref.dias@gmail.com',
-    keywords='restructuredText slide docutils',
+    keywords='restructuredText slide docutils presentation',
     description='',
     install_requires=['rst2html5'],
     zip_safe=False,
