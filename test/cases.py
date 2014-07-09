@@ -733,7 +733,7 @@ empty_slides_pseudoxml = {
     'part': 'pseudoxml',
 }
 
-meta_h = {
+meta_tag = {
     'rst': '''.. meta::
     :author: André Felipe Dias
     :http-equiv=X-UA-Compatible: chrome=1
@@ -754,10 +754,33 @@ meta_h = {
     'stylesheet': ('impress.css',),
 }
 
-meta_h2 = {
-    'rst': meta_h['rst'],
+meta_tag2 = {
+    'rst': meta_tag['rst'],
     'out': '',
     'part': 'body',
+}
+
+meta_tag_and_slides = {
+    'rst': '''.. meta::
+    :viewport: width=device-width, maximum-scale=1.0, initial-scale=1.0, user-scalable=yes
+
+Title 1
+=======
+
+* item''',
+    'part': 'pseudoxml',
+    'out': '''<document ids="title-1" names="title\ 1" source="<string>" title="Title 1">
+    <meta content="width=device-width, maximum-scale=1.0, initial-scale=1.0, user-scalable=yes" name="viewport">
+    <section>
+        <header>
+            <title>
+                Title 1
+        <slide_contents>
+            <bullet_list bullet="*">
+                <list_item>
+                    <paragraph>
+                        item
+''',
 }
 
 _rst_example = '''Title 1
@@ -787,7 +810,8 @@ Title 5
 '''
 
 linear = {
-    'rst': '''.. slides_distribution:: linear
+    'rst': '''.. rst2html5slides::
+    :distribution: linear
 
 ''' + _rst_example,
     'part': 'body',
@@ -848,8 +872,9 @@ linear = {
 }
 
 square = {
-    'rst': '''.. slides_distribution:: square
-    :parameter: 2
+    'rst': '''.. rst2html5slides::
+    :distribution: square
+    :distribution_parameter: 2
 
 ''' + _rst_example,
     'part': 'body',
@@ -910,8 +935,9 @@ square = {
 }
 
 square2 = {
-    'rst': '''.. slides_distribution:: square2
-    :parameter: 2
+    'rst': '''.. rst2html5slides::
+    :distribution: square2
+    :distribution_parameter: 2
 
 ''' + _rst_example,
     'part': 'body',
@@ -983,8 +1009,13 @@ square2 = {
 
 
 distribution_slide_with_data = {
-    'rst': '''.. slides_distribution:: square
-    :parameter: 2
+    'rst': '''.. rst2html5slides::
+    :distribution: square
+    :distribution_parameter: 2
+    :container_tag: div
+    :container_class: deck-container
+    :slide_tag: article
+    :slide_class: slide
 
 .. slide::
     :id: opening
@@ -1014,6 +1045,7 @@ Title 3
     :data-y: -1500
     :data-rotate: 180
     :data-scale: 7
+    :contents_class: special
 
     * Bullet
 
@@ -1024,11 +1056,11 @@ Title 5
 ''',
     'part': 'body',
     'out': '''
-<deck>
-    <slide data-y="-500" data-x="-1000" data-scale="5" id="opening" class="cover">
+<div class="deck-container">
+    <article data-y="-500" data-x="-1000" data-scale="5" id="opening" class="cover slide">
         <section>Welcome</section>
-    </slide>
-    <slide data-y="0" data-x="1500">
+    </article>
+    <article class="slide" data-y="0" data-x="1500">
         <header>
             <h1>Title 1</h1>
         </header>
@@ -1037,8 +1069,8 @@ Title 5
                 <li>Bullet</li>
             </ul>
         </section>
-    </slide>
-    <slide data-y="800" data-x="0">
+    </article>
+    <article class="slide" data-y="800" data-x="0">
         <header>
             <h1>Title 2</h1>
         </header>
@@ -1047,8 +1079,8 @@ Title 5
                 <li>Bullet</li>
             </ul>
         </section>
-    </slide>
-    <slide data-y="800" data-x="1500">
+    </article>
+    <article class="slide" data-y="800" data-x="1500">
         <header>
             <h1>Title 3</h1>
         </header>
@@ -1057,15 +1089,15 @@ Title 5
                 <li>Bullet</li>
             </ul>
         </section>
-    </slide>
-    <slide data-y="-1500" data-scale="7" data-rotate="180">
-        <section>
+    </article>
+    <article data-y="-1500" data-scale="7" class="slide" data-rotate="180">
+        <section class="special">
             <ul>
                 <li>Bullet</li>
             </ul>
         </section>
-    </slide>
-    <slide data-y="1600" data-x="1500">
+    </article>
+    <article class="slide" data-y="1600" data-x="1500">
         <header>
             <h1>Title 5</h1>
         </header>
@@ -1074,8 +1106,71 @@ Title 5
                 <li>Bullet</li>
             </ul>
         </section>
-    </slide>
-</deck>
+    </article>
+</div>
 ''',
 }
 
+rst2html5slides_directive = {
+    'rst': '''.. rst2html5slides::
+    :distribution: linear
+    :distribution_parameter: 3
+    :incr_x: 1200
+    :container_tag: div
+    :container_class: deck-container
+    :slide_tag: article
+    :slide_class: slide
+''',
+    'part': 'pseudoxml',
+    'out': '''<document source="<string>">
+    <rst2html5slides_options container_class="deck-container" container_tag="div" \
+distribution="linear" distribution_parameter="3" incr_x="1200" slide_class="slide" \
+slide_tag="article">
+''',
+}
+
+rst2html5slides_directive_2 = {
+    'rst': rst2html5slides_directive['rst'],
+    'part': 'body',
+    'out': '',
+}
+
+rst2html5slides_directive_3 = {
+    'rst': rst2html5slides_directive['rst'] + '''
+
+Title 1
+=======
+
+* item
+
+Title 2
+=======
+
+* item
+''',
+    'part': 'body',
+    'out': '''
+<div class="deck-container">
+    <article class="slide" data-x="0">
+        <header>
+            <h1>Title 1</h1>
+        </header>
+        <section>
+            <ul>
+                <li>item</li>
+            </ul>
+        </section>
+    </article>
+    <article class="slide" data-x="1200">
+        <header>
+            <h1>Title 2</h1>
+        </header>
+        <section>
+            <ul>
+                <li>item</li>
+            </ul>
+        </section>
+    </article>
+</div>
+''',
+}

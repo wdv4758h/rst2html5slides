@@ -73,8 +73,37 @@ class Slide(Directive):
         return [slide]
 
 
+class rst2html5slides_options(nodes.Element):
+    '''
+    node class that holds rst2html5slides options declared via rst2html5slides directive
+    '''
+    pass
+
+
+class Rst2html5slides(Directive):
+    '''
+    Set rst2html5slides global options
+    '''
+    required_arguments = 0
+    final_argument_whitespace = False
+    has_content = False
+    option_spec = {
+        'container_tag': directives.unchanged,
+        'container_class': directives.class_option,
+        'slide_tag': directives.unchanged,
+        'slide_class': directives.class_option,
+        'distribution': directives.unchanged,
+        'incr_x': int,
+        'incr_y': int,
+        'distribution_parameter': int,
+    }
+
+    def run(self):
+        return [rst2html5slides_options(**self.options)]
+
+
 directives.register_directive('slide', Slide)
-directives.register_directive('slides_distribution', distribution.Distribution)
+directives.register_directive('rst2html5slides', Rst2html5slides)
 
 
 class SlideTransform(Transform):
@@ -85,7 +114,8 @@ class SlideTransform(Transform):
 
     default_priority = 851
 
-    skip_classes = (Meta.meta,)
+    # node classes that should be ignored to not form new slides
+    skip_classes = (Meta.meta, rst2html5slides_options,)
 
     def apply(self):
         self.state = self.make_content
@@ -180,9 +210,30 @@ class SlideTranslator(HTML5Translator):
         self.rst_terms['section'] = ('slide', 'visit_section', 'depart_section')
         self.rst_terms['slide_contents'] = ('section', 'default_visit', 'default_departure')
         self.rst_terms['slide_section'] = ('section', 'default_visit', 'default_departure')
+        self.rst_terms['rst2html5slides_options'] = (None, 'visit_rst2html5slides_options', None)
         HTML5Translator.__init__(self, *args)
+        self._reset()
         # self.metatags.append(tag.base(target="_blank"))
         return
+
+    def _reset(self):
+        self.container_tag = 'deck'
+        self.container_class = []
+        self.slide_tag = 'slide'
+        self.slide_class = []
+        self.distribution = 'manual'
+        self.incr_x = 1500
+        self.incr_y = 800
+        self.distribution_parameter = None
+        return
+
+    def parse(self, node):
+        if node.__class__.__name__ == 'section':
+            node['classes'].extend(self.slide_class)
+        tag_name, indent, attrs = HTML5Translator.parse(self, node)
+        if tag_name == 'slide':
+            tag_name = self.slide_tag
+        return tag_name, indent, attrs
 
     def visit_section(self, node):
         node['ids'] = ''
@@ -200,20 +251,40 @@ class SlideTranslator(HTML5Translator):
     def depart_subtitle(self, node):
         HTML5Translator.depart_subtitle(self, node)
         self.heading_level += 1
+        return
 
-    def _distribute_slides_jmpress(self):
+    def visit_rst2html5slides_options(self, node):
+        self.container_tag = node.get('container_tag', self.container_tag)
+        self.container_class = node.get('container_class', self.container_class)
+        self.slide_tag = node.get('slide_tag', self.slide_tag)
+        self.slide_class = node.get('slide_class', self.slide_class)
+        self.distribution = node.get('distribution', self.distribution)
+        self.incr_x = node.get('incr_x', self.incr_x)
+        self.incr_y = node.get('incr_y', self.incr_y)
+        self.distribution_parameter = node.get('distribution_parameter', self.distribution_parameter)
+        raise nodes.SkipNode
+
+    def _distribute_slides(self):
+        '''
+        Distribute slides spatially according to some predefined function.
+        data-* attributes are used to keep the coordinates.
+        '''
+        if self.distribution == 'manual':
+            return
         slides = [elem for item in self.context.stack[0] for elem in item if isinstance(elem, Element)]
-        func_name = distribution.Distribution.slides_distribution
-        parameter = distribution.Distribution.opts.get('parameter', None)
-        func = getattr(distribution, func_name)
-        func(slides, parameter)
-        distribution.Distribution.reset()
+        func = getattr(distribution, self.distribution)
+        func(slides, self.incr_x, self.incr_y, self.distribution_parameter)
+        return
 
     def depart_document(self, node):
-        self._distribute_slides_jmpress()
+        self._distribute_slides()
         if len(self.context.stack[0]):
-            deck = tag.deck(*self.context.stack[0])
+            deck = getattr(tag, self.container_tag)(*self.context.stack[0])
+            if self.container_class:
+                deck(class_=' '.join(self.container_class))
             self.context.stack = ['\n', deck, '\n']
+        # _reset is necessary to run the several test cases
+        self._reset()
         return
 
 

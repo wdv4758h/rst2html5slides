@@ -3,66 +3,23 @@
 import math
 from docutils.parsers.rst import Directive, directives
 
-INCR_X = 1500
-INCR_Y = 800
-
-class Distribution(Directive):
-    '''
-    Set distribution global options
-    '''
-    required_arguments = 1
-    final_argument_whitespace = False
-    has_content = False
-    option_spec = {
-        'incr_x': int,
-        'incr_y': int,
-        'parameter': int,
-    }
-    _default_opts = {
-        'distribution': 'manual',
-        'incr_x': INCR_X,
-        'incr_y': INCR_Y,
-    }
-    opts = _default_opts.copy()
-    slides_distribution = 'manual'
-
-    @classmethod
-    def reset(cls):
-        Distribution.opts = Distribution._default_opts.copy()
-        Distribution.slides_distribution = 'manual'
-        return
-
-    def run(self):
-        self.reset()
-        Distribution.slides_distribution = self.arguments[0]
-        Distribution.opts.update(self.options)
-        return []
-
-
 def _apply_data(slide, **kwargs):
     attribs = unicode(slide.attrib)
     if 'data-' not in attribs:
         slide(**kwargs)
     return
 
-
-def manual(slides, parameter):
-    pass
-
-def linear(slides, parameter):
+def linear(slides, incr_x, incr_y, parameter):
     '''
     Linear distribution
     '''
     x = 0
-    incr_x = Distribution.opts['incr_x']
     for slide in slides:
         slide(data_x=x)
         x += incr_x
 
-def square(slides, amount=None):
+def square(slides, incr_x, incr_y, amount=None):
     amount = amount or 4
-    incr_x = Distribution.opts['incr_x']
-    incr_y = Distribution.opts['incr_y']
     x = 0
     y = -incr_y
     for index, slide in enumerate(slides):
@@ -72,10 +29,9 @@ def square(slides, amount=None):
         _apply_data(slide, data_x=x, data_y=y)
         x += incr_x
 
-def square2(slides, amount=None):
+def square2(slides, incr_x, incr_y, amount=None):
     amount = amount or 4
-    incr_x = -Distribution.opts['incr_x']
-    incr_y = Distribution.opts['incr_y']
+    incr_x = -incr_x
     x = 0
     y = -incr_y
     rotate_z = 179.9  # jmpress doesn't rotate clockwise when it is 180
@@ -88,7 +44,7 @@ def square2(slides, amount=None):
         x += incr_x
         _apply_data(slide, data_x=x, data_y=y, data_rotate_z=rotate_z)
 
-def spiral(slides, radius=None):
+def spiral(slides, incr_x, incr_y, radius=None):
     '''
     not working yet
     '''
