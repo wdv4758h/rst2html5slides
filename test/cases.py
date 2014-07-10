@@ -1174,3 +1174,48 @@ Title 2
 </div>
 ''',
 }
+
+rst2html5slides_impress = {
+    'rst': '''.. rst2html5slides::
+    :distribution: linear
+    :container_id: impress
+    :container_tag: div
+    :slide_tag: div
+    :slide_class: step
+
+Title 1
+=======
+
+* item
+
+Title 2
+=======
+
+* item
+''',
+    'part': 'body',
+    'out': '''
+<div id="impress">
+    <div class="step" data-x="0">
+        <header>
+            <h1>Title 1</h1>
+        </header>
+        <section>
+            <ul>
+                <li>item</li>
+            </ul>
+        </section>
+    </div>
+    <div class="step" data-x="1500">
+        <header>
+            <h1>Title 2</h1>
+        </header>
+        <section>
+            <ul>
+                <li>item</li>
+            </ul>
+        </section>
+    </div>
+</div>
+''',
+}

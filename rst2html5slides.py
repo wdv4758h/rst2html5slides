@@ -88,6 +88,7 @@ class Rst2html5slides(Directive):
     final_argument_whitespace = False
     has_content = False
     option_spec = {
+        'container_id': directives.unchanged,
         'container_tag': directives.unchanged,
         'container_class': directives.class_option,
         'slide_tag': directives.unchanged,
@@ -217,6 +218,7 @@ class SlideTranslator(HTML5Translator):
         return
 
     def _reset(self):
+        self.container_id = None
         self.container_tag = 'deck'
         self.container_class = []
         self.slide_tag = 'slide'
@@ -254,6 +256,7 @@ class SlideTranslator(HTML5Translator):
         return
 
     def visit_rst2html5slides_options(self, node):
+        self.container_id = node.get('container_id', self.container_id)
         self.container_tag = node.get('container_tag', self.container_tag)
         self.container_class = node.get('container_class', self.container_class)
         self.slide_tag = node.get('slide_tag', self.slide_tag)
@@ -279,7 +282,7 @@ class SlideTranslator(HTML5Translator):
     def depart_document(self, node):
         self._distribute_slides()
         if len(self.context.stack[0]):
-            deck = getattr(tag, self.container_tag)(*self.context.stack[0])
+            deck = getattr(tag, self.container_tag)(*self.context.stack[0], id=self.container_id)
             if self.container_class:
                 deck(class_=' '.join(self.container_class))
             self.context.stack = ['\n', deck, '\n']
