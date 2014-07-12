@@ -11,6 +11,7 @@ from rst2html5slides import SlideWriter
 from docutils.core import publish_parts
 from nose.tools import assert_equals
 from tempfile import gettempdir
+from functools import partial
 from io import open
 
 tmpdir = gettempdir()
@@ -18,6 +19,10 @@ unittest.TestCase.maxDiff = None
 
 
 def rst_to_html5slides_part(case):
+    '''
+    The main parts of a test case dict are rst, part and out.
+    Everything else is a configuration setting.
+    '''
     overrides = case.copy()
     rst = overrides.pop('rst')
     part = overrides.pop('part')
@@ -40,28 +45,18 @@ def extract_variables(module):
 
 
 def test():
-    '''
-    Test cases
-    '''
+    # do not use docstrings
+    # see http://code.google.com/p/python-nose/issues/detail?id=244#c1
     import cases
-    old_stderr = sys.stderr
-    sys.stderr = open(os.devnull, 'w')
-    try:
-        for test_name, case in extract_variables(cases):
-            _test_part.description = test_name
-            yield _test_part, test_name, case
-    finally:
-        sys.stderr = old_stderr
+    for test_name, case in extract_variables(cases):
+        func = partial(check_part)
+        func.description = test_name
+        yield func, test_name, case
 
 
-def _test_part(test_name, case):
+def check_part(test_name, case):
     result = rst_to_html5slides_part(case)
-    try:
-        assert_equals(result, case['out'])
-    except Exception as error:
-        '''
-        write temp files to help manual testing
-        '''
+    if result != case['out']:
         filename = os.path.join(tmpdir, test_name)
         with open(filename + '.rst', encoding='utf-8', mode='w') as f:
             f.write(case['rst'])
@@ -69,7 +64,4 @@ def _test_part(test_name, case):
             f.write(result)
         with open(filename + '.expected', encoding='utf-8', mode='w') as f:
             f.write(case['out'])
-
-        if isinstance(error, AssertionError):
-            error.args = ('%s\n%s' % (test_name, error.message), )
-        raise error
+    assert_equals(result, case['out'])
