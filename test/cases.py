@@ -6,7 +6,6 @@
 
 from __future__ import unicode_literals
 
-
 slides = {
     'rst': '''
 Title 1
@@ -44,6 +43,42 @@ Title 2
 ''',
     'part': 'body',
 }
+
+
+slide_doctree = {
+    'rst': '''
+Title 1
+=======
+
+* bullet
+
+Title 2
+=======
+
+* bullet 2''',
+    'out': '''<document source="<string>">
+    <section ids="title-1" names="title\ 1">
+        <header>
+            <title>
+                Title 1
+        <slide_contents>
+            <bullet_list bullet="*">
+                <list_item>
+                    <paragraph>
+                        bullet
+    <section ids="title-2" names="title\ 2">
+        <header>
+            <title>
+                Title 2
+        <slide_contents>
+            <bullet_list bullet="*">
+                <list_item>
+                    <paragraph>
+                        bullet 2
+''',
+    'part': 'pseudoxml',
+}
+
 
 slide_class = {
     'rst': '''
@@ -110,7 +145,6 @@ lose_nodes = {
     'part': 'body',
 }
 
-
 lose_nodes_doctree = {
     'rst': lose_nodes['rst'],
     'out': '''<document source="<string>">
@@ -171,43 +205,7 @@ title="Title 1">
     'part': 'pseudoxml',
 }
 
-
-simple_case = {
-    'rst': '''
-Title 1
-=======
-
-* bullet
-
-Title 2
-=======
-
-* bullet 2''',
-    'out': '''<document source="<string>">
-    <section ids="title-1" names="title\ 1">
-        <header>
-            <title>
-                Title 1
-        <slide_contents>
-            <bullet_list bullet="*">
-                <list_item>
-                    <paragraph>
-                        bullet
-    <section ids="title-2" names="title\ 2">
-        <header>
-            <title>
-                Title 2
-        <slide_contents>
-            <bullet_list bullet="*">
-                <list_item>
-                    <paragraph>
-                        bullet 2
-''',
-    'part': 'pseudoxml',
-}
-
-
-subsection = {
+h2 = {
     'rst': '''
 .. class:: segue dark nobackground
 
@@ -227,6 +225,37 @@ Subtitle 2
 
 * bullet 2
 ''',
+    'out': '''
+<deck>
+    <slide class="segue dark nobackground">
+        <header>
+            <h1>Title 1</h1>
+            <h2>Subtitle</h2>
+        </header>
+        <section>
+            <ul>
+                <li>bullet</li>
+            </ul>
+        </section>
+    </slide>
+    <slide>
+        <header>
+            <h1>Title 2</h1>
+            <h2>Subtitle 2</h2>
+        </header>
+        <section>
+            <ul>
+                <li>bullet 2</li>
+            </ul>
+        </section>
+    </slide>
+</deck>
+''',
+    'part': 'body',
+}
+
+h2_doctree = {
+    'rst': h2['rst'],
     'out': '''<document source="<string>">
     <section classes="segue dark nobackground" ids="title-1" names="title\ 1">
         <header>
@@ -250,6 +279,59 @@ Subtitle 2
                 <list_item>
                     <paragraph>
                         bullet 2
+''',
+    'part': 'pseudoxml',
+}
+
+# rst2html5slides doesn't allow three different heading levels at the same slide
+h3 =  {
+    'rst': '''Title 1
+=======
+
+Subtitle
+--------
+
+Subsubtitle
++++++++++++
+
+* bullet
+''',
+    'out': '''
+<deck>
+    <slide>
+        <header>
+            <h1>Title 1</h1>
+            <h2>Subtitle</h2>
+            <h2>Subsubtitle</h2>
+        </header>
+        <section>
+            <ul>
+                <li>bullet</li>
+            </ul>
+        </section>
+    </slide>
+</deck>
+''',
+    'part': 'body',
+}
+
+
+h3_doctree =  {
+    'rst': h3['rst'],
+    'out': '''<document ids="title-1" names="title\ 1" source="<string>" title="Title 1">
+    <section>
+        <header>
+            <title>
+                Title 1
+            <subtitle ids="subtitle" names="subtitle">
+                Subtitle
+            <subtitle>
+                Subsubtitle
+        <slide_contents>
+            <bullet_list bullet="*">
+                <list_item>
+                    <paragraph>
+                        bullet
 ''',
     'part': 'pseudoxml',
 }
@@ -296,34 +378,7 @@ transition_to_section_doctree = {
     'part': 'pseudoxml',
 }
 
-
-transition_2 = {
-    'rst': '''Title
-=====
-
-paragraph
-
-----
-
-another slide''',
-    'out': '''<document ids="title" names="title" source="<string>" \
-title="Title">
-    <section>
-        <header>
-            <title>
-                Title
-        <slide_contents>
-            <paragraph>
-                paragraph
-    <section>
-        <slide_contents>
-            <paragraph>
-                another slide
-''',
-    'part': 'pseudoxml',
-}
-
-transition_3 = {
+transition_2_doctree = {
     'rst': '''Title
 =====
 
@@ -399,261 +454,35 @@ slide 3''',
     'part': 'pseudoxml',
 }
 
-slide_directive_1 = {
-    'rst': '''.. slide::
-
-    paragraph''',
-    'out': '''<document source="<string>">
-    <section>
-        <slide_contents>
-            <paragraph>
-                paragraph
-''',
-    'part': 'pseudoxml',
-}
-
-
-slide_directive_1_slideshow = {
-    'rst': slide_directive_1['rst'],
-    'out': '''
-<deck>
-    <slide>
-        <section>paragraph</section>
-    </slide>
-</deck>
-''',
-    'part': 'body',
-}
-
-slide_directive_2 = {
-    'rst': '''.. slide::
-    :class: special
-    :title: Teste 1
-    :subtitle: Subtitle
-
-    paragraph''',
-    'out': '''<document source="<string>">
-    <section classes="special">
-        <header>
-            <title>
-                Teste 1
-            <subtitle>
-                Subtitle
-        <slide_contents>
-            <paragraph>
-                paragraph
-''',
-    'part': 'pseudoxml',
-}
-
-
-slide_directive_2_slideshow = {
-    'rst': slide_directive_2['rst'],
-    'out': '''
-<deck>
-    <slide class="special">
-        <header>
-            <h1>Teste 1</h1>
-            <h2>Subtitle</h2>
-        </header>
-        <section>paragraph</section>
-    </slide>
-</deck>
-''',
-    'part': 'body',
-}
-
-
-slide_directive_3 = {
-    'rst': '''.. slide::
-    :class: special
-    :title: Teste 1
-    :subtitle: Subtitle
-    :contents_class: flexbox vcenter
-
-    paragraph''',
-    'out': '''<document source="<string>">
-    <section classes="special">
-        <header>
-            <title>
-                Teste 1
-            <subtitle>
-                Subtitle
-        <slide_contents classes="flexbox vcenter">
-            <paragraph>
-                paragraph
-''',
-    'part': 'pseudoxml',
-}
-
-slide_directive_3_slideshow = {
-    'rst': slide_directive_3['rst'],
-    'out': '''
-<deck>
-    <slide class="special">
-        <header>
-            <h1>Teste 1</h1>
-            <h2>Subtitle</h2>
-        </header>
-        <section class="flexbox vcenter">paragraph</section>
-    </slide>
-</deck>
-''',
-    'part': 'body',
-}
-
-slide_directive_4 = {
-    'rst': '''.. slide::
-    :class: segue dark quote nobackground
-    :contents_class: flexbox vleft auto-fadein
-
-.. epigraph::
-
-    This is an
-    example of quote text.''',
-    'out': '''<document source="<string>">
-    <section classes="segue dark quote nobackground">
-        <slide_contents classes="flexbox vleft auto-fadein">
-            <block_quote classes="epigraph">
-                <paragraph>
-                    This is an
-                    example of quote text.
-''',
-    'part': 'pseudoxml',
-}
-
-slide_directive_4_slideshow = {
-    'rst': slide_directive_4['rst'],
-    'out': '''
-<deck>
-    <slide class="segue dark quote nobackground">
-        <section class="flexbox vleft auto-fadein">
-            <blockquote class="epigraph">
-                <p>This is an example of quote text.</p>
-            </blockquote>
-        </section>
-    </slide>
-</deck>
-''',
-    'part': 'body',
-}
-
-slide_directive_5 = {
-    'rst': '''.. slide::
-    :class: special
-    :title: Code Slide (Smaller Font)
-    :contents_class: smaller
-
-.. code-block:: javascript
-
-    function helloWorld(world) {
-        alert('Hello ' + String(world));
-    }''',
-    'out': '''
-<deck>
-    <slide class="special">
-        <header>
-            <h1>Code Slide (Smaller Font)</h1>
-        </header>
-        <section class="smaller">
-            <pre><code class="javascript"><span class="kd">function</span> \
-<span class="nx">helloWorld</span><span class="p">(</span><span class="nx">\
-world</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">alert</span><span class="p">(</span>\
-<span class="s1">'Hello '</span> <span class="o">+</span> \
-<span class="nb">String</span><span class="p">(</span><span class="nx">\
-world</span><span class="p">));</span>
-<span class="p">}</span></code></pre>
-        </section>
-    </slide>
-</deck>
-''',
-    'part': 'body',
-}
-
-slide_impress_1 = {
-    'rst': '''.. slide::
-    :id: paragraph
-    :class: special
-    :data-x: 1000
-    :data-y: -200
-    :data-scale: 4
-    :no-sense-attr: xyz
-
-    paragraph
-''',
-    'part': 'pseudoxml',
-    'out': '''<document source="<string>">
-    <section classes="special" data-scale="4" data-x="1000" data-y="-200" id="paragraph" no-sense-attr="xyz">
-        <slide_contents>
-            <paragraph>
-                paragraph
-''',
-}
-
-slide_impress_1_slideshow = {
-    'rst': slide_impress_1['rst'],
-    'part': 'body',
-    'out': '''
-<deck>
-    <slide no-sense-attr="xyz" class="special" data-y="-200" data-x="1000" data-scale="4" id="paragraph">
-        <section>paragraph</section>
-    </slide>
-</deck>
-''',
-}
-
-slide_directive_in_the_middle = {
+# it is not possible to have an initial empty slide
+empty_slide = {
     'rst': '''Title
 =====
 
-paragraph 1
+paragraph
 
-.. slide::
-    :class: special
-    :title: Teste 1
-    :subtitle: Subtitle
+----
 
-    paragraph''',
-    'out': '''<document ids="title" names="title" source="<string>" \
-title="Title">
-    <section>
+..''',
+    'out': '''
+<deck>
+    <slide>
         <header>
-            <title>
-                Title
-        <slide_contents>
-            <paragraph>
-                paragraph 1
-    <section classes="special">
-        <header>
-            <title>
-                Teste 1
-            <subtitle>
-                Subtitle
-        <slide_contents>
-            <paragraph>
-                paragraph
+            <h1>Title</h1>
+        </header>
+        <section>paragraph</section>
+    </slide>
+    <slide>
+        <section></section>
+    </slide>
+</deck>
 ''',
-    'part': 'pseudoxml',
+    'part': 'body',
 }
 
-everything_together = {
-    'rst': '''
-Title
-=====
 
-some test
-
------
-
-slide without title
-
-.. slide::
-    :title: Slide
-    :subtitle: Directive
-
-    slide_contents
-''',
+empty_slide_pseudoxml = {
+    'rst': empty_slide['rst'],
     'out': '''<document ids="title" names="title" source="<string>" title="Title">
     <section>
         <header>
@@ -661,74 +490,10 @@ slide without title
                 Title
         <slide_contents>
             <paragraph>
-                some test
-    <section>
-        <slide_contents>
-            <paragraph>
-                slide without title
-    <section>
-        <header>
-            <title>
-                Slide
-            <subtitle>
-                Directive
-        <slide_contents>
-            <paragraph>
-                slide_contents
-''',
-    'part': 'pseudoxml',
-}
-
-empty_slides = {
-    'rst': '''.. slide::
-    :class: special
-
-..
-
-----
-
-..
-
-Title
-=====
-
-paragraph''',
-    'out': '''
-<deck>
-    <slide class="special">
-        <section></section>
-    </slide>
-    <slide>
-        <section></section>
-    </slide>
-    <slide>
-        <header>
-            <h1>Title</h1>
-        </header>
-        <section>paragraph</section>
-    </slide>
-</deck>
-''',
-    'part': 'body',
-}
-
-
-empty_slides_pseudoxml = {
-    'rst': empty_slides['rst'],
-    'out': '''<document source="<string>">
-    <section classes="special">
-        <slide_contents>
-            <comment xml:space="preserve">
-    <section>
-        <slide_contents>
-            <comment xml:space="preserve">
-    <section ids="title" names="title">
-        <header>
-            <title>
-                Title
-        <slide_contents>
-            <paragraph>
                 paragraph
+    <section>
+        <slide_contents>
+            <comment xml:space="preserve">
 ''',
     'part': 'pseudoxml',
 }
@@ -783,7 +548,7 @@ Title 1
 ''',
 }
 
-_rst_example = '''Title 1
+_five_slides = '''Title 1
 =======
 
 * Bullet
@@ -810,10 +575,9 @@ Title 5
 '''
 
 linear = {
-    'rst': '''.. rst2html5slides::
-    :distribution: linear
+    'rst': ''':distribution: linear
 
-''' + _rst_example,
+''' + _five_slides,
     'part': 'body',
     'out': '''
 <deck>
@@ -827,7 +591,7 @@ linear = {
             </ul>
         </section>
     </slide>
-    <slide data-x="1500">
+    <slide data-x="1600">
         <header>
             <h1>Title 2</h1>
         </header>
@@ -837,7 +601,7 @@ linear = {
             </ul>
         </section>
     </slide>
-    <slide data-x="3000">
+    <slide data-x="3200">
         <header>
             <h1>Title 3</h1>
         </header>
@@ -847,7 +611,7 @@ linear = {
             </ul>
         </section>
     </slide>
-    <slide data-x="4500">
+    <slide data-x="4800">
         <header>
             <h1>Title 4</h1>
         </header>
@@ -857,7 +621,7 @@ linear = {
             </ul>
         </section>
     </slide>
-    <slide data-x="6000">
+    <slide data-x="6400">
         <header>
             <h1>Title 5</h1>
         </header>
@@ -872,15 +636,13 @@ linear = {
 }
 
 square = {
-    'rst': '''.. rst2html5slides::
-    :distribution: square
-    :distribution_parameter: 2
+    'rst': ''':distribution: square 2
 
-''' + _rst_example,
+''' + _five_slides,
     'part': 'body',
     'out': '''
 <deck>
-    <slide data-y="0" data-x="0">
+    <slide data-x="0">
         <header>
             <h1>Title 1</h1>
         </header>
@@ -890,29 +652,9 @@ square = {
             </ul>
         </section>
     </slide>
-    <slide data-y="0" data-x="1500">
+    <slide data-x="1600">
         <header>
             <h1>Title 2</h1>
-        </header>
-        <section>
-            <ul>
-                <li>Bullet</li>
-            </ul>
-        </section>
-    </slide>
-    <slide data-y="800" data-x="0">
-        <header>
-            <h1>Title 3</h1>
-        </header>
-        <section>
-            <ul>
-                <li>Bullet</li>
-            </ul>
-        </section>
-    </slide>
-    <slide data-y="800" data-x="1500">
-        <header>
-            <h1>Title 4</h1>
         </header>
         <section>
             <ul>
@@ -922,49 +664,6 @@ square = {
     </slide>
     <slide data-y="1600" data-x="0">
         <header>
-            <h1>Title 5</h1>
-        </header>
-        <section>
-            <ul>
-                <li>Bullet</li>
-            </ul>
-        </section>
-    </slide>
-</deck>
-''',
-}
-
-square2 = {
-    'rst': '''.. rst2html5slides::
-    :distribution: square2
-    :distribution_parameter: 2
-
-''' + _rst_example,
-    'part': 'body',
-    'out': '''
-<deck>
-    <slide data-rotate-z="0" data-y="0" data-x="0">
-        <header>
-            <h1>Title 1</h1>
-        </header>
-        <section>
-            <ul>
-                <li>Bullet</li>
-            </ul>
-        </section>
-    </slide>
-    <slide data-rotate-z="0" data-y="0" data-x="1500">
-        <header>
-            <h1>Title 2</h1>
-        </header>
-        <section>
-            <ul>
-                <li>Bullet</li>
-            </ul>
-        </section>
-    </slide>
-    <slide data-rotate-z="179.9" data-y="800" data-x="1500">
-        <header>
             <h1>Title 3</h1>
         </header>
         <section>
@@ -973,7 +672,7 @@ square2 = {
             </ul>
         </section>
     </slide>
-    <slide data-rotate-z="179.9" data-y="800" data-x="0">
+    <slide data-y="1600" data-x="1600">
         <header>
             <h1>Title 4</h1>
         </header>
@@ -983,7 +682,7 @@ square2 = {
             </ul>
         </section>
     </slide>
-    <slide data-rotate-z="0" data-y="1600" data-x="0">
+    <slide data-y="3200" data-x="0">
         <header>
             <h1>Title 5</h1>
         </header>
@@ -997,42 +696,137 @@ square2 = {
 ''',
 }
 
-# spiral = {
-#     'rst': '''.. slides_distribution::
-#     :distribution: spiral
+square_rotate = {
+    'rst': ''':distribution: square_rotate 2
 
-# ''' + _rst_example,
-#     'part': 'body',
-#     'out': '''
-# ''',
-# }
+''' + _five_slides,
+    'part': 'body',
+    'out': '''
+<deck>
+    <slide data-x="0" data-rotate-z="0">
+        <header>
+            <h1>Title 1</h1>
+        </header>
+        <section>
+            <ul>
+                <li>Bullet</li>
+            </ul>
+        </section>
+    </slide>
+    <slide data-x="1600" data-rotate-z="0">
+        <header>
+            <h1>Title 2</h1>
+        </header>
+        <section>
+            <ul>
+                <li>Bullet</li>
+            </ul>
+        </section>
+    </slide>
+    <slide data-y="1600" data-x="1600" data-rotate-z="179.9">
+        <header>
+            <h1>Title 3</h1>
+        </header>
+        <section>
+            <ul>
+                <li>Bullet</li>
+            </ul>
+        </section>
+    </slide>
+    <slide data-y="1600" data-x="0" data-rotate-z="179.9">
+        <header>
+            <h1>Title 4</h1>
+        </header>
+        <section>
+            <ul>
+                <li>Bullet</li>
+            </ul>
+        </section>
+    </slide>
+    <slide data-y="3200" data-x="0" data-rotate-z="0.0">
+        <header>
+            <h1>Title 5</h1>
+        </header>
+        <section>
+            <ul>
+                <li>Bullet</li>
+            </ul>
+        </section>
+    </slide>
+</deck>
+''',
+}
 
+container_slide_options  = {
+    'rst': ''':container: div.deck_container
+:slide: article.slide
 
-distribution_slide_with_data = {
-    'rst': '''.. rst2html5slides::
-    :distribution: square
-    :distribution_parameter: 2
-    :container_tag: div
-    :container_class: deck-container
-    :slide_tag: article
-    :slide_class: slide
-
-.. slide::
-    :id: opening
-    :class: cover
-    :data-x: -1000
-    :data-y: -500
-    :data-scale: 5
-
-    Welcome
+Welcome
 
 Title 1
 =======
 
 * Bullet
 
+:container: deck#impress
+:slide: div.step
+
 Title 2
 =======
+
+* Bullet''',
+    'part': 'body',
+    'out': '''
+<deck class="deck_container" id="impress">
+    <article class="slide">
+        <section>Welcome</section>
+    </article>
+    <div class="step">
+        <header>
+            <h1>Title 1</h1>
+        </header>
+        <section>
+            <ul>
+                <li>Bullet</li>
+            </ul>
+        </section>
+    </div>
+    <div class="step">
+        <header>
+            <h1>Title 2</h1>
+        </header>
+        <section>
+            <ul>
+                <li>Bullet</li>
+            </ul>
+        </section>
+    </div>
+</deck>
+''',
+}
+
+container_slide_options_2  = {
+    'rst': ''':container: div.deck-container
+:slide: article.slide
+
+:id: opening
+:class: cover
+:data-x: -1000
+:data-y: -500
+:data-scale: 5
+
+Welcome
+
+Title 1
+=======
+
+* Bullet
+
+:data-y: -1500
+:data-rotate: 180
+:data-scale: 7
+
+----
 
 * Bullet
 
@@ -1040,27 +834,14 @@ Title 3
 =======
 
 * Bullet
-
-.. slide::
-    :data-y: -1500
-    :data-rotate: 180
-    :data-scale: 7
-    :contents_class: special
-
-    * Bullet
-
-Title 5
-=======
-
-* Bullet
 ''',
     'part': 'body',
     'out': '''
 <div class="deck-container">
-    <article data-y="-500" data-x="-1000" data-scale="5" id="opening" class="cover slide">
+    <article data-y="-500" data-x="-1000" data-scale="5" id="opening" class="slide">
         <section>Welcome</section>
     </article>
-    <article class="slide" data-y="0" data-x="1500">
+    <article class="slide">
         <header>
             <h1>Title 1</h1>
         </header>
@@ -1070,17 +851,14 @@ Title 5
             </ul>
         </section>
     </article>
-    <article class="slide" data-y="800" data-x="0">
-        <header>
-            <h1>Title 2</h1>
-        </header>
+    <article data-y="-1500" data-rotate="180" class="slide" data-scale="7">
         <section>
             <ul>
                 <li>Bullet</li>
             </ul>
         </section>
     </article>
-    <article class="slide" data-y="800" data-x="1500">
+    <article class="slide">
         <header>
             <h1>Title 3</h1>
         </header>
@@ -1090,132 +868,234 @@ Title 5
             </ul>
         </section>
     </article>
-    <article data-y="-1500" data-scale="7" class="slide" data-rotate="180">
-        <section class="special">
-            <ul>
-                <li>Bullet</li>
-            </ul>
-        </section>
-    </article>
-    <article class="slide" data-y="1600" data-x="1500">
-        <header>
-            <h1>Title 5</h1>
-        </header>
-        <section>
-            <ul>
-                <li>Bullet</li>
-            </ul>
-        </section>
-    </article>
 </div>
 ''',
 }
 
-rst2html5slides_directive = {
-    'rst': '''.. rst2html5slides::
-    :distribution: linear
-    :distribution_parameter: 3
-    :incr_x: 1200
-    :container_tag: div
-    :container_class: deck-container
-    :slide_tag: article
-    :slide_class: slide
-''',
+case_1 = {
+    'rst': '''.. meta::
+    :http-equiv=X-UA-Compatible: chrome=1:
+    :viewport: width=device-width, maximum-scale=1.0, initial-scale=1.0, user-scalable=yes
+
+:container: div#impress
+:slide: div.step
+:data-x: 1000
+:data-y: 2000
+
+Title
+=====
+
+Text
+
+.. class:: special
+
+Title 2
+=======
+
+Another line''',
+    'part': 'whole',
+    'out': '''<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta content="chrome=1:" http-equiv="X-UA-Compatible" />
+    <meta content="width=device-width, maximum-scale=1.0, initial-scale=1.0, user-scalable=yes" name="viewport" />
+</head>
+<body>
+<div id="impress">
+    <div data-y="2000" data-x="1000" class="step">
+        <header>
+            <h1>Title</h1>
+        </header>
+        <section>Text</section>
+    </div>
+    <div class="special step">
+        <header>
+            <h1>Title 2</h1>
+        </header>
+        <section>Another line</section>
+    </div>
+</div>
+</body>
+</html>''',
+}
+
+case_1_pseudoxml = {
+    'rst': case_1['rst'],
     'part': 'pseudoxml',
     'out': '''<document source="<string>">
-    <rst2html5slides_options container_class="deck-container" container_tag="div" \
-distribution="linear" distribution_parameter="3" incr_x="1200" slide_class="slide" \
-slide_tag="article">
+    <docinfo>
+        <field>
+            <field_name>
+                container
+            <field_body>
+                <paragraph>
+                    div#impress
+        <field>
+            <field_name>
+                slide
+            <field_body>
+                <paragraph>
+                    div.step
+        <field>
+            <field_name>
+                data-x
+            <field_body>
+                <paragraph>
+                    1000
+        <field>
+            <field_name>
+                data-y
+            <field_body>
+                <paragraph>
+                    2000
+    <meta content="chrome=1:" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, maximum-scale=1.0, initial-scale=1.0, user-scalable=yes" name="viewport">
+    <section ids="title" names="title">
+        <header>
+            <title>
+                Title
+        <slide_contents>
+            <paragraph>
+                Text
+    <section classes="special" ids="title-2" names="title\ 2">
+        <header>
+            <title>
+                Title 2
+        <slide_contents>
+            <paragraph>
+                Another line
 ''',
 }
 
-rst2html5slides_directive_2 = {
-    'rst': rst2html5slides_directive['rst'],
+# do use this way
+data_before_transition = {
+    'rst': ''':data-x: 100
+
+slide 1
+
+:data-x: 200
+
+----
+
+slide 2''',
     'part': 'body',
-    'out': '',
+    'out': '''
+<deck>
+    <slide data-x="100">
+        <section>slide 1</section>
+    </slide>
+    <slide data-x="200">
+        <section>slide 2</section>
+    </slide>
+</deck>
+''',
 }
 
-rst2html5slides_directive_3 = {
-    'rst': rst2html5slides_directive['rst'] + '''
+
+# slide attributes within the slide
+# will be used in the next slide
+data_after_transition = {
+    'rst': ''':data-x: 100
+
+slide 1
+
+----
+
+:data-x: 200
+
+slide 2''',
+    'part': 'body',
+    'out': '''
+<deck>
+    <slide data-x="100">
+        <section>slide 1</section>
+    </slide>
+    <slide>
+        <section>slide 2</section>
+    </slide>
+</deck>
+''',
+}
+
+
+data_title = {
+    'rst': ''':data-x: 100
 
 Title 1
 =======
 
-* item
+slide 1
+
+:data-x: 200
 
 Title 2
 =======
 
-* item
-''',
+slide 2''',
     'part': 'body',
     'out': '''
-<div class="deck-container">
-    <article class="slide" data-x="0">
+<deck>
+    <slide data-x="100">
         <header>
             <h1>Title 1</h1>
         </header>
-        <section>
-            <ul>
-                <li>item</li>
-            </ul>
-        </section>
-    </article>
-    <article class="slide" data-x="1200">
+        <section>slide 1</section>
+    </slide>
+    <slide data-x="200">
         <header>
             <h1>Title 2</h1>
         </header>
-        <section>
-            <ul>
-                <li>item</li>
-            </ul>
-        </section>
-    </article>
-</div>
+        <section>slide 2</section>
+    </slide>
+</deck>
 ''',
 }
 
-rst2html5slides_impress = {
-    'rst': '''.. rst2html5slides::
-    :distribution: linear
-    :container_id: impress
-    :container_tag: div
-    :slide_tag: div
-    :slide_class: step
+data_title_doctree = {
+    'rst': ''':data-x: 100
 
 Title 1
 =======
 
-* item
+slide 1
+
+:data-x: 200
 
 Title 2
 =======
 
-* item
-''',
-    'part': 'body',
-    'out': '''
-<div id="impress">
-    <div class="step" data-x="0">
+slide 2''',
+    'part': 'pseudoxml',
+    'out': '''<document source="<string>">
+    <docinfo>
+        <field>
+            <field_name>
+                data-x
+            <field_body>
+                <paragraph>
+                    100
+    <section ids="title-1" names="title\ 1">
         <header>
-            <h1>Title 1</h1>
-        </header>
-        <section>
-            <ul>
-                <li>item</li>
-            </ul>
-        </section>
-    </div>
-    <div class="step" data-x="1500">
+            <title>
+                Title 1
+        <slide_contents>
+            <paragraph>
+                slide 1
+            <field_list>
+                <field>
+                    <field_name>
+                        data-x
+                    <field_body>
+                        <paragraph>
+                            200
+    <section ids="title-2" names="title\ 2">
         <header>
-            <h1>Title 2</h1>
-        </header>
-        <section>
-            <ul>
-                <li>item</li>
-            </ul>
-        </section>
-    </div>
-</div>
+            <title>
+                Title 2
+        <slide_contents>
+            <paragraph>
+                slide 2
 ''',
 }
+

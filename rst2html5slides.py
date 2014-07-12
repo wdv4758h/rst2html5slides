@@ -20,7 +20,7 @@ from docutils.parsers.rst.directives.html import MetaBody as Meta
 from genshi.builder import tag, Element
 from rst2html5 import HTML5Writer, HTML5Translator
 
-import distribution
+import re
 
 
 class slide_section(nodes.Element):
@@ -36,77 +36,6 @@ class slide_contents(nodes.Element):
     pass
 
 
-class Slide(Directive):
-    '''
-    This directive creates a new slide_section node.
-    The node doesn't need to be promoted to a document section because
-    the SlideTransformer serializes all sections automatically.
-
-    See test/cases.py for examples.
-
-    All non-defined options that are defined in the declaration are automatically
-    added as slide attributes such as :data-x:, :data-y: or :data-scale:
-    '''
-    final_argument_whitespace = True
-    has_content = True
-    option_spec = defaultdict(lambda: directives.unchanged, {
-        'id': directives.unchanged,
-        'class': directives.class_option,
-        'title': directives.unchanged,
-        'subtitle': directives.unchanged,
-        'contents_class': directives.class_option,
-    })
-
-    def run(self):
-        attrs = {key: value for key, value in self.options.iteritems()
-                 if key not in ('class', 'title', 'subtitle', 'contents_class')}
-        slide = slide_section(classes=self.options.get('class', []), **attrs)
-        if 'title' in self.options:
-            title = nodes.title(text=self.options.get('title', ''))
-            slide.append(title)
-            if 'subtitle' in self.options:
-                subtitle = nodes.subtitle(text=self.options['subtitle'])
-                slide.append(subtitle)
-        content = slide_contents(classes=self.options.get('contents_class', []))
-        self.state.nested_parse(self.content, self.content_offset, content)
-        slide.append(content)
-        return [slide]
-
-
-class rst2html5slides_options(nodes.Element):
-    '''
-    node class that holds rst2html5slides options declared via rst2html5slides directive
-    '''
-    pass
-
-
-class Rst2html5slides(Directive):
-    '''
-    Set rst2html5slides global options
-    '''
-    required_arguments = 0
-    final_argument_whitespace = False
-    has_content = False
-    option_spec = {
-        'container_id': directives.unchanged,
-        'container_tag': directives.unchanged,
-        'container_class': directives.class_option,
-        'slide_tag': directives.unchanged,
-        'slide_class': directives.class_option,
-        'distribution': directives.unchanged,
-        'incr_x': int,
-        'incr_y': int,
-        'distribution_parameter': int,
-    }
-
-    def run(self):
-        return [rst2html5slides_options(**self.options)]
-
-
-directives.register_directive('slide', Slide)
-directives.register_directive('rst2html5slides', Rst2html5slides)
-
-
 class SlideTransform(Transform):
     '''
     State Machine to transform default doctree to one with slideshow structure:
@@ -116,7 +45,7 @@ class SlideTransform(Transform):
     default_priority = 851
 
     # node classes that should be ignored to not form new slides
-    skip_classes = (Meta.meta, rst2html5slides_options,)
+    skip_classes = (Meta.meta, nodes.docinfo)
 
     def apply(self):
         self.state = self.make_content
@@ -160,9 +89,7 @@ class SlideTransform(Transform):
         Make the header of the slide
         '''
         if isinstance(node, nodes.section):  # subsection
-            '''
-            insert subsection in curr_children
-            '''
+            # insert subsection in curr_children
             self.curr_children = node.children + self.curr_children
         else:
             self.state = self.make_content
@@ -207,38 +134,31 @@ class SlideWriter(HTML5Writer):
 
 class SlideTranslator(HTML5Translator):
 
+    tag_name_re = re.compile('^\w+')
+    class_re = re.compile('\.([\w\-]+)')
+    id_re = re.compile('#([\w|\-]+)')
+
     def __init__(self, *args):
-        self.rst_terms['section'] = ('slide', 'visit_section', 'depart_section')
+        self.rst_terms['section'] = ['slide', 'visit_section', 'depart_section']  # [0] might be replaced later
         self.rst_terms['slide_contents'] = ('section', 'default_visit', 'default_departure')
         self.rst_terms['slide_section'] = ('section', 'default_visit', 'default_departure')
-        self.rst_terms['rst2html5slides_options'] = (None, 'visit_rst2html5slides_options', None)
         HTML5Translator.__init__(self, *args)
         self._reset()
         # self.metatags.append(tag.base(target="_blank"))
         return
 
-    def _reset(self):
-        self.container_id = None
-        self.container_tag = 'deck'
-        self.container_class = []
-        self.slide_tag = 'slide'
-        self.slide_class = []
-        self.distribution = 'manual'
-        self.incr_x = 1500
-        self.incr_y = 800
-        self.distribution_parameter = None
-        return
-
-    def parse(self, node):
-        if node.__class__.__name__ == 'section':
-            node['classes'].extend(self.slide_class)
-        tag_name, indent, attrs = HTML5Translator.parse(self, node)
-        if tag_name == 'slide':
-            tag_name = self.slide_tag
-        return tag_name, indent, attrs
+    def _compacted_paragraph(self, node):
+        '''
+        a single node followed by a single field list should also be compacted
+        '''
+        parent_length = len([n for n in node.parent
+                             if not isinstance(n, (nodes.field_list))])
+        return HTML5Translator._compacted_paragraph(self, node) or parent_length == 1
 
     def visit_section(self, node):
         node['ids'] = ''
+        node.attributes.update(self.slide_attributes)
+        self.slide_attributes = {}
         self.heading_level += 1
         if self.heading_level == 1:
             self.default_visit(node)
@@ -247,6 +167,9 @@ class SlideTranslator(HTML5Translator):
     def depart_section(self, node):
         self.heading_level -= 1
         if self.heading_level == 0:
+            # here it is a less intrusive way to add any default class to a slide
+            if 'class' in self.slide:
+                node['classes'].extend([self.slide['class']])
             self.default_departure(node)
         return
 
@@ -255,40 +178,159 @@ class SlideTranslator(HTML5Translator):
         self.heading_level += 1
         return
 
-    def visit_rst2html5slides_options(self, node):
-        self.container_id = node.get('container_id', self.container_id)
-        self.container_tag = node.get('container_tag', self.container_tag)
-        self.container_class = node.get('container_class', self.container_class)
-        self.slide_tag = node.get('slide_tag', self.slide_tag)
-        self.slide_class = node.get('slide_class', self.slide_class)
-        self.distribution = node.get('distribution', self.distribution)
-        self.incr_x = node.get('incr_x', self.incr_x)
-        self.incr_y = node.get('incr_y', self.incr_y)
-        self.distribution_parameter = node.get('distribution_parameter', self.distribution_parameter)
+    def depart_document(self, node):
+        self._distribute_slides()
+        if len(self.context.stack[0]):
+            deck = getattr(tag, self.container['tag'])(
+                    *self.context.stack[0],
+                    id=self.container.get('id', None),
+                    class_=self.container.get('class', None)
+            )
+            self.context.stack = ['\n', deck, '\n']
+        # _reset is necessary to run the several test cases
+        self._reset()
+        return
+
+    def _reset(self):
+        self.container = {'tag':'deck'}
+        self.slide = {'tag':'slide'}
+        self.slide_attributes = {}
+        self.distribution = {'func': None, 'incr_x': 1600, 'incr_y': 1600, 'data-*': {}}
+        return
+
+    def visit_field(self, node):
+        field_name = node.children[0].astext()
+        field_value = self._strip_spaces(node.children[1].astext())
+        visit_field_func = getattr(self, 'visit_field_' + field_name.replace('-', '_'), None)
+        if visit_field_func:
+            visit_field_func(field_value)
+        else:
+            self.slide_attributes[field_name] = field_value
         raise nodes.SkipNode
+
+    def visit_field_container(self, value):
+        tag_name = self.tag_name_re.findall(value)
+        id = self.id_re.findall(value)
+        class_ = self.class_re.findall(value)
+        if tag_name:
+            self.container['tag'] = tag_name[0]
+        if id:
+            self.container['id'] = id[0]
+        if class_:
+            self.container['class'] = class_[0]
+        return
+
+    def visit_field_slide(self, value):
+        tag_name = self.tag_name_re.findall(value)
+        class_ = self.class_re.findall(value)
+        if tag_name:
+            self.rst_terms['section'][0] = tag_name[0]
+        if class_:
+            self.slide['class'] = class_[0]
+        return
+
+    def visit_field_incr_x(self, value):
+        self.incr_x = int(value)
+        return
+
+    def visit_field_incr_y(self, value):
+        self.incr_y = int(value)
+        return
+
+    def visit_field_distribution(self, field_value):
+        self._distribute_slides()
+        values = field_value.split()
+        # distribution function names must end with '_distribution'
+        self.distribution['func'] = getattr(self, values[0] + '_distribution')
+        if len(values) > 1:
+            self.distribution['parameter'] = int(values[1])
+        return
 
     def _distribute_slides(self):
         '''
         Distribute slides spatially according to some predefined function.
         data-* attributes are used to keep the coordinates.
         '''
-        if self.distribution == 'manual':
+        if not self.distribution['func']:
             return
-        slides = [elem for item in self.context.stack[0] for elem in item if isinstance(elem, Element)]
-        func = getattr(distribution, self.distribution)
-        func(slides, self.incr_x, self.incr_y, self.distribution_parameter)
+        slides = (elem for item in self.context.stack[0] for elem in item if isinstance(elem, Element))
+        self.distribution['func'](slides)
         return
 
-    def depart_document(self, node):
-        self._distribute_slides()
-        if len(self.context.stack[0]):
-            deck = getattr(tag, self.container_tag)(*self.context.stack[0], id=self.container_id)
-            if self.container_class:
-                deck(class_=' '.join(self.container_class))
-            self.context.stack = ['\n', deck, '\n']
-        # _reset is necessary to run the several test cases
-        self._reset()
+    def _get_data(self, slide):
+
+        def convert(value):
+            if isinstance(value, (int, float)):
+                return value
+            try:
+                if '.' in value:
+                    return float(value)
+                else:
+                    return int(value)
+            except ValueError:
+                return value
+
+        return {q[0].localname: convert(q[1]) for q in slide.attrib if q[0].localname.startswith('data-')}
+
+    def linear_distribution(self, slides):
+        '''
+        Linear distribution
+        '''
+        data_attributes = self.distribution['data-*']
+        data_attributes.setdefault('data-x', 0)
+        incr_x = self.distribution['incr_x']
+        for slide in slides:
+            data_attributes.update(self._get_data(slide))
+            slide(**data_attributes)
+            data_attributes['data-x'] += incr_x
         return
+
+    def square_distribution(self, slides):
+        '''
+        change line after certain number of slides
+        It might receive one parameter to indicate the length of the line
+
+        [ ] [ ] [ ] [ ]
+        [ ] [ ] [ ] [ ]
+        ...
+        '''
+        data_attributes = self.distribution['data-*']
+        line_length = self.distribution.get('parameter', 4)
+        incr_x = self.distribution['incr_x']
+        incr_y = self.distribution['incr_y']
+        x_ref = 0
+        for index, slide in enumerate(slides):
+            data_attributes.update(self._get_data(slide))
+            if index == 0:
+                x_ref = data_attributes.setdefault('data-x', 0)
+            elif index % line_length == 0:  # break line
+                data_attributes['data-x'] = x_ref
+                data_attributes['data-y'] = data_attributes.setdefault('data-y', 0) + incr_y
+            slide(**data_attributes)
+            data_attributes['data-x'] += incr_x
+        return
+
+    def square_rotate_distribution(self, slides, number=4):
+        '''
+        Similar to square, but slides are rotated when line changes
+        '''
+        data_attributes = self.distribution['data-*']
+        line_length = self.distribution.get('parameter', 4)
+        incr_x = self.distribution['incr_x']
+        incr_y = self.distribution['incr_y']
+        # jmpress doesn't rotate clockwise when it is 180
+        rotate_z_ref = data_attributes.setdefault('data-rotate-z', 0) + 179.9
+        for index, slide in enumerate(slides):
+            if index == 0:
+                x_ref = data_attributes.setdefault('data-x', 0)
+            elif index % line_length == 0:
+                data_attributes['data-x'] -= incr_x  # keep same data-x reverting last += incr_x
+                data_attributes['data-y'] = data_attributes.setdefault('data-y', 0) + incr_y
+                incr_x = -incr_x
+                data_attributes['data-rotate-z'] = rotate_z_ref \
+                    if data_attributes['data-rotate-z'] != rotate_z_ref  else (rotate_z_ref - 179.9)
+            slide(**data_attributes)
+            data_attributes['data-x'] += incr_x
 
 
 def main():
