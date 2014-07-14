@@ -209,6 +209,14 @@ class SlideTranslator(HTML5Translator):
             self.slide_attributes[field_name] = field_value
         raise nodes.SkipNode
 
+    def visit_field_class(self, value):
+        self.slide_attributes['classes'] = value.split()
+        return
+
+    def visit_field_classes(self, value):
+        self.visit_field_class(value)
+        return
+
     def visit_field_container(self, value):
         tag_name = self.tag_name_re.findall(value)
         id = self.id_re.findall(value)

@@ -123,6 +123,103 @@ Title 2
     'part': 'body',
 }
 
+contents_class = {
+    'rst': '''
+Title 1
+=======
+
+.. class:: special
+
+this won't work. The class "special" will be ignored
+
+Title 2
+=======
+
+.. container:: special
+
+    This works because this construction will be translated to a <div> section.
+
+Title 3
+=======
+
+.. class:: hint
+
+     * This also works
+     * Substructure here''',
+    'part': 'body',
+    'out': '''
+<deck>
+    <slide>
+        <header>
+            <h1>Title 1</h1>
+        </header>
+        <section>this won't work. The class "special" will be ignored</section>
+    </slide>
+    <slide>
+        <header>
+            <h1>Title 2</h1>
+        </header>
+        <section>
+            <div class="special">This works because this construction will be translated to a \
+&lt;div&gt; section.</div>
+        </section>
+    </slide>
+    <slide>
+        <header>
+            <h1>Title 3</h1>
+        </header>
+        <section>
+            <ul class="hint">
+                <li>This also works</li>
+                <li>Substructure here</li>
+            </ul>
+        </section>
+    </slide>
+</deck>
+''',
+}
+
+
+slide_class_no_title = {
+    'rst': '''
+:slide: div.slide
+:class: test
+
+first slide, no title.
+The class directive doesn't work here.
+You must use :literal:`:class:` or :literal:`:classes:` to set up the class of this slide.
+Those are workarounds. No other solution at the time being.
+
+.. class:: hint
+
+----
+
+the class directive works from the second slide onward
+
+:classes: special
+
+----
+
+:literal:`classes` could also be used instead of :literal:`:class:`
+''',
+    'part': 'body',
+    'out': '''
+<deck>
+    <div class="test slide">
+        <section>first slide, no title. The class directive doesn't work here. \
+You must use <code>:class:</code> or <code>:classes:</code> to set up the class of this slide. \
+Those are workarounds. No other solution at the time being.</section>
+    </div>
+    <div class="hint slide">
+        <section>the class directive works from the second slide onward</section>
+    </div>
+    <div class="special slide">
+        <section><code>classes</code> could also be used instead of <code>:class:</code></section>
+    </div>
+</deck>
+''',
+}
+
 
 lose_nodes = {
     'rst': '''paragraph
@@ -206,8 +303,7 @@ title="Title 1">
 }
 
 h2 = {
-    'rst': '''
-.. class:: segue dark nobackground
+    'rst': '''.. class:: segue dark nobackground
 
 Title 1
 =======
@@ -960,7 +1056,7 @@ Title 3
     'part': 'body',
     'out': '''
 <div class="deck-container">
-    <article data-y="-500" data-x="-1000" data-scale="5" id="opening" class="slide">
+    <article data-y="-500" data-x="-1000" data-scale="5" id="opening" class="cover slide">
         <section>Welcome</section>
     </article>
     <article class="slide">
