@@ -757,6 +757,128 @@ square_rotate = {
 ''',
 }
 
+change_distribution_linear = {
+    'rst': ''':distribution: linear
+
+slide 1
+
+:data-x: -2000
+:data-y: -1000
+:data-scale: -3
+:data-rotate-z: 45
+
+----
+
+slide 2
+
+----
+
+slide 3
+
+''',
+    'part': 'body',
+    'out': '''
+<deck>
+    <slide data-x="0">
+        <section>slide 1</section>
+    </slide>
+    <slide data-y="-1000" data-x="-2000" data-rotate-z="45" data-scale="-3">
+        <section>slide 2</section>
+    </slide>
+    <slide data-y="-1000" data-x="-400" data-rotate-z="45" data-scale="-3">
+        <section>slide 3</section>
+    </slide>
+</deck>
+''',
+}
+
+
+change_distribution_square = {
+    'rst': ''':distribution: square 2
+
+slide 1
+
+:data-x: -2000
+:data-y: -1000
+:data-scale: -3
+:data-rotate-z: 45
+
+----
+
+slide 2
+
+----
+
+slide 3
+
+----
+
+slide 4
+''',
+    'part': 'body',
+    'out': '''
+<deck>
+    <slide data-x="0">
+        <section>slide 1</section>
+    </slide>
+    <slide data-y="-1000" data-x="-2000" data-rotate-z="45" data-scale="-3">
+        <section>slide 2</section>
+    </slide>
+    <slide data-y="-1000" data-x="-400" data-rotate-z="45" data-scale="-3">
+        <section>slide 3</section>
+    </slide>
+    <slide data-y="600" data-x="-2000" data-rotate-z="45" data-scale="-3">
+        <section>slide 4</section>
+    </slide>
+</deck>
+''',
+}
+
+change_distribution_func = {
+    'rst': ''':distribution: linear
+
+slide 1
+
+----
+
+slide 2
+
+----
+
+slide 3
+
+:distribution: square 1
+
+----
+
+slide 4
+
+----
+
+slide 5
+''',
+    'part': 'body',
+    'out': '''
+<deck>
+    <slide data-x="0">
+        <section>slide 1</section>
+    </slide>
+    <slide data-x="1600">
+        <section>slide 2</section>
+    </slide>
+    <slide data-x="3200">
+        <section>slide 3</section>
+    </slide>
+    <slide data-y="1600" data-x="3200">
+        <section>slide 4</section>
+    </slide>
+    <slide data-y="3200" data-x="3200">
+        <section>slide 5</section>
+    </slide>
+</deck>
+''',
+}
+
 container_slide_options  = {
     'rst': ''':container: div.deck_container
 :slide: article.slide

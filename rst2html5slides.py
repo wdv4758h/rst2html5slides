@@ -195,7 +195,13 @@ class SlideTranslator(HTML5Translator):
         self.container = {'tag':'deck'}
         self.slide = {'tag':'slide'}
         self.slide_attributes = {}
-        self.distribution = {'func': None, 'incr_x': 1600, 'incr_y': 1600, 'data-*': {}}
+        self.distribution = {
+            'func': None,
+            'incr_x': 1600,
+            'incr_y': 1600,
+            'data-*': {},
+            'visited': 0,
+        }
         return
 
     def visit_field(self, node):
@@ -253,8 +259,20 @@ class SlideTranslator(HTML5Translator):
         '''
         if not self.distribution['func']:
             return
-        slides = (elem for item in self.context.stack[0] for elem in item if isinstance(elem, Element))
-        self.distribution['func'](slides)
+        initial_pos = self.distribution['visited']
+        slides = (elem for item in self.context.stack[0][initial_pos::] for elem in item if isinstance(elem, Element))
+        self.distribution['visited'] = len(self.context.stack[0])
+        def enumerate_slides(slides):
+            index = 0
+            for slide in slides:
+                slide_data = self._get_data(slide)
+                if slide_data:
+                    index = 0
+                    self.distribution['data-*'].update(slide_data)
+                yield index, slide
+                index += 1
+
+        self.distribution['func'](enumerate_slides(slides))
         return
 
     def _get_data(self, slide):
@@ -270,22 +288,22 @@ class SlideTranslator(HTML5Translator):
             except ValueError:
                 return value
 
-        return {q[0].localname: convert(q[1]) for q in slide.attrib if q[0].localname.startswith('data-')}
+        return {q[0].localname: convert(q[1]) for q in slide.attrib \
+                if q[0].localname.startswith('data-')}
 
-    def linear_distribution(self, slides):
+    def linear_distribution(self, enumerated_slides):
         '''
         Linear distribution
         '''
         data_attributes = self.distribution['data-*']
         data_attributes.setdefault('data-x', 0)
         incr_x = self.distribution['incr_x']
-        for slide in slides:
-            data_attributes.update(self._get_data(slide))
+        for index, slide in enumerated_slides:
             slide(**data_attributes)
             data_attributes['data-x'] += incr_x
         return
 
-    def square_distribution(self, slides):
+    def square_distribution(self, enumerated_slides):
         '''
         change line after certain number of slides
         It might receive one parameter to indicate the length of the line
@@ -298,9 +316,7 @@ class SlideTranslator(HTML5Translator):
         line_length = self.distribution.get('parameter', 4)
         incr_x = self.distribution['incr_x']
         incr_y = self.distribution['incr_y']
-        x_ref = 0
-        for index, slide in enumerate(slides):
-            data_attributes.update(self._get_data(slide))
+        for index, slide in enumerated_slides:
             if index == 0:
                 x_ref = data_attributes.setdefault('data-x', 0)
             elif index % line_length == 0:  # break line
@@ -310,7 +326,7 @@ class SlideTranslator(HTML5Translator):
             data_attributes['data-x'] += incr_x
         return
 
-    def square_rotate_distribution(self, slides, number=4):
+    def square_rotate_distribution(self, enumerated_slides):
         '''
         Similar to square, but slides are rotated when line changes
         '''
@@ -318,17 +334,17 @@ class SlideTranslator(HTML5Translator):
         line_length = self.distribution.get('parameter', 4)
         incr_x = self.distribution['incr_x']
         incr_y = self.distribution['incr_y']
-        # jmpress doesn't rotate clockwise when it is 180
-        rotate_z_ref = data_attributes.setdefault('data-rotate-z', 0) + 179.9
-        for index, slide in enumerate(slides):
+        for index, slide in enumerated_slides:
             if index == 0:
                 x_ref = data_attributes.setdefault('data-x', 0)
+                # jmpress doesn't rotate clockwise when it is 180
+                rotate_z_ref = data_attributes.setdefault('data-rotate-z', 0) + 179.9
             elif index % line_length == 0:
                 data_attributes['data-x'] -= incr_x  # keep same data-x reverting last += incr_x
                 data_attributes['data-y'] = data_attributes.setdefault('data-y', 0) + incr_y
                 incr_x = -incr_x
                 data_attributes['data-rotate-z'] = rotate_z_ref \
-                    if data_attributes['data-rotate-z'] != rotate_z_ref  else (rotate_z_ref - 179.9)
+                    if data_attributes['data-rotate-z'] != rotate_z_ref else (rotate_z_ref - 179.9)
             slide(**data_attributes)
             data_attributes['data-x'] += incr_x
 
