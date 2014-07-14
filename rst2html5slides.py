@@ -11,7 +11,6 @@ Translates a restructuredText document to a HTML5 slideshow
 
 __docformat__ = 'reStructuredText'
 
-from collections import defaultdict
 from docutils import nodes
 from docutils.core import publish_from_doctree
 from docutils.transforms import Transform
@@ -50,7 +49,6 @@ class SlideTransform(Transform):
     def apply(self):
         self.state = self.make_content
         self.contents = []
-        self.contents_classes = []
         self.header = []
         self.children = []
         self.section = None
@@ -76,10 +74,9 @@ class SlideTransform(Transform):
             self.section.append(header)
             self.header = []
         if self.contents:
-            contents = slide_contents(classes=self.contents_classes)
+            contents = slide_contents()
             contents.extend(self.contents)
             self.contents = []
-            self.contents_classes = []
             self.section.append(contents)
         self.children.append(self.section)
         return
@@ -108,11 +105,9 @@ class SlideTransform(Transform):
             elem.extend(node.children)
             self.header.append(elem)
             self.state = self.check_subsection
-        elif isinstance(node, slide_contents):
-            self.contents_classes = node['classes']
-            if node.children:
-                self.contents = node.children
-                self.close_section()
+        elif isinstance(node, slide_contents) and node.children:
+            self.contents = node.children
+            self.close_section()
         else:
             self.contents.append(node)
         return
