@@ -22,15 +22,6 @@ from rst2html5 import HTML5Writer, HTML5Translator
 import re
 
 
-class slide_section(nodes.Element):
-    '''
-    nodes.section is not suited for this class because it must always
-    have a title node as first child. However, a nodes.Element class does not
-    have this restriction.
-    '''
-    pass
-
-
 class slide_contents(nodes.Element):
     pass
 
@@ -94,7 +85,7 @@ class SlideTransform(Transform):
         return
 
     def make_content(self, node):
-        if isinstance(node, (nodes.transition, nodes.section, slide_section)):
+        if isinstance(node, (nodes.transition, nodes.section)):
             self.close_section()
             self.section = nodes.section()
             self.section.update_all_atts(node)
@@ -136,7 +127,6 @@ class SlideTranslator(HTML5Translator):
     def __init__(self, *args):
         self.rst_terms['section'] = ['slide', 'visit_section', 'depart_section']  # [0] might be replaced later
         self.rst_terms['slide_contents'] = ('section', 'default_visit', 'default_departure')
-        self.rst_terms['slide_section'] = ('section', 'default_visit', 'default_departure')
         HTML5Translator.__init__(self, *args)
         self._reset()
         # self.metatags.append(tag.base(target="_blank"))
