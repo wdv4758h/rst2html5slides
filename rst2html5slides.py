@@ -38,69 +38,61 @@ class SlideTransform(Transform):
     skip_classes = (Meta.meta, nodes.docinfo)
 
     def apply(self):
-        self.state = self.make_content
         self.contents = []
         self.header = []
-        self.children = []
-        self.section = None
-        self.curr_children = self.document.children
-        self.document.clear()
-        while self.curr_children:
-            node = self.curr_children.pop(0)
-            if isinstance(node, self.skip_classes):
-                self.children.append(node)
-                continue
-            self.state(node)
-        self.close_section()
-        self.document.extend(self.children)
+        self.slides = []
+        self.slide = nodes.section()
+        self.inner_level = 0
+        self.visit(self.document.children)
+        self.document.extend(self.slides)
+        return
 
-    def close_section(self):
+    def visit(self, children):
+        self.inner_level += 1
+        while children:
+            node = children.pop(0)
+            if isinstance(node, self.skip_classes):
+                self.slides.append(node)
+                continue
+            self.parse(node)
+        self.inner_level -= 1
+        if self.inner_level <= 1:
+            self.close_slide()
+        return
+
+    def parse(self, node):
+        if isinstance(node, nodes.transition):
+            self.close_slide()
+            self.slide.update_all_atts(node)
+        elif isinstance(node, nodes.section):
+            # All subsections are flattened to the same level.
+            if self.inner_level == 1:
+                self.close_slide()
+                self.slide.update_all_atts(node)
+            self.visit(node.children)
+        elif isinstance(node, (nodes.title, nodes.subtitle)):
+            # Titles and subtitles are converted to nodes.title and
+            # their heading levels are defined later during translation
+            self.header.append(node)
+        else:
+            self.contents.append(node)
+        return
+
+    def close_slide(self):
         if not (self.contents or self.header):
             return
-        if not self.section:
-            self.section = nodes.section()
         if self.header:
             header = nodes.header()
             header.extend(self.header)
-            self.section.append(header)
+            self.slide.append(header)
             self.header = []
         if self.contents:
             contents = slide_contents()
             contents.extend(self.contents)
             self.contents = []
-            self.section.append(contents)
-        self.children.append(self.section)
-        return
-
-    def check_subsection(self, node):
-        '''
-        Make the header of the slide
-        '''
-        if isinstance(node, nodes.section):  # subsection
-            # insert subsection in curr_children
-            self.curr_children = node.children + self.curr_children
-        else:
-            self.state = self.make_content
-            self.state(node)
-        return
-
-    def make_content(self, node):
-        if isinstance(node, (nodes.transition, nodes.section)):
-            self.close_section()
-            self.section = nodes.section()
-            self.section.update_all_atts(node)
-            self.curr_children = node.children + self.curr_children
-        elif isinstance(node, (nodes.title, nodes.subtitle)):
-            elem = nodes.subtitle() if len(self.header) else nodes.title()
-            elem.update_all_atts(node)
-            elem.extend(node.children)
-            self.header.append(elem)
-            self.state = self.check_subsection
-        elif isinstance(node, slide_contents) and node.children:
-            self.contents = node.children
-            self.close_section()
-        else:
-            self.contents.append(node)
+            self.slide.append(contents)
+        self.slides.append(self.slide)
+        self.slide = nodes.section()
         return
 
 
@@ -127,6 +119,7 @@ class SlideTranslator(HTML5Translator):
     def __init__(self, *args):
         self.rst_terms['section'] = ['slide', 'visit_section', 'depart_section']  # [0] might be replaced later
         self.rst_terms['slide_contents'] = ('section', 'default_visit', 'default_departure')
+        self.rst_terms['title'] = (None, 'visit_title', 'depart_title')  # flatten titles
         HTML5Translator.__init__(self, *args)
         self._reset()
         # self.metatags.append(tag.base(target="_blank"))
@@ -144,22 +137,39 @@ class SlideTranslator(HTML5Translator):
         node['ids'] = ''
         node.attributes.update(self.slide_attributes)
         self.slide_attributes = {}
-        self.heading_level += 1
-        if self.heading_level == 1:
-            self.default_visit(node)
+        self.default_visit(node)
         return
 
     def depart_section(self, node):
-        self.heading_level -= 1
-        if self.heading_level == 0:
-            # here it is a less intrusive way to add any default class to a slide
-            if 'class' in self.slide:
-                node['classes'].extend([self.slide['class']])
-            self.default_departure(node)
+        self.heading_level = 0  # a new section reset title level
+        if 'class' in self.slide:
+            node['classes'].extend([self.slide['class']])
+        self.default_departure(node)
         return
 
-    def depart_subtitle(self, node):
-        HTML5Translator.depart_subtitle(self, node)
+    def visit_title(self, node):
+        '''
+        In rst2html5slides, subsections are flattened and every title node is grouped
+        inside the same header as a nodes.title.
+        According to their position, the title node should become h1, h2, h3 etc.
+
+        Example:
+
+        <header>
+            <title 1>
+            <title 2>
+            <title 3>
+
+        becomes:
+
+        <header>
+            <h1>Title 1</h1>
+            <h2>Subtitle</h2>
+            <h3>Subsubtitle</h3>
+
+        see test/cases.py  h2 and h3
+        '''
+        self.default_visit(node)
         self.heading_level += 1
         return
 

@@ -6,7 +6,7 @@
 
 from __future__ import unicode_literals
 
-slides = {
+simple_slides = {
     'rst': '''
 Title 1
 =======
@@ -45,17 +45,8 @@ Title 2
 }
 
 
-slide_doctree = {
-    'rst': '''
-Title 1
-=======
-
-* bullet
-
-Title 2
-=======
-
-* bullet 2''',
+simple_slides_doctree = {
+    'rst': simple_slides['rst'],
     'out': '''<document source="<string>">
     <section ids="title-1" names="title\ 1">
         <header>
@@ -123,29 +114,55 @@ Title 2
     'part': 'body',
 }
 
-contents_class = {
+
+slide_with_no_title = {
+    'rst': '''
+A slide with no title
+
+----
+
+slide 2. No title either.
+The next one is an empty slide
+
+----
+
+..''',
+    'part': 'body',
+    'out': '''
+<deck>
+    <slide>
+        <section>A slide with no title</section>
+    </slide>
+    <slide>
+        <section>slide 2. No title either. The next one is an empty slide</section>
+    </slide>
+    <slide>
+        <section></section>
+    </slide>
+</deck>
+''',
+}
+
+slide_with_no_title_in_the_middle = {
     'rst': '''
 Title 1
 =======
 
+paragraph
+
+----
+
+This should be a new slide
+
 .. class:: special
 
-this won't work. The class "special" will be ignored
+----
+
+This should also be a new slide
 
 Title 2
 =======
-
-.. container:: special
-
-    This works because this construction will be translated to a <div> section.
-
-Title 3
-=======
-
-.. class:: hint
-
-     * This also works
-     * Substructure here''',
+''',
     'part': 'body',
     'out': '''
 <deck>
@@ -153,36 +170,27 @@ Title 3
         <header>
             <h1>Title 1</h1>
         </header>
-        <section>this won't work. The class "special" will be ignored</section>
+        <section>paragraph</section>
+    </slide>
+    <slide>
+        <section>This should be a new slide</section>
+    </slide>
+    <slide class="special">
+        <section>This should also be a new slide</section>
     </slide>
     <slide>
         <header>
             <h1>Title 2</h1>
         </header>
-        <section>
-            <div class="special">This works because this construction will be translated to a \
-&lt;div&gt; section.</div>
-        </section>
-    </slide>
-    <slide>
-        <header>
-            <h1>Title 3</h1>
-        </header>
-        <section>
-            <ul class="hint">
-                <li>This also works</li>
-                <li>Substructure here</li>
-            </ul>
-        </section>
     </slide>
 </deck>
 ''',
 }
 
 
-slide_class_no_title = {
+slide_with_no_title_class = {
     'rst': '''
-:slide: div.slide
+:slide: .step
 :class: test
 
 first slide, no title.
@@ -205,23 +213,179 @@ the class directive works from the second slide onward
     'part': 'body',
     'out': '''
 <deck>
-    <div class="test slide">
-        <section>first slide, no title. The class directive doesn't work here. \
-You must use <code>:class:</code> or <code>:classes:</code> to set up the class of this slide. \
-Those are workarounds. No other solution at the time being.</section>
-    </div>
-    <div class="hint slide">
+    <slide class="test step">
+        <section>first slide, no title. The class directive doesn't work here. You must use <code>:class:</code> or <code>:classes:</code> to set up the class of this slide. Those are workarounds. No other solution at the time being.</section>
+    </slide>
+    <slide class="hint step">
         <section>the class directive works from the second slide onward</section>
-    </div>
-    <div class="special slide">
+    </slide>
+    <slide class="special step">
         <section><code>classes</code> could also be used instead of <code>:class:</code></section>
-    </div>
+    </slide>
 </deck>
 ''',
 }
 
 
-lose_nodes = {
+slide_without_content_1 = {
+    'rst': '''
+Title 1
+=======
+
+Title 2
+=======''',
+    'part': 'body',
+    'out': '''
+<deck>
+    <slide>
+        <header>
+            <h1>Title 1</h1>
+        </header>
+    </slide>
+    <slide>
+        <header>
+            <h1>Title 2</h1>
+        </header>
+    </slide>
+</deck>
+''',
+}
+
+
+slide_without_content_1_doctree = {
+    'rst': slide_without_content_1['rst'],
+    'part': 'pseudoxml',
+    'out': '''<document source="<string>">
+    <section ids="title-1" names="title\ 1">
+        <header>
+            <title>
+                Title 1
+    <section ids="title-2" names="title\ 2">
+        <header>
+            <title>
+                Title 2
+''',
+}
+
+
+slide_without_content_2 = {
+    'rst': '''
+Title 1
+=======
+
+Subtitle 1
+----------
+
+Title 2
+=======
+
+Subtitle 2
+----------
+
+Subsubtitle
+^^^^^^^^^^^
+''',
+    'part': 'body',
+    'out': '''
+<deck>
+    <slide>
+        <header>
+            <h1>Title 1</h1>
+            <h2>Subtitle 1</h2>
+        </header>
+    </slide>
+    <slide>
+        <header>
+            <h1>Title 2</h1>
+            <h2>Subtitle 2</h2>
+            <h3>Subsubtitle</h3>
+        </header>
+    </slide>
+</deck>
+''',
+}
+
+
+slide_without_content_2_doctree = {
+    'rst': slide_without_content_2['rst'],
+    'part': 'pseudoxml',
+    'out': '''<document source="<string>">
+    <section ids="title-1" names="title\ 1">
+        <header>
+            <title>
+                Title 1
+            <title>
+                Subtitle 1
+    <section ids="title-2" names="title\ 2">
+        <header>
+            <title>
+                Title 2
+            <title>
+                Subtitle 2
+            <title>
+                Subsubtitle
+''',
+}
+
+
+slide_contents_class = {
+    'rst': '''
+Title 1
+=======
+
+.. class:: special
+
+It won't work. The class "special" will be ignored
+
+Title 2
+=======
+
+.. container:: special
+
+    It works because this construction will be translated to a <div> section.
+
+Title 3
+=======
+
+.. class:: hint
+
+     * This also works
+     * Substructure here''',
+    'part': 'body',
+    'out': '''
+<deck>
+    <slide>
+        <header>
+            <h1>Title 1</h1>
+        </header>
+        <section>It won't work. The class "special" will be ignored</section>
+    </slide>
+    <slide>
+        <header>
+            <h1>Title 2</h1>
+        </header>
+        <section>
+            <div class="special">It works because this construction will be translated to a \
+&lt;div&gt; section.</div>
+        </section>
+    </slide>
+    <slide>
+        <header>
+            <h1>Title 3</h1>
+        </header>
+        <section>
+            <ul class="hint">
+                <li>This also works</li>
+                <li>Substructure here</li>
+            </ul>
+        </section>
+    </slide>
+</deck>
+''',
+}
+
+
+single_slide_no_title = {
     'rst': '''paragraph
 
 * bullet 1
@@ -242,8 +406,8 @@ lose_nodes = {
     'part': 'body',
 }
 
-lose_nodes_doctree = {
-    'rst': lose_nodes['rst'],
+single_slide_no_title_doctree = {
+    'rst': single_slide_no_title['rst'],
     'out': '''<document source="<string>">
     <section>
         <slide_contents>
@@ -357,7 +521,7 @@ h2_doctree = {
         <header>
             <title>
                 Title 1
-            <subtitle>
+            <title>
                 Subtitle
         <slide_contents>
             <bullet_list bullet="*">
@@ -368,7 +532,7 @@ h2_doctree = {
         <header>
             <title>
                 Title 2
-            <subtitle>
+            <title>
                 Subtitle 2
         <slide_contents>
             <bullet_list bullet="*">
@@ -381,7 +545,13 @@ h2_doctree = {
 
 # rst2html5slides doesn't allow three different heading levels at the same slide
 h3 =  {
-    'rst': '''Title 1
+    'rst': '''There can't be three title levels at the first slide
+because the first two are interpreted as document title / subtitle.
+See http://docutils.sourceforge.net/docs/user/rst/quickstart.html#document-title-subtitle
+
+----
+
+Title 1
 =======
 
 Subtitle
@@ -395,10 +565,16 @@ Subsubtitle
     'out': '''
 <deck>
     <slide>
+        <section>There can't be three title levels at the first slide because the first two are \
+interpreted as document title / subtitle. \
+See <a href="http://docutils.sourceforge.net/docs/user/rst/quickstart.html#document-title-subtitle">\
+http://docutils.sourceforge.net/docs/user/rst/quickstart.html#document-title-subtitle</a></section>
+    </slide>
+    <slide>
         <header>
             <h1>Title 1</h1>
             <h2>Subtitle</h2>
-            <h2>Subsubtitle</h2>
+            <h3>Subsubtitle</h3>
         </header>
         <section>
             <ul>
@@ -414,14 +590,22 @@ Subsubtitle
 
 h3_doctree =  {
     'rst': h3['rst'],
-    'out': '''<document ids="title-1" names="title\ 1" source="<string>" title="Title 1">
+    'out': '''<document source="<string>">
     <section>
+        <slide_contents>
+            <paragraph>
+                There can't be three title levels at the first slide
+                because the first two are interpreted as document title / subtitle.
+                See \n                \
+<reference refuri="http://docutils.sourceforge.net/docs/user/rst/quickstart.html#document-title-subtitle">
+                    http://docutils.sourceforge.net/docs/user/rst/quickstart.html#document-title-subtitle
+    <section ids="title-1" names="title\ 1">
         <header>
             <title>
                 Title 1
-            <subtitle ids="subtitle" names="subtitle">
+            <title>
                 Subtitle
-            <subtitle>
+            <title>
                 Subsubtitle
         <slide_contents>
             <bullet_list bullet="*">
@@ -1089,6 +1273,7 @@ Title 3
 </div>
 ''',
 }
+
 
 case_1 = {
     'rst': '''.. meta::
