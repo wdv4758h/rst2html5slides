@@ -42,6 +42,7 @@ Title 2
 </deck>
 ''',
     'part': 'body',
+    'manual_slide_identification': True,
 }
 
 
@@ -68,6 +69,39 @@ simple_slides_doctree = {
                         bullet 2
 ''',
     'part': 'pseudoxml',
+}
+
+
+deck_slide_selector_parameters = {
+    'rst': simple_slides['rst'],
+    'deck_selector': 'div#impress.impress-not-supported',
+    'slide_selector': 'div.step',
+    'manual_slide_identification': True,
+    'part': 'body',
+    'out': '''
+<div class="impress-not-supported" id="impress">
+    <div class="step">
+        <header>
+            <h1>Title 1</h1>
+        </header>
+        <section>
+            <ul>
+                <li>bullet</li>
+            </ul>
+        </section>
+    </div>
+    <div class="step">
+        <header>
+            <h1>Title 2</h1>
+        </header>
+        <section>
+            <ul>
+                <li>bullet 2</li>
+            </ul>
+        </section>
+    </div>
+</div>
+''',
 }
 
 
@@ -112,6 +146,7 @@ Title 2
 </deck>
 ''',
     'part': 'body',
+    'manual_slide_identification': True,
 }
 
 
@@ -166,7 +201,7 @@ Title 2
     'part': 'body',
     'out': '''
 <deck>
-    <slide>
+    <slide id="title-1">
         <header>
             <h1>Title 1</h1>
         </header>
@@ -178,7 +213,7 @@ Title 2
     <slide class="special">
         <section>This should also be a new slide</section>
     </slide>
-    <slide>
+    <slide id="title-2">
         <header>
             <h1>Title 2</h1>
         </header>
@@ -190,7 +225,7 @@ Title 2
 
 slide_with_no_title_class = {
     'rst': '''
-:slide: .step
+:slide_selector: .step
 :class: test
 
 first slide, no title.
@@ -237,12 +272,12 @@ Title 2
     'part': 'body',
     'out': '''
 <deck>
-    <slide>
+    <slide id="title-1">
         <header>
             <h1>Title 1</h1>
         </header>
     </slide>
-    <slide>
+    <slide id="title-2">
         <header>
             <h1>Title 2</h1>
         </header>
@@ -288,13 +323,13 @@ Subsubtitle
     'part': 'body',
     'out': '''
 <deck>
-    <slide>
+    <slide id="title-1">
         <header>
             <h1>Title 1</h1>
             <h2>Subtitle 1</h2>
         </header>
     </slide>
-    <slide>
+    <slide id="title-2">
         <header>
             <h1>Title 2</h1>
             <h2>Subtitle 2</h2>
@@ -352,6 +387,7 @@ Title 3
      * This also works
      * Substructure here''',
     'part': 'body',
+    'manual_slide_identification': True,
     'out': '''
 <deck>
     <slide>
@@ -487,7 +523,7 @@ Subtitle 2
 ''',
     'out': '''
 <deck>
-    <slide class="segue dark nobackground">
+    <slide class="segue dark nobackground" id="title-1">
         <header>
             <h1>Title 1</h1>
             <h2>Subtitle</h2>
@@ -498,7 +534,7 @@ Subtitle 2
             </ul>
         </section>
     </slide>
-    <slide>
+    <slide id="title-2">
         <header>
             <h1>Title 2</h1>
             <h2>Subtitle 2</h2>
@@ -570,7 +606,7 @@ interpreted as document title / subtitle. \
 See <a href="http://docutils.sourceforge.net/docs/user/rst/quickstart.html#document-title-subtitle">\
 http://docutils.sourceforge.net/docs/user/rst/quickstart.html#document-title-subtitle</a></section>
     </slide>
-    <slide>
+    <slide id="title-1">
         <header>
             <h1>Title 1</h1>
             <h2>Subtitle</h2>
@@ -859,6 +895,7 @@ linear = {
 
 ''' + _five_slides,
     'part': 'body',
+    'manual_slide_identification': True,
     'out': '''
 <deck>
     <slide data-x="0">
@@ -915,11 +952,22 @@ linear = {
 ''',
 }
 
+
+linear_parameter = {
+    'rst': _five_slides,
+    'part': 'body',
+    'manual_slide_identification': True,
+    'distribution': 'linear',
+    'out': linear['out'],
+}
+
+
 square = {
     'rst': ''':distribution: square 2
 
 ''' + _five_slides,
     'part': 'body',
+    'manual_slide_identification': True,
     'out': '''
 <deck>
     <slide data-x="0">
@@ -976,11 +1024,22 @@ square = {
 ''',
 }
 
+
+square_parameter = {
+    'rst': _five_slides,
+    'part': 'body',
+    'manual_slide_identification': True,
+    'distribution': 'square 2',
+    'out': square['out']
+}
+
+
 square_rotate = {
     'rst': ''':distribution: square_rotate 2
 
 ''' + _five_slides,
     'part': 'body',
+    'manual_slide_identification': True,
     'out': '''
 <deck>
     <slide data-x="0" data-rotate-z="0">
@@ -1159,9 +1218,9 @@ slide 5
 ''',
 }
 
-container_slide_options  = {
-    'rst': ''':container: div.deck_container
-:slide: article.slide
+deck_slide_selectors  = {
+    'rst': ''':deck_selector: div.deck_container
+:slide_selector: article.slide
 
 Welcome
 
@@ -1170,8 +1229,8 @@ Title 1
 
 * Bullet
 
-:container: deck#impress
-:slide: div.step
+:deck_selector: deck#impress
+:slide_selector: div.step
 
 Title 2
 =======
@@ -1183,7 +1242,7 @@ Title 2
     <article class="slide">
         <section>Welcome</section>
     </article>
-    <div class="step">
+    <div class="step" id="title-1">
         <header>
             <h1>Title 1</h1>
         </header>
@@ -1193,7 +1252,7 @@ Title 2
             </ul>
         </section>
     </div>
-    <div class="step">
+    <div class="step" id="title-2">
         <header>
             <h1>Title 2</h1>
         </header>
@@ -1207,9 +1266,9 @@ Title 2
 ''',
 }
 
-container_slide_options_2  = {
-    'rst': ''':container: div.deck-container
-:slide: article.slide
+deck_slide_selectors_2  = {
+    'rst': ''':deck_selector: div.deck-container
+:slide_selector: article.slide
 
 :id: opening
 :class: cover
@@ -1240,10 +1299,10 @@ Title 3
     'part': 'body',
     'out': '''
 <div class="deck-container">
-    <article data-y="-500" data-x="-1000" data-scale="5" id="opening" class="cover slide">
+    <article data-y="-500" data-x="-1000" class="cover slide" id="opening" data-scale="5">
         <section>Welcome</section>
     </article>
-    <article class="slide">
+    <article class="slide" id="title-1">
         <header>
             <h1>Title 1</h1>
         </header>
@@ -1260,7 +1319,7 @@ Title 3
             </ul>
         </section>
     </article>
-    <article class="slide">
+    <article class="slide" id="title-3">
         <header>
             <h1>Title 3</h1>
         </header>
@@ -1275,13 +1334,86 @@ Title 3
 }
 
 
+manual_slide_identification = {
+    'rst': '''
+:id: benvindo
+
+Welcome
+
+:id: introducao
+
+Title 1
+=======
+
+Title 2
+=======
+
+paragraph
+
+----
+
+About
+''',
+    'part': 'body',
+    'manual_slide_identification': True,
+    'out': '''
+<deck>
+    <slide id="benvindo">
+        <section>Welcome</section>
+    </slide>
+    <slide id="introducao">
+        <header>
+            <h1>Title 1</h1>
+        </header>
+    </slide>
+    <slide>
+        <header>
+            <h1>Title 2</h1>
+        </header>
+        <section>paragraph</section>
+    </slide>
+    <slide>
+        <section>About</section>
+    </slide>
+</deck>
+''',
+}
+
+
+automatic_slide_identification = {
+    'rst': manual_slide_identification['rst'],
+    'part': 'body',
+    'out': '''
+<deck>
+    <slide id="benvindo">
+        <section>Welcome</section>
+    </slide>
+    <slide id="introducao">
+        <header>
+            <h1>Title 1</h1>
+        </header>
+    </slide>
+    <slide id="title-2">
+        <header>
+            <h1>Title 2</h1>
+        </header>
+        <section>paragraph</section>
+    </slide>
+    <slide>
+        <section>About</section>
+    </slide>
+</deck>
+''',
+}
+
+
 case_1 = {
     'rst': '''.. meta::
     :http-equiv=X-UA-Compatible: chrome=1:
     :viewport: width=device-width, maximum-scale=1.0, initial-scale=1.0, user-scalable=yes
 
-:container: div#impress
-:slide: div.step
+:deck_selector: div#impress
+:slide_selector: div.step
 :data-x: 1000
 :data-y: 2000
 
@@ -1306,13 +1438,13 @@ Another line''',
 </head>
 <body>
 <div id="impress">
-    <div data-y="2000" data-x="1000" class="step">
+    <div data-y="2000" data-x="1000" class="step" id="title">
         <header>
             <h1>Title</h1>
         </header>
         <section>Text</section>
     </div>
-    <div class="special step">
+    <div class="special step" id="title-2">
         <header>
             <h1>Title 2</h1>
         </header>
@@ -1330,13 +1462,13 @@ case_1_pseudoxml = {
     <docinfo>
         <field>
             <field_name>
-                container
+                deck_selector
             <field_body>
                 <paragraph>
                     div#impress
         <field>
             <field_name>
-                slide
+                slide_selector
             <field_body>
                 <paragraph>
                     div.step
@@ -1439,13 +1571,13 @@ slide 2''',
     'part': 'body',
     'out': '''
 <deck>
-    <slide data-x="100">
+    <slide data-x="100" id="title-1">
         <header>
             <h1>Title 1</h1>
         </header>
         <section>slide 1</section>
     </slide>
-    <slide data-x="200">
+    <slide data-x="200" id="title-2">
         <header>
             <h1>Title 2</h1>
         </header>
@@ -1499,6 +1631,50 @@ slide 2''',
         <slide_contents>
             <paragraph>
                 slide 2
+''',
+}
+
+
+internal_link = {
+    'rst': '''
+
+.. warning::
+
+    :literal:`id` fields mess up with internal links.
+
+:id: another-id
+
+Title 1
+=======
+
+paragraph
+
+Title 2
+=======
+
+link to `Title 1`_
+''',
+    'part': 'body',
+    'out': '''
+<deck>
+    <slide>
+        <section>
+            <aside class="warning"><code>id</code> fields mess up with internal links.</aside>
+        </section>
+    </slide>
+    <slide id="another-id">
+        <header>
+            <h1>Title 1</h1>
+        </header>
+        <section>paragraph</section>
+    </slide>
+    <slide id="title-2">
+        <header>
+            <h1>Title 2</h1>
+        </header>
+        <section>link to <a href="#title-1">Title 1</a></section>
+    </slide>
+</deck>
 ''',
 }
 

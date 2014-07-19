@@ -14,7 +14,6 @@ __docformat__ = 'reStructuredText'
 from docutils import nodes
 from docutils.core import publish_from_doctree
 from docutils.transforms import Transform
-from docutils.parsers.rst import Directive, directives
 from docutils.parsers.rst.directives.html import MetaBody as Meta
 from genshi.builder import tag, Element
 from rst2html5 import HTML5Writer, HTML5Translator
@@ -98,6 +97,54 @@ class SlideTransform(Transform):
 
 class SlideWriter(HTML5Writer):
 
+    settings_spec = HTML5Writer.settings_spec + (
+        'rst2html5slides Specific Options',
+        None,
+        (
+            (
+                'Specify the name of the slide distribution function. '
+                'Options are "linear", "square" or "square-rotate". '
+                'An additional parameter can be specified along with the name such as in '
+                '"square_rotate  3".',
+                ['--distribution'],
+                {
+                    'dest': 'distribution',
+                    'metavar': '<function_name>'
+                }
+            ),
+            (
+                'Disable slide automatic identification based on title.',
+                ['--manual-slide-id'],
+                {
+                    'action': 'store_true',
+                    'dest': 'manual_slide_identification',
+                }
+            ),
+            (
+                'Specify the tag, id and/or class to replace the default (and non-standard) '
+                '<deck> tag used to surround the slides. '
+                'Follow the pattern tag#id.class (such as a CSS selector). '
+                'Examples: div, div#impress, div.deck-container, article#impress.impress-not-supported',
+                ['--deck-selector'],
+                {
+                    'dest': 'deck_selector',
+                    'metavar': '<deck_selector>',
+                },
+            ),
+            (
+                'Specify the tag, id and/or class to replace the default (and non-standard) '
+                '<slide> tag used to surround each slide.'
+                'Follow the pattern tag#id.class (such as a CSS selector)'
+                'Examples: div.slide, section, div.step',
+                ['--slide-selector'],
+                {
+                    'dest': 'slide_selector',
+                    'metavar': '<slide_selector>'
+                },
+            ),
+        )
+    )
+
     def __init__(self):
         HTML5Writer.__init__(self)
         self.translator_class = SlideTranslator
@@ -122,7 +169,13 @@ class SlideTranslator(HTML5Translator):
         self.rst_terms['title'] = (None, 'visit_title', 'depart_title')  # flatten titles
         HTML5Translator.__init__(self, *args)
         self._reset()
-        # self.metatags.append(tag.base(target="_blank"))
+        settings = self.document.settings
+        if settings.distribution:
+            self.visit_field_distribution(settings.distribution)
+        if settings.deck_selector:
+            self.visit_field_deck_selector(settings.deck_selector)
+        if settings.slide_selector:
+            self.visit_field_slide_selector(settings.slide_selector)
         return
 
     def _compacted_paragraph(self, node):
@@ -134,7 +187,10 @@ class SlideTranslator(HTML5Translator):
         return HTML5Translator._compacted_paragraph(self, node) or parent_length == 1
 
     def visit_section(self, node):
-        node['ids'] = ''
+        if self.document.settings.manual_slide_identification:
+            node['ids'] = []
+        elif 'id' in self.slide_attributes:
+            node['ids'] = [self.slide_attributes['id']]
         node.attributes.update(self.slide_attributes)
         self.slide_attributes = {}
         self.default_visit(node)
@@ -142,8 +198,8 @@ class SlideTranslator(HTML5Translator):
 
     def depart_section(self, node):
         self.heading_level = 0  # a new section reset title level
-        if 'class' in self.slide:
-            node['classes'].extend([self.slide['class']])
+        if 'class' in self.slide_selector:
+            node['classes'].extend([self.slide_selector['class']])
         self.default_departure(node)
         return
 
@@ -176,10 +232,10 @@ class SlideTranslator(HTML5Translator):
     def depart_document(self, node):
         self._distribute_slides()
         if len(self.context.stack[0]):
-            deck = getattr(tag, self.container['tag'])(
+            deck = getattr(tag, self.deck_selector['tag'])(
                     *self.context.stack[0],
-                    id=self.container.get('id', None),
-                    class_=self.container.get('class', None)
+                    id=self.deck_selector.get('id', None),
+                    class_=self.deck_selector.get('class', None)
             )
             self.context.stack = ['\n', deck, '\n']
         # _reset is necessary to run the several test cases
@@ -187,8 +243,8 @@ class SlideTranslator(HTML5Translator):
         return
 
     def _reset(self):
-        self.container = {'tag':'deck'}
-        self.slide = {'tag':'slide'}
+        self.deck_selector = {'tag':'deck'}
+        self.slide_selector = {'tag':'slide'}
         self.slide_attributes = {}
         self.distribution = {
             'func': None,
@@ -217,25 +273,25 @@ class SlideTranslator(HTML5Translator):
         self.visit_field_class(value)
         return
 
-    def visit_field_container(self, value):
+    def visit_field_deck_selector(self, value):
         tag_name = self.tag_name_re.findall(value)
         id = self.id_re.findall(value)
         class_ = self.class_re.findall(value)
         if tag_name:
-            self.container['tag'] = tag_name[0]
+            self.deck_selector['tag'] = tag_name[0]
         if id:
-            self.container['id'] = id[0]
+            self.deck_selector['id'] = id[0]
         if class_:
-            self.container['class'] = class_[0]
+            self.deck_selector['class'] = class_[0]
         return
 
-    def visit_field_slide(self, value):
+    def visit_field_slide_selector(self, value):
         tag_name = self.tag_name_re.findall(value)
         class_ = self.class_re.findall(value)
         if tag_name:
             self.rst_terms['section'][0] = tag_name[0]
         if class_:
-            self.slide['class'] = class_[0]
+            self.slide_selector['class'] = class_[0]
         return
 
     def visit_field_incr_x(self, value):
