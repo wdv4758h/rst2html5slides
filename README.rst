@@ -3,7 +3,19 @@ rst2html5slides
 ===============
 
 rst2html5slides extends rst2html5_ to generate a deck of slides from a restructuredtext file
-that can be used with presentation frameworks such as `jmpress.js`_ and `deck.js`_.
+that can be used with web presentation frameworks such as `jmpress.js`_ or `deck.js`_.
+
+
+Features
+========
+
+* Write your presentations in restructureText and convert them to
+Write your presentations in a text markup language. No slow, limiting GUI, no annoying HTML!
+Pan, rotate and zoom in 3D, with automatic repositioning of slides!
+A presenter console with notes and slide previews!
+The slide show generated is in HTML, so you only need a web browser to show it.
+Easy sharing, as it can be put up on a website for anyone to see!
+
 
 Usage
 =====
@@ -12,247 +24,182 @@ Usage
 
     $ rst2html5slides [options] SOURCE DEST
 
-There are no new options from rst2html5_.
-However options :literal:`--stylesheet`, :literal:`--script`, :literal:`--script-defer`
-and :literal:`--template` are particularly important to make the html5 produced fit
-the chosen presentation framework.
+Options:
 
-
-Overview
-========
-
-A presentation starts with a rst file:
-
-.. include:: doc/example1.rst
-    :code: rst
-
-Without any additional parameters,
-the HTML5 code produced is:
-
-.. code-block:: bash
-
-    $ rst2html5slides example.rst
-
-.. include:: doc/example1.html
-    :code: html
-
-It won't work as it is because
-rst2html5slides does not provide or attach any presentation framework files by default.
-They should be specified as parameters or in a template file.
-Besides,
-the structure of HTML of the deck of slides certainly will not fit directly any presentation framework.
-Some small adjustments have to be done.
-
-
-Using a Template File
-=====================
-
-The easiest way to suit the rst2html5slides result to a specific presentation framework
-is using a template with all necessary surrounds.
-The role of rst2html5slides is to fill in the blanks with the deck of slides.
-
-Below there is an example of a template to use rst2html5slides with the `jmpress.js` framework:
-
-.. include:: doc/jmpress_template.html
-    :code: html
+--distribution=<function_name>
+                        Specify the name of the slide distribution function.
+                        Options are "linear", "square" or "square-rotate". An
+                        additional parameter can be specified along with the
+                        name such as in "square_rotate  3".
+--manual-slide-id       Disable slide automatic identification based on title.
+--deck-selector=<deck_selector>
+                        Specify the tag, id and/or class to replace the
+                        default (and non-standard) <deck> tag used to surround
+                        the slides. Follow the pattern tag#id.class (such as a
+                        CSS selector). Examples: div, div#impress, div.deck-
+                        container, article#impress.impress-not-supported
+--slide-selector=<slide_selector>
+                        Specify the tag, id and/or class to replace the
+                        default (and non-standard) <slide> tag used to surround
+                        each slide.Follow the pattern tag#id.class (such as a
+                        CSS selector)Examples: div.slide, section, div.step
 
 .. tip::
 
-    You must always double curly braces in template's javascripts.
-    To avoid this, keep all scripts in external files.
-    In the previous template,
-    the jmpress initialization could be a external file included by a
-    :literal:`<script defer="defer" src="jmpress_init.js"></script>`.
-
-The command to generate a presentation from example.rst using the previous template
-is show below:
-
-.. code-block:: bash
-
-    $ rst2html5slides --template jmpress_template.html example.rst
-
-.. include:: doc/example1-jmpress.html
-    :code: html
+    Other options inherited from rst2html5_ like :literal:`--stylesheet`, :literal:`--script`, :literal:`--script-defer`
+    and :literal:`--template` are particularly important to make the rst presentation fit
+    the chosen presentation framework.
 
 
-Using Parameters
-================
+Example
+=======
 
-It is possible to get an equivalent result using parameters.
-However:
-
-#. All meta tags must be defined in the rst file through a :literal:`meta` directive
-   usually placed at the beginning of the rst file:
-
-    .. code-block:: rst
-
-        .. meta::
-            :author: André Felipe Dias
-            :viewport: width=device-width, maximum-scale=1.0, initial-scale=1.0, user-scalable=yes
-            :http-equiv=X-UA-Compatible: chrome=1
-
-#. All stylesheets and scripts should be passed as parameters
-#. The framework initialization must be in an external file specified via a :literal:`--script-defer` option
-
-    .. include:: doc/jmpress_init.js
-        :code: javascript
-
-The command to produce an equivalent `jmpress.js`_ presentation from the previous section would be:
-
-.. code-block:: bash
-
-    $ rst2html5slides \
-        --stylesheet impress.css \
-        --script http://code.jquery.com/jquery-latest.min.js \
-        --script jmpress.js \
-        --script-defer jmpress_init.js \
-        example-with-meta-tag.rst
-
-.. include:: doc/example2.html
-    :code: html
-
-
-
-A slide is delimited by three different ways:
-
-#. Title. A new title automatically starts a new section that corresponds to a new slide
-#. Horizontal line :literal:`----`
-#. :literal:`slide` directive
-
-
-
-Slides Delimitados por Title
------------------------------
-
-O restrucutedText automaticamente gera seções para cada título encontrado.
-Como exemplo, considere o trecho a seguir:
-
-
-
-
-
-
-O pseudoxml gerado é o seguinte:
-
-.. code-block:: xml
-
-    <document source="trecho.rst">
-        <section ids="titulo-1" names="título\ 1">
-            <title>
-                Title 1
-            <bullet_list bullet="*">
-                <list_item>
-                    <paragraph>
-                        item 1
-                <list_item>
-                    <paragraph>
-                        item 2
-        <section ids="titulo-2" names="título\ 2">
-            <title>
-                Title 2
-            <bullet_list bullet="*">
-                <list_item>
-                    <paragraph>
-                        item 1
-                <list_item>
-                    <paragraph>
-                        item 2
-
-Essa característica foi aproveitada para traduzir nós do tipo ``section``
-diretamante para o marcador ``<slide>`` em html5 no resultado final.
-O título será agrupado em um ``<header>`` e o conteúdo do slide em uma ``<section>``,
-conforme planejado inicialmente para a estrutura do slide.
-
-O slide pode ter um subtítulo:
+:literal:`presentation.rst`:
 
 .. code-block:: rst
 
-    Title
-    ======
+    .. title:: Simple Presentation | rst2html5slides
+    .. meta::
+      :author: André Felipe Dias
 
-    Subtítulo
-    ---------
+    .. class:: context
 
-    parágrafo 1
+    Presentation
+    ============
 
-    parágrafo 2
+    Author
+    ------
 
-Resultando em HTML5:
+    Topic 1
+    =======
+
+    * item A
+    * item B
+
+    Topic 2
+    =======
+
+    * item C
+    * item D
+
+
+The simplest way to generate a jmpress.js presentation is using a template.
+:literal:`jmpress_template.html`:
 
 .. code-block:: html
 
-    <slide>
-        <header>
-            <h1>Title</h1>
-            <h2>Subtítulo</h2>
-        </header>
-        <section>
-            <p>parágrafo 1</p>
-            <p>parágrafo 2</p>
-        </section>
-    </slide>
+    <!DOCTYPE html>
+    <html{html_attr}>
+    <head>{head}
+        <!-- styles and scripts for a jmpress.js presentation -->
+        <meta content="width=device-width, maximum-scale=1.0, initial-scale=1.0, user-scalable=yes" name="viewport" />
+        <link href="css/default.css" rel="stylesheet" />
+        <link href="css/pygments.css" rel="stylesheet" />
+        <link href="css/impress.css" rel="stylesheet" />
+        <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+        <script src="js/jmpress.js"></script>
+    <body>{body}
+    <script>
+    $(function() {{
+        $('deck').jmpress({{
+            stepSelector: 'slide'
+        }});
+    }});
+    </script>
+    </body>
+    </html>
 
 .. note::
 
-    A ideia inicial era usar um agrupamento em torno de ``<hgroup>``
-    mas essa tag foi excluída do padrão HTML5.
+    You must double curly braces when coding javascript directly in templates.
+    To avoid this, keep all scripts in external files.
+    In the previous template,
+    the jmpress initialization could be placed in an external file included via
+    :literal:`<script defer="defer" src="jmpress_init.js"></script>`.
+
+rst2html5slides command:
+
+.. code-block:: bash
+
+    $ rst2html5slides --template jmpress_template.html --distribution linear presentation.rst presentation.html
+
+:literal:`presentation.html`:
+
+.. code-block:: html
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Simple Presentation | rst2html5slides</title>
+        <meta charset="utf-8" />
+        <meta content="André Felipe Dias" name="author" />
+
+        <!-- styles and scripts for a jmpress.js presentation -->
+        <meta content="width=device-width, maximum-scale=1.0, initial-scale=1.0, user-scalable=yes" name="viewport" />
+        <link href="css/default.css" rel="stylesheet" />
+        <link href="css/pygments.css" rel="stylesheet" />
+        <link href="css/impress.css" rel="stylesheet" />
+        <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+        <script src="js/jmpress.js"></script>
+    <body>
+    <deck>
+        <slide class="context" id="presentation" data-x="0">
+            <header>
+                <h1>Presentation</h1>
+                <h2>Author</h2>
+            </header>
+        </slide>
+        <slide id="topic-1" data-x="1600">
+            <header>
+                <h1>Topic 1</h1>
+            </header>
+            <section>
+                <ul>
+                    <li>item A</li>
+                    <li>item B</li>
+                </ul>
+            </section>
+        </slide>
+        <slide id="topic-2" data-x="3200">
+            <header>
+                <h1>Topic 2</h1>
+            </header>
+            <section>
+                <ul>
+                    <li>item C</li>
+                    <li>item D</li>
+                </ul>
+            </section>
+        </slide>
+    </deck>
+
+    <script>
+    $(function() {
+        $('deck').jmpress({
+            stepSelector: 'slide'
+        });
+    });
+    </script>
+    </body>
+    </html>
 
 
-Slides Delimitados por uma Linha Horizontal
--------------------------------------------
+.. important::
 
-Uma linha horizontal é uma sequência formada por 4 ou mais caracteres de pontuação
-(`ref <http://docutils.sourceforge.net/docs/user/rst/quickref.html#transitions>`_),
-que corresponde a um nó do tipo ``transition``.
-Originalmente, a linha horizontal corresponde em HTML5 ao elemento ``<hr />``,
-mas foi aproveitado para indicar o limite entre um slide e outro:
-
-.. code-block:: rst
-
-    Slide 1
-
-    -----------
-
-    slide 2
-
-    .. class:: segue contexto
-
-    -----------
-
-    slide 3 com atributo class="segue contexto"
-
-A linha horizontal é indicada para os casos de slides que não têm Title.
+    Since **rst2html5slides** doesn't provide any specific css or javascript framework files,
+    you must already have all necessary files in place.
 
 
-Slides Delimmitados pela Diretiva ``slide``
--------------------------------------------
+Documentation
+=============
 
-A diretiva ``slide`` é o modo mais flexível de delimitar um slide.
-Serve tanto para slides que têm título e subtítulo,
-quanto para slides que não têm.
-Além disso, pode receber diretamente o parâmetro correspondente ao atributo ``class``:
+Full documentation is available at readthedocs.org and also in the documentation subdirectory.
 
 
-.. code-block:: rst
+Source
+======
 
-    .. slide::
-        :class: special black-background
-        :title: Slide 1
-        :subtitle: Subtítulo do slide
-
-        conteúdo do slide
-
-    .. slide::
-
-        conteúdo do outro slide 2, que não tem título
-
-
-
-
-Directives
-==========
-
-There
+rst2html5slides source is located at http://bitbucket.org/andre_felipe_dias/rst2html5slides
 
 
 .. _rst2html5: https://pypi.python.org/pypi/rst2html5

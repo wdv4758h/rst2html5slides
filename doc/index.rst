@@ -1,26 +1,22 @@
-.. rst2html5slides documentation master file, created by
-   sphinx-quickstart on Wed Aug 15 10:43:15 2012.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+.. rst2html5slides documentation master file
 
-Welcome to rst2html5slides's documentation!
-=========================================
+rst2html5slides - Presentations from restructuredtext files
+===========================================================
 
 Contents:
 
 .. toctree::
     :maxdepth: 2
 
+    introduction
+    usage
+    presentations
+    designing
+    internals
     como_transformar_rst_para_slides
     fase_1
     fase_2
     referencias
 
 
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
 

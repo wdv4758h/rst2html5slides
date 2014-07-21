@@ -1,7 +1,0 @@
-Commands to generate html from rst sources:
-
-../rst2html5slides.py --stylesheet "http://fonts.googleapis.com/css?family=Open+Sans:regular,semibold,italic,italicsemibold|PT+Sans:400,700,400italic,700italic|PT+Serif:400,700,400italic,700italic" --stylesheet impress.css --script http://code.jquery.com/jquery-latest.min.js --script jmpress.js --script-defer jmpress_init.js jmpress.rst jmpress.html
-
-
-../rst2html5slides.py --stylesheet impress.css --script http://code.jquery.com/jquery-latest.min.js --script jmpress.js --script-defer jmpress_init.js simple.rst simple.html
-

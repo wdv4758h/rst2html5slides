@@ -1,3 +1,0 @@
-find . -name '*.css' | xargs -I {} \
-    sed -i -e 's/\.deck-container/deck/g' -e 's/\.slide/slide/g' \
-        -e 's/h1/old_h1/g' -e 's/h2/h1/g' {}

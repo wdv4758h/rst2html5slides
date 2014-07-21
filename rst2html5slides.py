@@ -19,6 +19,7 @@ from genshi.builder import tag, Element
 from rst2html5 import HTML5Writer, HTML5Translator
 
 import re
+import media
 
 
 class slide_contents(nodes.Element):
