@@ -1272,18 +1272,24 @@ deck_slide_selectors_2  = {
 
 Welcome
 
+
+:data-rotate-x: 180
+
 Title 1
 =======
 
 * Bullet
 
 :data-y: -1500
-:data-rotate: 180
+:data-rotate-z: 180
 :data-scale: 7
 
 ----
 
 * Bullet
+
+:data-rotate-x: 0
+:data-x: 0
 
 Title 3
 =======
@@ -1296,7 +1302,8 @@ Title 3
     <article data-y="-500" data-x="-1000" class="cover slide" id="opening" data-scale="5">
         <section>Welcome</section>
     </article>
-    <article class="slide" id="title-1">
+    <article class="slide" data-y="-500" data-x="-1000" data-rotate-x="180" data-scale="5" \
+id="title-1">
         <header>
             <h1>Title 1</h1>
         </header>
@@ -1306,14 +1313,16 @@ Title 3
             </ul>
         </section>
     </article>
-    <article data-y="-1500" data-rotate="180" class="slide" data-scale="7">
+    <article data-scale="7" data-y="-1500" data-x="-1000" data-rotate-z="180" data-rotate-x="180" \
+class="slide">
         <section>
             <ul>
                 <li>Bullet</li>
             </ul>
         </section>
     </article>
-    <article class="slide" id="title-3">
+    <article data-scale="7" data-y="-1500" data-x="0" data-rotate-z="180" data-rotate-x="0" \
+id="title-3" class="slide">
         <header>
             <h1>Title 3</h1>
         </header>
@@ -1408,8 +1417,6 @@ case_1 = {
 
 :deck_selector: div#impress
 :slide_selector: div.step
-:data-x: 1000
-:data-y: 2000
 
 Title
 =====
@@ -1432,7 +1439,7 @@ Another line''',
 </head>
 <body>
 <div id="impress">
-    <div data-y="2000" data-x="1000" class="step" id="title">
+    <div class="step" id="title">
         <header>
             <h1>Title</h1>
         </header>
@@ -1466,18 +1473,6 @@ case_1_pseudoxml = {
             <field_body>
                 <paragraph>
                     div.step
-        <field>
-            <field_name>
-                data-x
-            <field_body>
-                <paragraph>
-                    1000
-        <field>
-            <field_name>
-                data-y
-            <field_body>
-                <paragraph>
-                    2000
     <meta content="chrome=1:" http-equiv="X-UA-Compatible">
     <meta content="width=device-width, maximum-scale=1.0, initial-scale=1.0, user-scalable=yes" name="viewport">
     <section ids="title" names="title">
@@ -1540,7 +1535,7 @@ slide 2''',
     <slide data-x="100">
         <section>slide 1</section>
     </slide>
-    <slide>
+    <slide data-x="100">
         <section>slide 2</section>
     </slide>
 </deck>

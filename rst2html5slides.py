@@ -196,7 +196,14 @@ class SlideTranslator(HTML5Translator):
         elif 'id' in self.slide_attributes:
             node['ids'] = [self.slide_attributes['id']]
         node.attributes.update(self.slide_attributes)
-        self.slide_attributes = {}
+        if not self.distribution['func']:
+            # (Only) slide data-* attributes are cumulative
+            # otherwise impress.js defaults data-x,y,z to 0, data-scale to 1 etc.
+            for key in self.slide_attributes.keys():
+                if not key.startswith('data-'):
+                    del self.slide_attributes[key]
+        else:  # does not accumulate any slide attributes
+            self.slide_attributes = {}
         self.default_visit(node)
         return
 
