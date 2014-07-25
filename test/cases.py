@@ -956,8 +956,8 @@ linear_parameter = {
 }
 
 
-square = {
-    'rst': ''':distribution: square 2
+grid = {
+    'rst': ''':distribution: grid 2
 
 ''' + _five_slides,
     'part': 'body',
@@ -1019,17 +1019,17 @@ square = {
 }
 
 
-square_parameter = {
+grid_parameter = {
     'rst': _five_slides,
     'part': 'body',
     'manual_slide_identification': True,
-    'distribution': 'square 2',
-    'out': square['out']
+    'distribution': 'grid 2',
+    'out': grid['out']
 }
 
 
-square_rotate = {
-    'rst': ''':distribution: square_rotate 2
+grid_rotate = {
+    'rst': ''':distribution: grid_rotate 2
 
 ''' + _five_slides,
     'part': 'body',
@@ -1126,8 +1126,8 @@ slide 3
 }
 
 
-change_distribution_square = {
-    'rst': ''':distribution: square 2
+change_distribution_grid = {
+    'rst': ''':distribution: grid 2
 
 slide 1
 
@@ -1180,7 +1180,7 @@ slide 2
 
 slide 3
 
-:distribution: square 1
+:distribution: grid 1
 
 ----
 

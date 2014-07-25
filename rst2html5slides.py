@@ -104,9 +104,9 @@ class SlideWriter(HTML5Writer):
         (
             (
                 'Specify the name of the slide distribution function. '
-                'Options are "linear", "square" or "square-rotate". '
+                'Options are "linear", "grid" or "grid-rotate". '
                 'An additional parameter can be specified along with the name such as in '
-                '"square_rotate  3".',
+                '"grid_rotate  3".',
                 ['--distribution'],
                 {
                     'dest': 'distribution',
@@ -317,7 +317,7 @@ class SlideTranslator(HTML5Translator):
         self._distribute_slides()
         values = field_value.split()
         # distribution function names must end with '_distribution'
-        self.distribution['func'] = getattr(self, values[0] + '_distribution')
+        self.distribution['func'] = getattr(self, values[0] + '_distribution', None)
         if len(values) > 1:
             self.distribution['parameter'] = int(values[1])
         return
@@ -373,7 +373,7 @@ class SlideTranslator(HTML5Translator):
             data_attributes['data-x'] += incr_x
         return
 
-    def square_distribution(self, enumerated_slides):
+    def grid_distribution(self, enumerated_slides):
         '''
         change line after certain number of slides
         It might receive one parameter to indicate the length of the line
@@ -396,9 +396,9 @@ class SlideTranslator(HTML5Translator):
             data_attributes['data-x'] += incr_x
         return
 
-    def square_rotate_distribution(self, enumerated_slides):
+    def grid_rotate_distribution(self, enumerated_slides):
         '''
-        Similar to square, but slides are rotated when line changes
+        Similar to grid, but slides are rotated when line changes
         '''
         data_attributes = self.distribution['data-*']
         line_length = self.distribution.get('parameter', 4)

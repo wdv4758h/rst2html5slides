@@ -2,19 +2,9 @@
 rst2html5slides
 ===============
 
-rst2html5slides extends rst2html5_ to generate a deck of slides from a restructuredtext file
-that can be used with web presentation frameworks such as `jmpress.js`_ or `deck.js`_.
-
-
-Features
-========
-
-* Write your presentations in restructureText and convert them to
-Write your presentations in a text markup language. No slow, limiting GUI, no annoying HTML!
-Pan, rotate and zoom in 3D, with automatic repositioning of slides!
-A presenter console with notes and slide previews!
-The slide show generated is in HTML, so you only need a web browser to show it.
-Easy sharing, as it can be put up on a website for anyone to see!
+rst2html5slides extends rst2html5_ to generate a deck of slides from a reStructuredText file
+that can be used with any web presentation framework
+such as `impress.js`_, `jmpress.js`_ or `deck.js`_.
 
 
 Usage
@@ -28,9 +18,9 @@ Options:
 
 --distribution=<function_name>
                         Specify the name of the slide distribution function.
-                        Options are "linear", "square" or "square-rotate". An
+                        Options are "linear", "grid" or "grid-rotate". An
                         additional parameter can be specified along with the
-                        name such as in "square_rotate  3".
+                        name such as in "grid_rotate  3".
 --manual-slide-id       Disable slide automatic identification based on title.
 --deck-selector=<deck_selector>
                         Specify the tag, id and/or class to replace the
@@ -49,6 +39,17 @@ Options:
     Other options inherited from rst2html5_ like :literal:`--stylesheet`, :literal:`--script`, :literal:`--script-defer`
     and :literal:`--template` are particularly important to make the rst presentation fit
     the chosen presentation framework.
+
+
+Features
+========
+
+* Agnostic to any specific presentation framework.
+  rst2html5slides generates suitable content to any presentation framework,
+  but does not provide any of the other necessary stylesheet or javascript files.
+* Presentations are easy to read and write as a plain text file
+* Slides can be manually or automatically positioned through pre-defined functions
+* Separation between content and design details
 
 
 Example
@@ -83,7 +84,9 @@ Example
     * item D
 
 
-The simplest way to generate a jmpress.js presentation is using a template.
+rst2html5slides doesn't provide any specific web presentation framework files.
+You must already have them in place and use rst2html5slides to fill in the presentation contents.
+The simplest way is passing a template as parameter.
 :literal:`jmpress_template.html`:
 
 .. code-block:: html
@@ -121,7 +124,9 @@ rst2html5slides command:
 
 .. code-block:: bash
 
-    $ rst2html5slides --template jmpress_template.html --distribution linear presentation.rst presentation.html
+    rst2html5slides --template jmpress_template.html \
+                    --distribution linear \
+                    presentation.rst presentation.html
 
 :literal:`presentation.html`:
 
@@ -184,12 +189,6 @@ rst2html5slides command:
     </html>
 
 
-.. important::
-
-    Since **rst2html5slides** doesn't provide any specific css or javascript framework files,
-    you must already have all necessary files in place.
-
-
 Documentation
 =============
 
@@ -202,6 +201,24 @@ Source
 rst2html5slides source is located at http://bitbucket.org/andre_felipe_dias/rst2html5slides
 
 
+Installing rst2html5slides
+==========================
+
+.. code-block:: bash
+
+    pip install rst2html5slides
+
+
+License
+=======
+
+rst2html5slides is made available under a MIT license.
+
+Included slide CSS and JavaScript are based on JQuery_, `impress.js`, `jmpress.js`_
+and `deck.js`_ projects also licensed under MIT License.
+
+
 .. _rst2html5: https://pypi.python.org/pypi/rst2html5
+.. _impress.js: http://github.com/bartaz/impress.js
 .. _jmpress.js: http://jmpressjs.github.io/jmpress.js/
 .. _deck.js: http://imakewebthings.com/deck.js/
