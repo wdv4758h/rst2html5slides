@@ -185,9 +185,10 @@ class SlideTranslator(HTML5Translator):
         '''
         a single node followed by a single field list should also be compacted
         '''
-        parent_length = len([n for n in node.parent
-                             if not isinstance(n, (nodes.field_list))])
-        return HTML5Translator._compacted_paragraph(self, node) or parent_length == 1
+        field_list_sibling = len([n for n in node.parent
+            if not isinstance(n, (nodes.field_list))]) == 1
+        return not node['classes'] and \
+            (HTML5Translator._compacted_paragraph(self, node) or field_list_sibling)
 
     def visit_section(self, node):
         if self.document.settings.manual_slide_identification:

@@ -365,22 +365,21 @@ slide_without_content_2_doctree = {
 
 slide_contents_class = {
     'rst': '''
-Title 1
-=======
+single paragraph. No <p> tag wrapping it.
+
+----
 
 .. class:: special
 
-It won't work. The class "special" will be ignored
+This paragraph won't be compacted because of its "special" class
 
-Title 2
-=======
+----
 
 .. container:: special
 
-    It works because this construction will be translated to a <div> section.
+    This construction becomes a <div> section.
 
-Title 3
-=======
+----
 
 .. class:: hint
 
@@ -391,24 +390,19 @@ Title 3
     'out': '''
 <deck>
     <slide>
-        <header>
-            <h1>Title 1</h1>
-        </header>
-        <section>It won't work. The class "special" will be ignored</section>
+        <section>single paragraph. No &lt;p&gt; tag wrapping it.</section>
     </slide>
     <slide>
-        <header>
-            <h1>Title 2</h1>
-        </header>
         <section>
-            <div class="special">It works because this construction will be translated to a \
-&lt;div&gt; section.</div>
+            <p class="special">This paragraph won't be compacted because of its "special" class</p>
         </section>
     </slide>
     <slide>
-        <header>
-            <h1>Title 3</h1>
-        </header>
+        <section>
+            <div class="special">This construction becomes a &lt;div&gt; section.</div>
+        </section>
+    </slide>
+    <slide>
         <section>
             <ul class="hint">
                 <li>This also works</li>
