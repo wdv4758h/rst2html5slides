@@ -152,6 +152,8 @@ class SlideWriter(HTML5Writer):
 
     def translate(self):
         self.parts['pseudoxml'] = self.document.pformat()  # get pseudoxml before HTML5.translate
+        self.document.reporter.debug('%s pseudoxml:\n %s' %
+            (self.__class__.__name__, self.parts['pseudoxml']))
         HTML5Writer.translate(self)
 
     def get_transforms(self):
