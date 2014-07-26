@@ -225,7 +225,9 @@ Title 2
 
 slide_with_no_title_class = {
     'rst': '''
-:slide_selector: .step
+.. presentation::
+    :slide_selector: .step
+
 :class: test
 
 first slide, no title.
@@ -885,7 +887,9 @@ Title 5
 '''
 
 linear = {
-    'rst': ''':distribution: linear
+    'rst': '''
+.. presentation::
+    :distribution: linear
 
 ''' + _five_slides,
     'part': 'body',
@@ -947,17 +951,75 @@ linear = {
 }
 
 
-linear_parameter = {
+presentation_attributes_via_command_parameters = {
     'rst': _five_slides,
     'part': 'body',
     'manual_slide_identification': True,
-    'distribution': 'linear',
-    'out': linear['out'],
+    'distribution': 'grid_rotate 2',
+    'deck_selector': 'div#impress.impress-not-supported',
+    'slide_selector': 'div.step',
+    'increment': '1000 800',
+    'out': '''
+<div class="impress-not-supported" id="impress">
+    <div class="step" data-x="0" data-rotate-z="0">
+        <header>
+            <h1>Title 1</h1>
+        </header>
+        <section>
+            <ul>
+                <li>Bullet</li>
+            </ul>
+        </section>
+    </div>
+    <div class="step" data-x="1000" data-rotate-z="0">
+        <header>
+            <h1>Title 2</h1>
+        </header>
+        <section>
+            <ul>
+                <li>Bullet</li>
+            </ul>
+        </section>
+    </div>
+    <div class="step" data-y="800" data-x="1000" data-rotate-z="179.9">
+        <header>
+            <h1>Title 3</h1>
+        </header>
+        <section>
+            <ul>
+                <li>Bullet</li>
+            </ul>
+        </section>
+    </div>
+    <div class="step" data-y="800" data-x="0" data-rotate-z="179.9">
+        <header>
+            <h1>Title 4</h1>
+        </header>
+        <section>
+            <ul>
+                <li>Bullet</li>
+            </ul>
+        </section>
+    </div>
+    <div class="step" data-y="1600" data-x="0" data-rotate-z="0.0">
+        <header>
+            <h1>Title 5</h1>
+        </header>
+        <section>
+            <ul>
+                <li>Bullet</li>
+            </ul>
+        </section>
+    </div>
+</div>
+''',
 }
 
 
 grid = {
-    'rst': ''':distribution: grid 2
+    'rst': '''
+.. presentation::
+    :distribution: grid 2
 
 ''' + _five_slides,
     'part': 'body',
@@ -1029,7 +1091,9 @@ grid_parameter = {
 
 
 grid_rotate = {
-    'rst': ''':distribution: grid_rotate 2
+    'rst': '''
+.. presentation::
+    :distribution: grid_rotate 2
 
 ''' + _five_slides,
     'part': 'body',
@@ -1091,7 +1155,9 @@ grid_rotate = {
 }
 
 change_distribution_linear = {
-    'rst': ''':distribution: linear
+    'rst': '''
+.. presentation::
+    :distribution: linear
 
 slide 1
 
@@ -1127,7 +1193,9 @@ slide 3
 
 
 change_distribution_grid = {
-    'rst': ''':distribution: grid 2
+    'rst': '''
+.. presentation::
+    :distribution: grid 2
 
 slide 1
 
@@ -1168,7 +1236,9 @@ slide 4
 }
 
 change_distribution_func = {
-    'rst': ''':distribution: linear
+    'rst': '''
+.. presentation::
+    :distribution: linear
 
 slide 1
 
@@ -1176,11 +1246,12 @@ slide 1
 
 slide 2
 
+.. presentation::
+    :distribution: grid 1
+
 ----
 
 slide 3
-
-:distribution: grid 1
 
 ----
 
@@ -1212,63 +1283,53 @@ slide 5
 ''',
 }
 
-deck_slide_selectors  = {
-    'rst': ''':deck_selector: div.deck_container
-:slide_selector: article.slide
+change_deck_slide_selectors_in_the_middle  = {
+    'rst': '''
+.. presentation::
+    :deck_selector: div.deck_container
+    :slide_selector: article.slide
 
-Welcome
+the tag of this slide is <article class="slide">
 
-Title 1
-=======
+----
 
-* Bullet
+idem
 
-:deck_selector: deck#impress
-:slide_selector: div.step
+.. presentation::
+    :deck_selector: deck#impress
+    :slide_selector: div.step
 
-Title 2
-=======
+----
 
-* Bullet''',
+The tag here is supposed to be <div class="step">''',
     'part': 'body',
     'out': '''
 <deck class="deck_container" id="impress">
     <article class="slide">
-        <section>Welcome</section>
+        <section>the tag of this slide is &lt;article class="slide"&gt;</section>
     </article>
-    <div class="step" id="title-1">
-        <header>
-            <h1>Title 1</h1>
-        </header>
-        <section>
-            <ul>
-                <li>Bullet</li>
-            </ul>
-        </section>
-    </div>
-    <div class="step" id="title-2">
-        <header>
-            <h1>Title 2</h1>
-        </header>
-        <section>
-            <ul>
-                <li>Bullet</li>
-            </ul>
-        </section>
+    <article class="slide">
+        <section>idem</section>
+    </article>
+    <div class="step">
+        <section>The tag here is supposed to be &lt;div class="step"&gt;</section>
     </div>
 </deck>
 ''',
 }
 
-deck_slide_selectors_2  = {
-    'rst': ''':deck_selector: div.deck-container
-:slide_selector: article.slide
+deck_slide_selectors = {
+    'rst': '''
+.. presentation::
+    :deck_selector: div.deck-container
+    :slide_selector: article.slide
 
 :id: opening
 :class: cover
 :data-x: -1000
 :data-y: -500
 :data-scale: 5
+
 
 Welcome
 
@@ -1415,8 +1476,9 @@ case_1 = {
     :http-equiv=X-UA-Compatible: chrome=1:
     :viewport: width=device-width, maximum-scale=1.0, initial-scale=1.0, user-scalable=yes
 
-:deck_selector: div#impress
-:slide_selector: div.step
+.. presentation::
+    :deck_selector: div#impress
+    :slide_selector: div.step
 
 Title
 =====
@@ -1460,21 +1522,9 @@ case_1_pseudoxml = {
     'rst': case_1['rst'],
     'part': 'pseudoxml',
     'out': '''<document source="<string>">
-    <docinfo>
-        <field>
-            <field_name>
-                deck_selector
-            <field_body>
-                <paragraph>
-                    div#impress
-        <field>
-            <field_name>
-                slide_selector
-            <field_body>
-                <paragraph>
-                    div.step
     <meta content="chrome=1:" http-equiv="X-UA-Compatible">
     <meta content="width=device-width, maximum-scale=1.0, initial-scale=1.0, user-scalable=yes" name="viewport">
+    <presentation deck_selector="div#impress" slide_selector="div.step">
     <section ids="title" names="title">
         <header>
             <title>
@@ -1517,26 +1567,25 @@ slide 2''',
 }
 
 
-# slide attributes within the slide
-# will be used in the next slide
-data_after_transition = {
+field_list_transition = {
     'rst': ''':data-x: 100
 
 slide 1
 
-----
-
 :data-x: 200
 
-slide 2''',
+field list creates a new slide.
+A transition '----' isn't mandatory
+''',
     'part': 'body',
     'out': '''
 <deck>
     <slide data-x="100">
         <section>slide 1</section>
     </slide>
-    <slide data-x="100">
-        <section>slide 2</section>
+    <slide data-x="200">
+        <section>field list creates a new slide. \
+A transition '----' isn't mandatory</section>
     </slide>
 </deck>
 ''',
@@ -1606,13 +1655,13 @@ slide 2''',
         <slide_contents>
             <paragraph>
                 slide 1
-            <field_list>
-                <field>
-                    <field_name>
-                        data-x
-                    <field_body>
-                        <paragraph>
-                            200
+    <field_list>
+        <field>
+            <field_name>
+                data-x
+            <field_body>
+                <paragraph>
+                    200
     <section ids="title-2" names="title\ 2">
         <header>
             <title>
@@ -1667,3 +1716,127 @@ link to `Title 1`_
 ''',
 }
 
+
+presentation_directive_1 = {
+    'rst': '''
+.. presentation::
+    :distribution: grid_rotate 2
+    :deck_selector: div#impress
+    :slide_selector: div.slide
+    :increment: 1000 800
+
+slide 1
+
+----
+
+slide 2
+
+----
+
+slide 3
+''',
+    'part': 'body',
+    'manual_slide_identification': True,
+    'out': '''
+<div id="impress">
+    <div class="slide" data-x="0" data-rotate-z="0">
+        <section>slide 1</section>
+    </div>
+    <div class="slide" data-x="1000" data-rotate-z="0">
+        <section>slide 2</section>
+    </div>
+    <div class="slide" data-y="800" data-x="1000" data-rotate-z="179.9">
+        <section>slide 3</section>
+    </div>
+</div>
+''',
+}
+
+
+presentation_directive_1_doctree = {
+    'rst': presentation_directive_1['rst'],
+    'part': 'pseudoxml',
+    'manual_slide_identification': True,
+    'out': '''<document source="<string>">
+    <presentation deck_selector="div#impress" distribution="grid_rotate 2" \
+increment="1000 800" slide_selector="div.slide">
+    <section>
+        <slide_contents>
+            <paragraph>
+                slide 1
+    <section>
+        <slide_contents>
+            <paragraph>
+                slide 2
+    <section>
+        <slide_contents>
+            <paragraph>
+                slide 3
+''',
+}
+
+
+presentation_directive_single_slide = {
+    'rst': '''
+.. presentation::
+    :distribution: linear
+    :deck_selector: div#impress
+
+single slide
+''',
+    'part': 'body',
+    'manual_slide_identification': True,
+    'out': '''
+<div id="impress">
+    <slide data-x="0">
+        <section>single slide</section>
+    </slide>
+</div>
+''',
+}
+
+
+presentation_directive_single_slide_pseudoxml = {
+    'rst': presentation_directive_single_slide['rst'],
+    'part': 'pseudoxml',
+    'manual_slide_identification': True,
+    'out': '''<document source="<string>">
+    <presentation deck_selector="div#impress" distribution="linear">
+    <section>
+        <slide_contents>
+            <paragraph>
+                single slide
+''',
+}
+
+invalid_distribution_function_name = {
+    'rst': '''
+.. presentation::
+    :distribution: linear
+
+slide
+
+.. presentation::
+    :distribution: manual
+
+----
+
+An invalid distribution function name is simply ignored.
+Not even a warning is raised
+''',
+    'part': 'pseudoxml',
+    'manual_slide_identification': True,
+    'out': '''<document source="<string>">
+    <presentation distribution="linear">
+    <section>
+        <slide_contents>
+            <paragraph>
+                slide
+    <presentation distribution="manual">
+    <section>
+        <slide_contents>
+            <paragraph>
+                An invalid distribution function name is simply ignored.
+                Not even a warning is raised
+''',
+}

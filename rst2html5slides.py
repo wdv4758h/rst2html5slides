@@ -14,12 +14,40 @@ __docformat__ = 'reStructuredText'
 from docutils import nodes
 from docutils.core import publish_from_doctree
 from docutils.transforms import Transform
+from docutils.parsers.rst import Directive, directives
 from docutils.parsers.rst.directives.html import MetaBody as Meta
 from genshi.builder import tag, Element
 from rst2html5 import HTML5Writer, HTML5Translator
 
 import re
 import media
+
+
+class presentation(nodes.Element):
+    pass
+
+
+class Presentation(Directive):
+    '''
+    This directive handles attributes global to the presentation.
+    Usually, it is placed at the top of the document
+    but it is possible to change presentation attributes in the middle.
+
+    See test/cases.py for examples.
+    '''
+
+    option_spec = {
+        'distribution': directives.unchanged,
+        'deck_selector': directives.unchanged,
+        'slide_selector': directives.unchanged,
+        'increment': directives.unchanged,
+    }
+
+    def run(self):
+        return [presentation(**self.options)]
+
+
+directives.register_directive('presentation', Presentation)
 
 
 class slide_contents(nodes.Element):
@@ -35,7 +63,8 @@ class SlideTransform(Transform):
     default_priority = 851
 
     # node classes that should be ignored to not form new slides
-    skip_classes = (Meta.meta, nodes.docinfo)
+    force_new_slide = (presentation, nodes.field_list)
+    skip_classes = (Meta.meta, nodes.docinfo) + force_new_slide
 
     def apply(self):
         self.contents = []
@@ -52,6 +81,10 @@ class SlideTransform(Transform):
         while children:
             node = children.pop(0)
             if isinstance(node, self.skip_classes):
+                if isinstance(node, self.force_new_slide):
+                    # meta and docinfo doesn't close slide
+                    # see meta_tag_and_slides in test/cases.py
+                    self.close_slide()
                 self.slides.append(node)
                 continue
             self.parse(node)
@@ -114,6 +147,17 @@ class SlideWriter(HTML5Writer):
                 }
             ),
             (
+                'Specify the value of the increment used by the distribution functions. '
+                'To specify different values for X and Y increments, '
+                'separate them by space. Example "1000 500". '
+                'Default value is 1600 for X and Y increments.',
+                ['--increment'],
+                {
+                    'dest': 'increment',
+                    'metavar': '<increment>'
+                }
+            ),
+            (
                 'Disable slide automatic identification based on title.',
                 ['--manual-slide-id'],
                 {
@@ -170,15 +214,18 @@ class SlideTranslator(HTML5Translator):
         self.rst_terms['section'] = ['slide', 'visit_section', 'depart_section']  # [0] might be replaced later
         self.rst_terms['slide_contents'] = ('section', 'default_visit', 'default_departure')
         self.rst_terms['title'] = (None, 'visit_title', 'depart_title')  # flatten titles
+        self.rst_terms['presentation'] = (None, 'visit_presentation', None)
         HTML5Translator.__init__(self, *args)
         self._reset()
         settings = self.document.settings
         if settings.distribution:
-            self.visit_field_distribution(settings.distribution)
+            self._get_distribution(settings.distribution)
         if settings.deck_selector:
-            self.visit_field_deck_selector(settings.deck_selector)
+            self._get_deck_selector(settings.deck_selector)
         if settings.slide_selector:
-            self.visit_field_slide_selector(settings.slide_selector)
+            self._get_slide_selector(settings.slide_selector)
+        if settings.increment:
+            self._get_increment(settings.increment)
         return
 
     def _compacted_paragraph(self, node):
@@ -284,7 +331,18 @@ class SlideTranslator(HTML5Translator):
         self.visit_field_class(value)
         return
 
-    def visit_field_deck_selector(self, value):
+    def visit_presentation(self, node):
+        if 'distribution' in node:
+            self._get_distribution(node['distribution'])
+        if 'deck_selector' in node:
+            self._get_deck_selector(node['deck_selector'])
+        if 'slide_selector' in node:
+            self._get_slide_selector(node['slide_selector'])
+        if 'increment' in node:
+            self._get_increment(node['increment'])
+        raise nodes.SkipNode
+
+    def _get_deck_selector(self, value):
         tag_name = self.tag_name_re.findall(value)
         id = self.id_re.findall(value)
         class_ = self.class_re.findall(value)
@@ -296,7 +354,7 @@ class SlideTranslator(HTML5Translator):
             self.deck_selector['class'] = class_[0]
         return
 
-    def visit_field_slide_selector(self, value):
+    def _get_slide_selector(self, value):
         tag_name = self.tag_name_re.findall(value)
         class_ = self.class_re.findall(value)
         if tag_name:
@@ -305,21 +363,21 @@ class SlideTranslator(HTML5Translator):
             self.slide_selector['class'] = class_[0]
         return
 
-    def visit_field_incr_x(self, value):
-        self.incr_x = int(value)
+    def _get_increment(self, value):
+        value = value.split()
+        self.distribution['incr_x'] = int(value[0])
+        self.distribution['incr_y'] = int(value[1]) if len(value) > 1 else self.distribution['incr_x']
         return
 
-    def visit_field_incr_y(self, value):
-        self.incr_y = int(value)
-        return
-
-    def visit_field_distribution(self, field_value):
+    def _get_distribution(self, field_value):
         self._distribute_slides()
         values = field_value.split()
         # distribution function names must end with '_distribution'
         self.distribution['func'] = getattr(self, values[0] + '_distribution', None)
         if len(values) > 1:
             self.distribution['parameter'] = int(values[1])
+        elif 'parameter' in self.distribution:
+            del self.distribution['parameter']
         return
 
     def _distribute_slides(self):
