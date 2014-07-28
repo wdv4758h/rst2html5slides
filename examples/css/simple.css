@@ -1,0 +1,21 @@
+ul {
+    list-style: disc
+}
+
+ol {
+    list-style: decimal
+}
+
+h1, h2 {
+    font-weight: bold;
+}
+
+h2 {
+    font-size: smaller;
+    color: #765;
+}
+
+header {
+    margin-bottom: 1em;
+    border-bottom: 1px solid black;
+}

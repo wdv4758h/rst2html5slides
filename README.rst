@@ -21,6 +21,12 @@ Options:
                         Options are "linear", "grid" or "grid-rotate". An
                         additional parameter can be specified along with the
                         name such as in "grid_rotate  3".
+--increment=<increment>
+                        Specify the value of the increment used by the
+                        distribution functions. To specify different values
+                        for X and Y increments, separate them by space.
+                        Example "1000 500". Default value is 1600 for X and Y
+                        increments.
 --manual-slide-id       Disable slide automatic identification based on title.
 --deck-selector=<deck_selector>
                         Specify the tag, id and/or class to replace the

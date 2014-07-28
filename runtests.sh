@@ -1,6 +1,6 @@
 #!/bin/bash
-# to keep current virtualenv, use
-# ./runtests.sh keep-env
+# to create a new virtualenv during tests, use
+# ./runtests.sh new-env
 
 PACKAGE='rst2html5slides'
 

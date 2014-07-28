@@ -64,7 +64,7 @@ release = '1.0'
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
-exclude_patterns = ['_build']
+exclude_patterns = ['_build', 'incomplete']
 
 # The reST default role (used for this markup: `text`) to use for all documents.
 #default_role = None
@@ -120,7 +120,7 @@ html_theme = 'default'
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+html_static_path = []
 
 # If not '', a 'Last updated on:' timestamp is inserted at every page bottom,
 # using the given strftime format.
@@ -240,3 +240,17 @@ texinfo_documents = [
 
 # How to display URL addresses: 'footnote', 'no', or 'inline'.
 #texinfo_show_urls = 'footnote'
+
+rst_epilog = '''
+
+.. _rst2html5: https://pypi.python.org/pypi/rst2html5
+.. _impress.js: http://github.com/bartaz/impress.js
+.. _jmpress.js: http://jmpressjs.github.io/jmpress.js/
+.. _deck.js: http://imakewebthings.com/deck.js/
+.. _python-impress: https://github.com/gawel/impress/
+.. _Hieroglyph: https://github.com/nyergler/hieroglyph
+.. _Hovercraft: https://pypi.python.org/pypi/hovercraft/
+.. _reStructuredText: http://docutils.sourceforge.net/rst.html
+.. _Sphinx: http://sphinx-doc.org/
+.. _Google HTML5 slides template: https://code.google.com/p/io-2012-slides/
+'''
