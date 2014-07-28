@@ -38,8 +38,8 @@ class Presentation(Directive):
 
     option_spec = {
         'distribution': directives.unchanged,
-        'deck_selector': directives.unchanged,
-        'slide_selector': directives.unchanged,
+        'deck-selector': directives.unchanged,
+        'slide-selector': directives.unchanged,
         'increment': directives.unchanged,
     }
 
@@ -334,10 +334,10 @@ class SlideTranslator(HTML5Translator):
     def visit_presentation(self, node):
         if 'distribution' in node:
             self._get_distribution(node['distribution'])
-        if 'deck_selector' in node:
-            self._get_deck_selector(node['deck_selector'])
-        if 'slide_selector' in node:
-            self._get_slide_selector(node['slide_selector'])
+        if 'deck-selector' in node:
+            self._get_deck_selector(node['deck-selector'])
+        if 'slide-selector' in node:
+            self._get_slide_selector(node['slide-selector'])
         if 'increment' in node:
             self._get_increment(node['increment'])
         raise nodes.SkipNode

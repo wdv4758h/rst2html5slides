@@ -226,7 +226,7 @@ Title 2
 slide_with_no_title_class = {
     'rst': '''
 .. presentation::
-    :slide_selector: .step
+    :slide-selector: .step
 
 :class: test
 
@@ -1154,10 +1154,7 @@ grid_rotate = {
 ''',
 }
 
-change_distribution_linear = {
-    'rst': '''
-.. presentation::
-    :distribution: linear
+_change_distribution = '''
 
 slide 1
 
@@ -1174,7 +1171,15 @@ slide 2
 
 slide 3
 
-''',
+----
+
+slide 4'''
+
+
+change_distribution_linear = {
+    'rst': '''
+.. presentation::
+    :distribution: linear''' + _change_distribution,
     'part': 'body',
     'out': '''
 <deck>
@@ -1187,6 +1192,9 @@ slide 3
     <slide data-y="-1000" data-x="-400" data-rotate-z="45" data-scale="-3">
         <section>slide 3</section>
     </slide>
+    <slide data-y="-1000" data-x="1200" data-rotate-z="45" data-scale="-3">
+        <section>slide 4</section>
+    </slide>
 </deck>
 ''',
 }
@@ -1195,27 +1203,7 @@ slide 3
 change_distribution_grid = {
     'rst': '''
 .. presentation::
-    :distribution: grid 2
-
-slide 1
-
-:data-x: -2000
-:data-y: -1000
-:data-scale: -3
-:data-rotate-z: 45
-
-----
-
-slide 2
-
-----
-
-slide 3
-
-----
-
-slide 4
-''',
+    :distribution: grid 2''' + _change_distribution,
     'part': 'body',
     'out': '''
 <deck>
@@ -1234,6 +1222,32 @@ slide 4
 </deck>
 ''',
 }
+
+
+change_distribution_grid_rotate = {
+    'rst': '''
+.. presentation::
+    :distribution: grid_rotate 2
+    :increment: -800 -750''' + _change_distribution,
+    'part': 'body',
+    'out': '''
+<deck>
+    <slide data-x="0" data-rotate-z="0">
+        <section>slide 1</section>
+    </slide>
+    <slide data-y="-1000" data-x="-2000" data-rotate-z="45" data-scale="-3">
+        <section>slide 2</section>
+    </slide>
+    <slide data-y="-1000" data-x="-2800" data-rotate-z="45" data-scale="-3">
+        <section>slide 3</section>
+    </slide>
+    <slide data-y="-1750" data-x="-2800" data-rotate-z="224.9" data-scale="-3">
+        <section>slide 4</section>
+    </slide>
+</deck>
+''',
+}
+
 
 change_distribution_func = {
     'rst': '''
@@ -1286,8 +1300,8 @@ slide 5
 change_deck_slide_selectors_in_the_middle  = {
     'rst': '''
 .. presentation::
-    :deck_selector: div.deck_container
-    :slide_selector: article.slide
+    :deck-selector: div.deck_container
+    :slide-selector: article.slide
 
 the tag of this slide is <article class="slide">
 
@@ -1296,8 +1310,8 @@ the tag of this slide is <article class="slide">
 idem
 
 .. presentation::
-    :deck_selector: deck#impress
-    :slide_selector: div.step
+    :deck-selector: deck#impress
+    :slide-selector: div.step
 
 ----
 
@@ -1321,8 +1335,8 @@ The tag here is supposed to be <div class="step">''',
 deck_slide_selectors = {
     'rst': '''
 .. presentation::
-    :deck_selector: div.deck-container
-    :slide_selector: article.slide
+    :deck-selector: div.deck-container
+    :slide-selector: article.slide
 
 :id: opening
 :class: cover
@@ -1477,8 +1491,8 @@ case_1 = {
     :viewport: width=device-width, maximum-scale=1.0, initial-scale=1.0, user-scalable=yes
 
 .. presentation::
-    :deck_selector: div#impress
-    :slide_selector: div.step
+    :deck-selector: div#impress
+    :slide-selector: div.step
 
 Title
 =====
@@ -1524,7 +1538,7 @@ case_1_pseudoxml = {
     'out': '''<document source="<string>">
     <meta content="chrome=1:" http-equiv="X-UA-Compatible">
     <meta content="width=device-width, maximum-scale=1.0, initial-scale=1.0, user-scalable=yes" name="viewport">
-    <presentation deck_selector="div#impress" slide_selector="div.step">
+    <presentation deck-selector="div#impress" slide-selector="div.step">
     <section ids="title" names="title">
         <header>
             <title>
@@ -1721,8 +1735,8 @@ presentation_directive_1 = {
     'rst': '''
 .. presentation::
     :distribution: grid_rotate 2
-    :deck_selector: div#impress
-    :slide_selector: div.slide
+    :deck-selector: div#impress
+    :slide-selector: div.slide
     :increment: 1000 800
 
 slide 1
@@ -1758,8 +1772,8 @@ presentation_directive_1_doctree = {
     'part': 'pseudoxml',
     'manual_slide_identification': True,
     'out': '''<document source="<string>">
-    <presentation deck_selector="div#impress" distribution="grid_rotate 2" \
-increment="1000 800" slide_selector="div.slide">
+    <presentation deck-selector="div#impress" distribution="grid_rotate 2" \
+increment="1000 800" slide-selector="div.slide">
     <section>
         <slide_contents>
             <paragraph>
@@ -1780,7 +1794,7 @@ presentation_directive_single_slide = {
     'rst': '''
 .. presentation::
     :distribution: linear
-    :deck_selector: div#impress
+    :deck-selector: div#impress
 
 single slide
 ''',
@@ -1801,7 +1815,7 @@ presentation_directive_single_slide_pseudoxml = {
     'part': 'pseudoxml',
     'manual_slide_identification': True,
     'out': '''<document source="<string>">
-    <presentation deck_selector="div#impress" distribution="linear">
+    <presentation deck-selector="div#impress" distribution="linear">
     <section>
         <slide_contents>
             <paragraph>
