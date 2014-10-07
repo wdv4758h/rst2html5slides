@@ -4,7 +4,6 @@
 from __future__ import unicode_literals
 
 import os
-import sys
 import unittest
 
 from rst2html5slides import SlideWriter
@@ -47,7 +46,7 @@ def extract_variables(module):
 def test():
     # do not use docstrings
     # see http://code.google.com/p/python-nose/issues/detail?id=244#c1
-    import cases
+    from . import cases
     for test_name, case in extract_variables(cases):
         func = partial(check_part)
         func.description = test_name

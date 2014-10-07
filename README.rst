@@ -42,9 +42,9 @@ Options:
 
 .. tip::
 
-    Other options inherited from rst2html5_ like :literal:`--stylesheet`, :literal:`--script`, :literal:`--script-defer`
-    and :literal:`--template` are particularly important to make the rst presentation fit
-    the chosen presentation framework.
+    Other options inherited from rst2html5_ like :literal:`--stylesheet`, :literal:`--script`,
+    :literal:`--script-defer` and :literal:`--template`
+    are particularly important to make the rst presentation fit the chosen presentation framework.
 
 
 Features
@@ -91,7 +91,7 @@ Example
 
 
 rst2html5slides doesn't provide any specific web presentation framework files.
-You must already have them in place and use rst2html5slides to fill in the presentation contents.
+You must already have them in place and use rst2html5slides to fill in presentation contents.
 The simplest way is passing a template as parameter.
 :literal:`jmpress_template.html`:
 
@@ -198,7 +198,7 @@ rst2html5slides command:
 Documentation
 =============
 
-Full documentation is available at readthedocs.org and also in the documentation subdirectory.
+Full documentation is available at readthedocs.org and also in the :literal:`doc` subdirectory.
 
 
 Source

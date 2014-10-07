@@ -2,6 +2,7 @@ import micawber
 from docutils import nodes
 from docutils.parsers.rst import Directive, directives
 
+
 class Media(Directive):
     """
     Restructured text extension for inserting any sort of media using micawber

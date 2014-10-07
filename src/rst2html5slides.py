@@ -5,22 +5,21 @@
 
 from __future__ import unicode_literals
 
+import re
+from collections import OrderedDict
+
+from docutils import nodes
+from docutils.parsers.rst import Directive, directives
+from docutils.parsers.rst.directives.html import MetaBody as Meta
+from docutils.transforms import Transform
+from genshi.builder import Element, tag
+from rst2html5 import HTML5Translator, HTML5Writer
+
 """
 Translates a restructuredText document to a HTML5 slideshow
 """
 
 __docformat__ = 'reStructuredText'
-
-from docutils import nodes
-from docutils.core import publish_from_doctree
-from docutils.transforms import Transform
-from docutils.parsers.rst import Directive, directives
-from docutils.parsers.rst.directives.html import MetaBody as Meta
-from genshi.builder import tag, Element
-from rst2html5 import HTML5Writer, HTML5Translator
-
-import re
-import media
 
 
 class presentation(nodes.Element):
@@ -197,7 +196,7 @@ class SlideWriter(HTML5Writer):
     def translate(self):
         self.parts['pseudoxml'] = self.document.pformat()  # get pseudoxml before HTML5.translate
         self.document.reporter.debug('%s pseudoxml:\n %s' %
-            (self.__class__.__name__, self.parts['pseudoxml']))
+                                     (self.__class__.__name__, self.parts['pseudoxml']))
         HTML5Writer.translate(self)
 
     def get_transforms(self):
@@ -233,7 +232,7 @@ class SlideTranslator(HTML5Translator):
         a single node followed by a single field list should also be compacted
         '''
         field_list_sibling = len([n for n in node.parent
-            if not isinstance(n, (nodes.field_list))]) == 1
+                                 if not isinstance(n, (nodes.field_list))]) == 1
         return not node['classes'] and \
             (HTML5Translator._compacted_paragraph(self, node) or field_list_sibling)
 
@@ -246,7 +245,8 @@ class SlideTranslator(HTML5Translator):
         if not self.distribution['func']:
             # (Only) slide data-* attributes are cumulative
             # otherwise impress.js defaults data-x,y,z to 0, data-scale to 1 etc.
-            for key in self.slide_attributes.keys():
+            keys = list(self.slide_attributes.keys())
+            for key in keys:
                 if not key.startswith('data-'):
                     del self.slide_attributes[key]
         else:  # does not accumulate any slide attributes
@@ -290,19 +290,18 @@ class SlideTranslator(HTML5Translator):
     def depart_document(self, node):
         self._distribute_slides()
         if len(self.context.stack[0]):
-            deck = getattr(tag, self.deck_selector['tag'])(
-                    *self.context.stack[0],
-                    id=self.deck_selector.get('id', None),
-                    class_=self.deck_selector.get('class', None)
-            )
+            deck = getattr(tag, self.deck_selector['tag'])(*self.context.stack[0])
+            self._ordered_tag_attributes(deck,
+                                         OrderedDict([('class', self.deck_selector.get('class', None)),
+                                                      ('id', self.deck_selector.get('id', None))]))
             self.context.stack = ['\n', deck, '\n']
         # _reset is necessary to run the several test cases
         self._reset()
         return
 
     def _reset(self):
-        self.deck_selector = {'tag':'deck'}
-        self.slide_selector = {'tag':'slide'}
+        self.deck_selector = {'tag': 'deck'}
+        self.slide_selector = {'tag': 'slide'}
         self.slide_attributes = {}
         self.distribution = {
             'func': None,
@@ -390,6 +389,7 @@ class SlideTranslator(HTML5Translator):
         initial_pos = self.distribution['visited']
         slides = (elem for item in self.context.stack[0][initial_pos::] for elem in item if isinstance(elem, Element))
         self.distribution['visited'] = len(self.context.stack[0])
+
         def enumerate_slides(slides):
             index = 0
             for slide in slides:
@@ -416,7 +416,7 @@ class SlideTranslator(HTML5Translator):
             except ValueError:
                 return value
 
-        return {q[0].localname: convert(q[1]) for q in slide.attrib \
+        return {q[0].localname: convert(q[1]) for q in slide.attrib
                 if q[0].localname.startswith('data-')}
 
     def linear_distribution(self, enumerated_slides):
@@ -427,7 +427,7 @@ class SlideTranslator(HTML5Translator):
         data_attributes.setdefault('data-x', 0)
         incr_x = self.distribution['incr_x']
         for index, slide in enumerated_slides:
-            slide(**data_attributes)
+            self._ordered_tag_attributes(slide, OrderedDict(sorted(data_attributes.items())))
             data_attributes['data-x'] += incr_x
         return
 
@@ -450,7 +450,7 @@ class SlideTranslator(HTML5Translator):
             elif index % line_length == 0:  # break line
                 data_attributes['data-x'] = x_ref
                 data_attributes['data-y'] = data_attributes.setdefault('data-y', 0) + incr_y
-            slide(**data_attributes)
+            self._ordered_tag_attributes(slide, OrderedDict(sorted(data_attributes.items())))
             data_attributes['data-x'] += incr_x
         return
 
@@ -464,7 +464,7 @@ class SlideTranslator(HTML5Translator):
         incr_y = self.distribution['incr_y']
         for index, slide in enumerated_slides:
             if index == 0:
-                x_ref = data_attributes.setdefault('data-x', 0)
+                data_attributes.setdefault('data-x', 0)
                 # jmpress doesn't rotate clockwise when it is 180
                 rotate_z_ref = data_attributes.setdefault('data-rotate-z', 0) + 179.9
             elif index % line_length == 0:
@@ -473,7 +473,7 @@ class SlideTranslator(HTML5Translator):
                 incr_x = -incr_x
                 data_attributes['data-rotate-z'] = rotate_z_ref \
                     if data_attributes['data-rotate-z'] != rotate_z_ref else (rotate_z_ref - 179.9)
-            slide(**data_attributes)
+            self._ordered_tag_attributes(slide, OrderedDict(sorted(data_attributes.items())))
             data_attributes['data-x'] += incr_x
 
 

@@ -17,3 +17,5 @@ build
 metrics
 .coverage
 **/*.html
+.tox
+*.egg

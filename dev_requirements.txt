@@ -1,0 +1,4 @@
+nose
+tox
+bumpversion
+isort

@@ -251,7 +251,9 @@ the class directive works from the second slide onward
     'out': '''
 <deck>
     <slide class="test step">
-        <section>first slide, no title. The class directive doesn't work here. You must use <code>:class:</code> or <code>:classes:</code> to set up the class of this slide. Those are workarounds. No other solution at the time being.</section>
+        <section>first slide, no title. The class directive doesn't work here. You must use \
+<code>:class:</code> or <code>:classes:</code> to set up the class of this slide. \
+Those are workarounds. No other solution at the time being.</section>
     </slide>
     <slide class="hint step">
         <section>the class directive works from the second slide onward</section>
@@ -576,7 +578,7 @@ h2_doctree = {
 }
 
 # rst2html5slides doesn't allow three different heading levels at the same slide
-h3 =  {
+h3 = {
     'rst': '''There can't be three title levels at the first slide
 because the first two are interpreted as document title / subtitle.
 See http://docutils.sourceforge.net/docs/user/rst/quickstart.html#document-title-subtitle
@@ -620,7 +622,7 @@ http://docutils.sourceforge.net/docs/user/rst/quickstart.html#document-title-sub
 }
 
 
-h3_doctree =  {
+h3_doctree = {
     'rst': h3['rst'],
     'out': '''<document source="<string>">
     <section>
@@ -961,7 +963,7 @@ presentation_attributes_via_command_parameters = {
     'increment': '1000 800',
     'out': '''
 <div class="impress-not-supported" id="impress">
-    <div class="step" data-x="0" data-rotate-z="0">
+    <div class="step" data-rotate-z="0" data-x="0">
         <header>
             <h1>Title 1</h1>
         </header>
@@ -971,7 +973,7 @@ presentation_attributes_via_command_parameters = {
             </ul>
         </section>
     </div>
-    <div class="step" data-x="1000" data-rotate-z="0">
+    <div class="step" data-rotate-z="0" data-x="1000">
         <header>
             <h1>Title 2</h1>
         </header>
@@ -981,7 +983,7 @@ presentation_attributes_via_command_parameters = {
             </ul>
         </section>
     </div>
-    <div class="step" data-y="800" data-x="1000" data-rotate-z="179.9">
+    <div class="step" data-rotate-z="179.9" data-x="1000" data-y="800">
         <header>
             <h1>Title 3</h1>
         </header>
@@ -991,7 +993,7 @@ presentation_attributes_via_command_parameters = {
             </ul>
         </section>
     </div>
-    <div class="step" data-y="800" data-x="0" data-rotate-z="179.9">
+    <div class="step" data-rotate-z="179.9" data-x="0" data-y="800">
         <header>
             <h1>Title 4</h1>
         </header>
@@ -1001,7 +1003,7 @@ presentation_attributes_via_command_parameters = {
             </ul>
         </section>
     </div>
-    <div class="step" data-y="1600" data-x="0" data-rotate-z="0.0">
+    <div class="step" data-rotate-z="0.0" data-x="0" data-y="1600">
         <header>
             <h1>Title 5</h1>
         </header>
@@ -1046,7 +1048,7 @@ grid = {
             </ul>
         </section>
     </slide>
-    <slide data-y="1600" data-x="0">
+    <slide data-x="0" data-y="1600">
         <header>
             <h1>Title 3</h1>
         </header>
@@ -1056,7 +1058,7 @@ grid = {
             </ul>
         </section>
     </slide>
-    <slide data-y="1600" data-x="1600">
+    <slide data-x="1600" data-y="1600">
         <header>
             <h1>Title 4</h1>
         </header>
@@ -1066,7 +1068,7 @@ grid = {
             </ul>
         </section>
     </slide>
-    <slide data-y="3200" data-x="0">
+    <slide data-x="0" data-y="3200">
         <header>
             <h1>Title 5</h1>
         </header>
@@ -1100,7 +1102,7 @@ grid_rotate = {
     'manual_slide_identification': True,
     'out': '''
 <deck>
-    <slide data-x="0" data-rotate-z="0">
+    <slide data-rotate-z="0" data-x="0">
         <header>
             <h1>Title 1</h1>
         </header>
@@ -1110,7 +1112,7 @@ grid_rotate = {
             </ul>
         </section>
     </slide>
-    <slide data-x="1600" data-rotate-z="0">
+    <slide data-rotate-z="0" data-x="1600">
         <header>
             <h1>Title 2</h1>
         </header>
@@ -1120,7 +1122,7 @@ grid_rotate = {
             </ul>
         </section>
     </slide>
-    <slide data-y="1600" data-x="1600" data-rotate-z="179.9">
+    <slide data-rotate-z="179.9" data-x="1600" data-y="1600">
         <header>
             <h1>Title 3</h1>
         </header>
@@ -1130,7 +1132,7 @@ grid_rotate = {
             </ul>
         </section>
     </slide>
-    <slide data-y="1600" data-x="0" data-rotate-z="179.9">
+    <slide data-rotate-z="179.9" data-x="0" data-y="1600">
         <header>
             <h1>Title 4</h1>
         </header>
@@ -1140,7 +1142,7 @@ grid_rotate = {
             </ul>
         </section>
     </slide>
-    <slide data-y="3200" data-x="0" data-rotate-z="0.0">
+    <slide data-rotate-z="0.0" data-x="0" data-y="3200">
         <header>
             <h1>Title 5</h1>
         </header>
@@ -1186,13 +1188,13 @@ change_distribution_linear = {
     <slide data-x="0">
         <section>slide 1</section>
     </slide>
-    <slide data-y="-1000" data-x="-2000" data-rotate-z="45" data-scale="-3">
+    <slide data-rotate-z="45" data-scale="-3" data-x="-2000" data-y="-1000">
         <section>slide 2</section>
     </slide>
-    <slide data-y="-1000" data-x="-400" data-rotate-z="45" data-scale="-3">
+    <slide data-rotate-z="45" data-scale="-3" data-x="-400" data-y="-1000">
         <section>slide 3</section>
     </slide>
-    <slide data-y="-1000" data-x="1200" data-rotate-z="45" data-scale="-3">
+    <slide data-rotate-z="45" data-scale="-3" data-x="1200" data-y="-1000">
         <section>slide 4</section>
     </slide>
 </deck>
@@ -1210,13 +1212,13 @@ change_distribution_grid = {
     <slide data-x="0">
         <section>slide 1</section>
     </slide>
-    <slide data-y="-1000" data-x="-2000" data-rotate-z="45" data-scale="-3">
+    <slide data-rotate-z="45" data-scale="-3" data-x="-2000" data-y="-1000">
         <section>slide 2</section>
     </slide>
-    <slide data-y="-1000" data-x="-400" data-rotate-z="45" data-scale="-3">
+    <slide data-rotate-z="45" data-scale="-3" data-x="-400" data-y="-1000">
         <section>slide 3</section>
     </slide>
-    <slide data-y="600" data-x="-2000" data-rotate-z="45" data-scale="-3">
+    <slide data-rotate-z="45" data-scale="-3" data-x="-2000" data-y="600">
         <section>slide 4</section>
     </slide>
 </deck>
@@ -1232,16 +1234,16 @@ change_distribution_grid_rotate = {
     'part': 'body',
     'out': '''
 <deck>
-    <slide data-x="0" data-rotate-z="0">
+    <slide data-rotate-z="0" data-x="0">
         <section>slide 1</section>
     </slide>
-    <slide data-y="-1000" data-x="-2000" data-rotate-z="45" data-scale="-3">
+    <slide data-rotate-z="45" data-scale="-3" data-x="-2000" data-y="-1000">
         <section>slide 2</section>
     </slide>
-    <slide data-y="-1000" data-x="-2800" data-rotate-z="45" data-scale="-3">
+    <slide data-rotate-z="45" data-scale="-3" data-x="-2800" data-y="-1000">
         <section>slide 3</section>
     </slide>
-    <slide data-y="-1750" data-x="-2800" data-rotate-z="224.9" data-scale="-3">
+    <slide data-rotate-z="224.9" data-scale="-3" data-x="-2800" data-y="-1750">
         <section>slide 4</section>
     </slide>
 </deck>
@@ -1287,17 +1289,17 @@ slide 5
     <slide data-x="3200">
         <section>slide 3</section>
     </slide>
-    <slide data-y="1600" data-x="3200">
+    <slide data-x="3200" data-y="1600">
         <section>slide 4</section>
     </slide>
-    <slide data-y="3200" data-x="3200">
+    <slide data-x="3200" data-y="3200">
         <section>slide 5</section>
     </slide>
 </deck>
 ''',
 }
 
-change_deck_slide_selectors_in_the_middle  = {
+change_deck_slide_selectors_in_the_middle = {
     'rst': '''
 .. presentation::
     :deck-selector: div.deck_container
@@ -1374,10 +1376,10 @@ Title 3
     'part': 'body',
     'out': '''
 <div class="deck-container">
-    <article data-y="-500" data-x="-1000" class="cover slide" id="opening" data-scale="5">
+    <article class="cover slide" data-scale="5" data-x="-1000" data-y="-500" id="opening">
         <section>Welcome</section>
     </article>
-    <article class="slide" data-y="-500" data-x="-1000" data-rotate-x="180" data-scale="5" \
+    <article class="slide" data-rotate-x="180" data-scale="5" data-x="-1000" data-y="-500" \
 id="title-1">
         <header>
             <h1>Title 1</h1>
@@ -1388,16 +1390,16 @@ id="title-1">
             </ul>
         </section>
     </article>
-    <article data-scale="7" data-y="-1500" data-x="-1000" data-rotate-z="180" data-rotate-x="180" \
-class="slide">
+    <article class="slide" data-rotate-x="180" data-rotate-z="180" data-scale="7" data-x="-1000" \
+data-y="-1500">
         <section>
             <ul>
                 <li>Bullet</li>
             </ul>
         </section>
     </article>
-    <article data-scale="7" data-y="-1500" data-x="0" data-rotate-z="180" data-rotate-x="0" \
-id="title-3" class="slide">
+    <article class="slide" data-rotate-x="0" data-rotate-z="180" data-scale="7" data-x="0" \
+data-y="-1500" id="title-3">
         <header>
             <h1>Title 3</h1>
         </header>
@@ -1753,13 +1755,13 @@ slide 3
     'manual_slide_identification': True,
     'out': '''
 <div id="impress">
-    <div class="slide" data-x="0" data-rotate-z="0">
+    <div class="slide" data-rotate-z="0" data-x="0">
         <section>slide 1</section>
     </div>
-    <div class="slide" data-x="1000" data-rotate-z="0">
+    <div class="slide" data-rotate-z="0" data-x="1000">
         <section>slide 2</section>
     </div>
-    <div class="slide" data-y="800" data-x="1000" data-rotate-z="179.9">
+    <div class="slide" data-rotate-z="179.9" data-x="1000" data-y="800">
         <section>slide 3</section>
     </div>
 </div>
