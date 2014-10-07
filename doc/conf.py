@@ -64,7 +64,7 @@ release = '1.0'
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
-exclude_patterns = ['_build', 'incomplete']
+exclude_patterns = ['_build', 'incomplete', 'examples']
 
 # The reST default role (used for this markup: `text`) to use for all documents.
 #default_role = None
@@ -120,7 +120,8 @@ html_theme = 'default'
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = []
+html_static_path = ['examples']
+html_extra_path = ['include']
 
 # If not '', a 'Last updated on:' timestamp is inserted at every page bottom,
 # using the given strftime format.

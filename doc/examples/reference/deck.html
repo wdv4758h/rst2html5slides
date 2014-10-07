@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js ie6" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!-->  <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>Getting Started with deck.js (using rst2html5slides)</title>
+    <meta charset="utf-8" />
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="description" content="A jQuery library for modern HTML presentations">
+    <meta name="author" content="Caleb Troughton">
+    <meta name="viewport" content="width=1024, user-scalable=no">
+
+    <!-- Core and extension CSS files -->
+    <link rel="stylesheet" media="screen" href="core/deck.core.css">
+    <link rel="stylesheet" media="screen" href="extensions/goto/deck.goto.css">
+    <link rel="stylesheet" media="screen" href="extensions/menu/deck.menu.css">
+    <link rel="stylesheet" media="screen" href="extensions/navigation/deck.navigation.css">
+    <link rel="stylesheet" media="screen" href="extensions/status/deck.status.css">
+    <link rel="stylesheet" media="screen" href="extensions/scale/deck.scale.css">
+
+    <!-- Style theme. More available in /themes/style/ or create your own. -->
+    <link id="style-theme-link" rel="stylesheet" media="screen" href="themes/style/web-2.0.css">
+
+    <!-- Transition theme. More available in /themes/transition/ or create your own. -->
+    <link id="transition-theme-link" rel="stylesheet" media="screen" href="themes/transition/horizontal-slide.css">
+
+    <!-- Basic black and white print styles -->
+    <link rel="stylesheet" media="print" href="core/print.css">
+
+    <script src="modernizr.custom.js"></script>
+</head>
+<body>
+<deck>
+    <slide id="title-slide">
+        <header>
+            <h1>Getting Started with deck.js</h1>
+        </header>
+        <section></section>
+    </slide>
+    <slide id="how-to-overview">
+        <header>
+            <h1>How to Make a Deck</h1>
+        </header>
+        <section>
+            <ol type="1">
+                <li>
+                    <p><strong>Write Slides</strong>.</p>
+                    <p>Slide content is simple HTML.</p>
+                </li>
+                <li>
+                    <p><strong>Choose Themes</strong></p>
+                    <p>One for slide styles and one for deck&amp;nbsp;transitions.</p>
+                </li>
+                <li>
+                    <p><strong>Include Extensions</strong></p>
+                    <p>Add extra functionality to your deck, or leave it stripped&amp;nbsp;down.</p>
+                </li>
+            </ol>
+        </section>
+    </slide>
+    <slide id="quick-start">
+        <header>
+            <h1>Quick Start</h1>
+        </header>
+        <section>When you <a href="https://github.com/imakewebthings/deck.js/archive/latest.zip">download</a> deck.js, it will include a file named <code>boilerplate.html</code>. You can immediately start editing slides in this page and viewing them in your web browser. Later on, when you are comfortable customizing the deck, you can edit the various pieces of the boilerplate or make your own to suit your needs.</section>
+    </slide>
+    <slide id="markup">
+        <header>
+            <h1>The Markup</h1>
+        </header>
+        <section>
+            <p>Slides are just HTML elements with a class of <code>slide</code>.</p>
+            <pre><code class="html"><span class="nt">&lt;section</span> <span class="na">class=</span><span class="s">"slide"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;h1&gt;</span>How to Make a Deck<span class="nt">&lt;/h1&gt;</span>
+  <span class="nt">&lt;ol&gt;</span>
+    <span class="nt">&lt;li&gt;</span>
+      <span class="nt">&lt;h3&gt;</span>Write Slides<span class="nt">&lt;/h3&gt;</span>
+      <span class="nt">&lt;p&gt;</span>Slide content is simple HTML.<span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;/li&gt;</span>
+    <span class="nt">&lt;li&gt;</span>
+      <span class="nt">&lt;h3&gt;</span>Choose Themes<span class="nt">&lt;/h3&gt;</span>
+      <span class="nt">&lt;p&gt;</span>One for slide styles and one for deck transitions.<span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;/li&gt;</span>
+    …
+  <span class="nt">&lt;/ol&gt;</span>
+<span class="nt">&lt;/section&gt;</span></code></pre>
+        </section>
+    </slide>
+    <slide id="themes">
+        <header>
+            <h1>Style Themes</h1>
+        </header>
+        <section>
+            <p>Customizes the colors, typography, and layout of slide content.</p>
+            <pre><code class="html"><span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">"stylesheet"</span> <span class="na">href=</span><span class="s">"/path/to/css/style-theme.css"</span><span class="nt">&gt;</span></code></pre>
+        </section>
+    </slide>
+    <slide>
+        <header>
+            <h1>Transition Themes</h1>
+        </header>
+        <section>
+            <p>Defines transitions between slides using CSS3 transitions. Less capable browsers fall back to cutaways. But <strong>you</strong> aren't using <em>those</em> browsers to give your presentations, are you...</p>
+            <pre><code class="html"><span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">"stylesheet"</span> <span class="na">href=</span><span class="s">"/path/to/css/transition-theme.css"</span><span class="nt">&gt;</span></code></pre>
+        </section>
+    </slide>
+    <slide id="extensions">
+        <header>
+            <h1>Extensions</h1>
+        </header>
+        <section>
+            <p>Core gives you basic slide functionality with left and right arrow navigation, but you may want more. Here are the ones included in this deck:</p>
+            <ul>
+                <li><strong>deck.goto</strong>: Adds a shortcut key to jump to any slide number. Hit g, type in the slide number, and hit enter.</li>
+                <li><strong>deck.menu</strong>: Adds a menu view, letting you see all slides in a grid. Hit m to toggle to menu view, continue navigating your deck, and hit m to return to normal view. Touch devices can double-tap the deck to switch between views.</li>
+                <li><strong>deck.navigation</strong>: Adds clickable left and right buttons for the less keyboard inclined.</li>
+                <li><strong>deck.status</strong>: Adds a page number indicator. (current/total)</li>
+                <li><strong>deck.scale</strong>: Scales each slide to fit within the deck container using CSS Transforms for those browsers that support them.</li>
+            </ul>
+            <p class="slide">Each extension folder in the download package contains the necessary JavaScript, CSS, and HTML files. For a complete list of extension modules included in deck.js, check out the <a href="http://imakewebthings.github.com/deck.js/docs">documentation</a></p>
+        </section>
+    </slide>
+    <slide id="elements-videos">
+        <header>
+            <h1>Other Elements: Video Embeds</h1>
+        </header>
+        <section>
+            <p>Embed videos from your favorite online video service or with an HTML5 video element.</p>
+            <iframe width="459" height="344" src="http://www.youtube.com/embed/cEh5cLqxgpA?feature=oembed" frameborder="0" allowfullscreen></iframe>
+            <pre><code class="rst"><span class="p">..</span> <span class="ow">media</span><span class="p">::</span> http://player.vimeo.com/video/1063136?title=0&amp;amp;byline=0&amp;amp;portrait=0</code></pre>
+        </section>
+    </slide>
+    <slide id="digging-deeper">
+        <header>
+            <h1>Digging Deeper</h1>
+        </header>
+        <section>If you want to learn about making your own themes, extending deck.js, and more, check out the <a href="http://imakewebthings.github.com/deck.js/docs">documentation</a>.</section>
+    </slide>
+</deck>
+
+
+<!-- deck.navigation snippet -->
+<div aria-role="navigation">
+    <a href="#" class="deck-prev-link" title="Previous">&#8592;</a>
+    <a href="#" class="deck-next-link" title="Next">&#8594;</a>
+</div>
+
+<!-- deck.status snippet -->
+<p class="deck-status" aria-role="status">
+    <span class="deck-status-current"></span>
+    /
+    <span class="deck-status-total"></span>
+</p>
+
+<!-- deck.goto snippet -->
+<form action="." method="get" class="goto-form">
+    <label for="goto-slide">Go to slide:</label>
+    <input type="text" name="slidenum" id="goto-slide" list="goto-datalist">
+    <datalist id="goto-datalist"></datalist>
+    <input type="submit" value="Go">
+</form>
+
+<script src="jquery.min.js"></script>
+
+<!-- Deck Core and extensions -->
+<script src="core/deck.core.js"></script>
+<script src="extensions/menu/deck.menu.js"></script>
+<script src="extensions/goto/deck.goto.js"></script>
+<script src="extensions/status/deck.status.js"></script>
+<script src="extensions/navigation/deck.navigation.js"></script>
+<script src="extensions/scale/deck.scale.js"></script>
+
+<!-- Initialize the deck -->
+<script>
+$(function() {
+    $.deck('slide');
+});
+</script>
+
+</body>
+</html>

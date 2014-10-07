@@ -6,16 +6,12 @@ syntax: glob
 *.session
 Thumbs.db
 .directory
-*.kate-swp
 *.~lock*
 _build
 _static
 *.sublime-*
 *.egg-info
-env
 build
-metrics
 .coverage
-**/*.html
 .tox
 *.egg

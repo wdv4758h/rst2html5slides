@@ -28,6 +28,7 @@ then rst2html5slides is perfect for you to create your presentations.
     :maxdepth: 2
 
     usage
+    examples
 
 
 
