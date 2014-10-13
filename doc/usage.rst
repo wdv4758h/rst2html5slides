@@ -216,6 +216,7 @@ and `meta <http://docutils.sourceforge.net/docs/ref/rst/directives.html#meta>`_:
 which translates to:
 
 .. code-block:: html
+    :emphasize-lines: 6, 7
 
     <!DOCTYPE html>
     <html>
@@ -233,10 +234,11 @@ Another important directive is
 which sets the "class" attribute value on its content
 or on the first immediately following non-comment element.
 When making presentations,
-you use :literal:`class` directive to set the class of a slide.
-In some cases you :
+you use :literal:`class` directive to set the class of a slide:
 
 .. code-block:: rst
+    :linenos:
+    :emphasize-lines: 1, 9, 18
 
     .. class:: logo-background
 
@@ -260,9 +262,12 @@ In some cases you :
     * This also works
     * Substructure here
 
+
 which translates to:
 
 .. code-block:: html
+    :linenos:
+    :emphasize-lines: 3, 9, 17
 
     ...
     <deck>
@@ -293,7 +298,7 @@ which translates to:
 Slide Attributes
 ================
 
-Slide attributes are set via rst fields declared just above the desired slide.
+Slide attributes are set via rst fields declared just **above the desired slide**.
 There is no restriction on field name or value.
 They are directly included as slide tag attributes.
 Example:
@@ -347,7 +352,7 @@ The most common fields are:
   This will cause the slide to be rotated clockwise or counter-clockwise.
 * :literal:`data-rotate`: The same as data-rotate-z.
 
-Unless there is a automatic distribution function defined,
+Unless there is an automatic distribution function defined,
 the same set of :literal:`data-*` attributes are applied to the following slides
 until you overwrite some of their values.
 For example:
@@ -378,17 +383,26 @@ results in:
 
     ...
     <deck>
-        <slide data-y="1000" data-x="1000">
+        <slide data-x="1000" data-y="1000">
             <section>slide 1</section>
         </slide>
-        <slide data-y="1000" data-x="2000">
+        <slide data-x="2000" data-y="1000">
             <section>slide 2</section>
         </slide>
-        <slide data-y="-1000" data-x="2000">
+        <slide data-x="2000" data-y="-1000">
             <section>slide 3</section>
         </slide>
     </deck>
     ...
+
+Note that :literal:`slide 2` kept the same :literal:`data-y` value from :literal:`slide 1`
+and :literal:`slide 3` has the same :literal:`data-x` value from :literal:`slide 2`.
+
+.. attention::
+
+    Positional attributes must be declared above the desired slide.
+    So, :literal:`:data-x: 2000` refers to :literal:`slide 2`
+    while :literal:`:data-y: -1000` changes :literal:`slide 3`.
 
 
 Automatic Positioning of Slides
@@ -396,8 +410,8 @@ Automatic Positioning of Slides
 
 Manual positioning is annoying if all you need is a simple presentation.
 In such cases,
-you should use one of the automatic distribution functions provided by rst2html5slides.
-There are three functions available:
+you should use one of the automatic distribution functions provided by :literal:`rst2html5slides`.
+For the time being, there are three functions available:
 
 #. :literal:`linear`: horizontal distribution by regular increments of :literal:`data-x`.
 #. :literal:`grid`: similar to linear, but a new line is created at every 4 slides.
@@ -441,6 +455,7 @@ which translates to:
     </deck>
     ...
 
+
 .. tip::
 
     :literal:`grid 1` makes a column.
@@ -451,7 +466,7 @@ Increment Values
 
 The default value for increment :literal:`data-x` and :literal:`data-y` is 1600.
 To change this, specify different values with :literal:`increment` attribute
-declaring one or two values.
+declaring one or two values (see the next section for an example).
 A single value will be applied to both :literal:`data-x` and :literal:`data-y`.
 
 
@@ -517,13 +532,10 @@ resulting in:
 Adapting to a Presentation Framework
 ====================================
 
-Each presentation framework has its particularities or choices regarding style and structure of slides.
-Some frameworks can be configured
-It's up to your presentation to conform to t
-It is not always necessary to change the structure of a rst2html5slides translation.
+Each presentation framework has its particularities or choices regarding style and structure of slides,
+but  it is not always necessary to change the structure of a raw rst2html5slides translation.
 For example, `jmpress.js`_ is rather flexible.
-You could use unchanged translations made by rst2html5slides with `jmpress.js`_
-configuring it to accept a :literal:`deck` tag as the root element and
+You could configuring it to accept a :literal:`deck` tag as the root element and
 :literal:`slide` tags as steps:
 
 .. code-block:: javascript
@@ -643,17 +655,3 @@ Example:
 
     $ rst2html5slides --template jmpress_template.html example.rst example.html
 
-
-Further Examples
-================
-
-To get used with rst2html5slides,
-further examples are available at the `project's repository <https://bitbucket.org/andre_felipe_dias/rst2html5slides/src/default/examples/>`_.
-All framework necessary files are provided
-although they are not part of the rst2html5slides project.
-If you prefer, you can download them in :download:`zip format <examples.zip>`.
-
-.. tip::
-
-    The file :file:`build.sh` contains the commands necessary to rebuild
-    all examples.

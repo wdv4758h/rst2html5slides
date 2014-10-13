@@ -1,6 +1,6 @@
-===================
-rst2html5 Changelog
-===================
+=========
+Changelog
+=========
 
 Here you can see the full list of changes between each rst2html5 releases.
 

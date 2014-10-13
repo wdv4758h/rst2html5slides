@@ -225,6 +225,7 @@ and `deck.js`_ projects also licensed under MIT License.
 
 
 .. _rst2html5: https://pypi.python.org/pypi/rst2html5
+.. _JQuery: http://jquery.com/
 .. _impress.js: http://github.com/bartaz/impress.js
 .. _jmpress.js: http://jmpressjs.github.io/jmpress.js/
 .. _deck.js: http://imakewebthings.com/deck.js/
