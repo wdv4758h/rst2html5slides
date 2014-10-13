@@ -20,14 +20,16 @@ def read(*names, **kwargs):
 setup(
     name='rst2html5slides',
     version='1.0',
+    license='MIT License',
     author='André Felipe Dias',
     author_email='andref.dias@gmail.com',
     keywords=['restructuredText', 'slide', 'docutils', 'presentation', 'html5'],
-    description='rst2html5slides extends rst2html5_ to generate a deck of slides from '
+    description='rst2html5slides extends rst2html5 to generate a deck of slides from '
                 'a reStructuredText file that can be used with any web presentation '
                 'framework such as impress.js, jmpress.js or deck.js.',
     long_description="%s\n%s" % (read("README.rst"),
                                  re.sub(":obj:`~?(.*?)`", r"``\1``", read("CHANGELOG.rst"))),
+    platforms='any',
     install_requires=['rst2html5', 'micawber'],
     classifiers=[
         'Development Status :: 5 - Production/Stable',
