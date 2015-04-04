@@ -1518,8 +1518,8 @@ Another line''',
     'out': '''<!DOCTYPE html>
 <html>
 <head>
-    <link async="async" href='//fonts.googleapis.com/css?family=Open+Sans:400,600,700' \
-rel='stylesheet' type='text/css' />
+    <link async="async" href="//fonts.googleapis.com/css?family=Open+Sans:400,600,700" \
+rel="stylesheet" type="text/css" />
     <link href="css/slides.css" rel="stylesheet" />
     <script src="js/jquery.min.js"></script>
     <script src="js/jmpress/jmpress.js"></script>
