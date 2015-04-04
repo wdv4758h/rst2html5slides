@@ -19,7 +19,7 @@ Title 2
 * bullet 2''',
     'out': '''
 <deck>
-    <slide>
+    <slide data-x="0">
         <header>
             <h1>Title 1</h1>
         </header>
@@ -29,7 +29,7 @@ Title 2
             </ul>
         </section>
     </slide>
-    <slide>
+    <slide data-x="1600">
         <header>
             <h1>Title 2</h1>
         </header>
@@ -78,6 +78,7 @@ deck_slide_selector_parameters = {
     'slide_selector': 'div.step',
     'manual_slide_identification': True,
     'part': 'body',
+    'distribution': None,
     'out': '''
 <div class="impress-not-supported" id="impress">
     <div class="step">
@@ -123,7 +124,7 @@ Title 2
 ''',
     'out': '''
 <deck>
-    <slide class="segue dark nobackground">
+    <slide class="segue dark nobackground" data-x="0">
         <header>
             <h1>Title 1</h1>
         </header>
@@ -133,7 +134,7 @@ Title 2
             </ul>
         </section>
     </slide>
-    <slide>
+    <slide data-x="1600">
         <header>
             <h1>Title 2</h1>
         </header>
@@ -163,6 +164,7 @@ The next one is an empty slide
 
 ..''',
     'part': 'body',
+    'distribution': None,
     'out': '''
 <deck>
     <slide>
@@ -201,19 +203,19 @@ Title 2
     'part': 'body',
     'out': '''
 <deck>
-    <slide id="title-1">
+    <slide id="title-1" data-x="0">
         <header>
             <h1>Title 1</h1>
         </header>
         <section>paragraph</section>
     </slide>
-    <slide>
+    <slide data-x="1600">
         <section>This should be a new slide</section>
     </slide>
-    <slide class="special">
+    <slide class="special" data-x="3200">
         <section>This should also be a new slide</section>
     </slide>
-    <slide id="title-2">
+    <slide id="title-2" data-x="4800">
         <header>
             <h1>Title 2</h1>
         </header>
@@ -250,15 +252,15 @@ the class directive works from the second slide onward
     'part': 'body',
     'out': '''
 <deck>
-    <slide class="test step">
+    <slide class="test step" data-x="0">
         <section>first slide, no title. The class directive doesn't work here. You must use \
 <code>:class:</code> or <code>:classes:</code> to set up the class of this slide. \
 Those are workarounds. No other solution at the time being.</section>
     </slide>
-    <slide class="hint step">
+    <slide class="hint step" data-x="1600">
         <section>the class directive works from the second slide onward</section>
     </slide>
-    <slide class="special step">
+    <slide class="special step" data-x="3200">
         <section><code>classes</code> could also be used instead of <code>:class:</code></section>
     </slide>
 </deck>
@@ -276,12 +278,12 @@ Title 2
     'part': 'body',
     'out': '''
 <deck>
-    <slide id="title-1">
+    <slide id="title-1" data-x="0">
         <header>
             <h1>Title 1</h1>
         </header>
     </slide>
-    <slide id="title-2">
+    <slide id="title-2" data-x="1600">
         <header>
             <h1>Title 2</h1>
         </header>
@@ -327,13 +329,13 @@ Subsubtitle
     'part': 'body',
     'out': '''
 <deck>
-    <slide id="title-1">
+    <slide id="title-1" data-x="0">
         <header>
             <h1>Title 1</h1>
             <h2>Subtitle 1</h2>
         </header>
     </slide>
-    <slide id="title-2">
+    <slide id="title-2" data-x="1600">
         <header>
             <h1>Title 2</h1>
             <h2>Subtitle 2</h2>
@@ -390,6 +392,7 @@ This paragraph won't be compacted because of its "special" class
      * This also works
      * Substructure here''',
     'part': 'body',
+    'distribution': None,
     'manual_slide_identification': True,
     'out': '''
 <deck>
@@ -426,7 +429,7 @@ single_slide_no_title = {
 * bullet 2''',
     'out': '''
 <deck>
-    <slide>
+    <slide data-x="0">
         <section>
             <p>paragraph</p>
             <ul>
@@ -467,7 +470,7 @@ Title 1
 * bullet''',
     'out': '''
 <deck>
-    <slide>
+    <slide data-x="0">
         <header>
             <h1>Title 1</h1>
         </header>
@@ -521,7 +524,7 @@ Subtitle 2
 ''',
     'out': '''
 <deck>
-    <slide class="segue dark nobackground" id="title-1">
+    <slide class="segue dark nobackground" id="title-1" data-x="0">
         <header>
             <h1>Title 1</h1>
             <h2>Subtitle</h2>
@@ -532,7 +535,7 @@ Subtitle 2
             </ul>
         </section>
     </slide>
-    <slide id="title-2">
+    <slide id="title-2" data-x="1600">
         <header>
             <h1>Title 2</h1>
             <h2>Subtitle 2</h2>
@@ -598,13 +601,13 @@ Subsubtitle
 ''',
     'out': '''
 <deck>
-    <slide>
+    <slide data-x="0">
         <section>There can't be three title levels at the first slide because the first two are \
 interpreted as document title / subtitle. \
 See <a href="http://docutils.sourceforge.net/docs/user/rst/quickstart.html#document-title-subtitle">\
 http://docutils.sourceforge.net/docs/user/rst/quickstart.html#document-title-subtitle</a></section>
     </slide>
-    <slide id="title-1">
+    <slide id="title-1" data-x="1600">
         <header>
             <h1>Title 1</h1>
             <h2>Subtitle</h2>
@@ -659,10 +662,10 @@ transition_to_section = {
 * bullet''',
     'out': '''
 <deck>
-    <slide>
+    <slide data-x="0">
         <section>paragraph</section>
     </slide>
-    <slide>
+    <slide data-x="1600">
         <section>
             <ul>
                 <li>bullet</li>
@@ -780,13 +783,13 @@ paragraph
 ..''',
     'out': '''
 <deck>
-    <slide>
+    <slide data-x="0">
         <header>
             <h1>Title</h1>
         </header>
         <section>paragraph</section>
     </slide>
-    <slide>
+    <slide data-x="1600">
         <section></section>
     </slide>
 </deck>
@@ -1319,6 +1322,7 @@ idem
 
 The tag here is supposed to be <div class="step">''',
     'part': 'body',
+    'distribution': None,
     'out': '''
 <deck class="deck_container" id="impress">
     <article class="slide">
@@ -1374,6 +1378,7 @@ Title 3
 * Bullet
 ''',
     'part': 'body',
+    'distribution': None,
     'out': '''
 <div class="deck-container">
     <article class="cover slide" data-scale="5" data-x="-1000" data-y="-500" id="opening">
@@ -1435,6 +1440,7 @@ paragraph
 About
 ''',
     'part': 'body',
+    'distribution': None,
     'manual_slide_identification': True,
     'out': '''
 <deck>
@@ -1465,21 +1471,21 @@ automatic_slide_identification = {
     'part': 'body',
     'out': '''
 <deck>
-    <slide id="benvindo">
+    <slide id="benvindo" data-x="0">
         <section>Welcome</section>
     </slide>
-    <slide id="introducao">
+    <slide id="introducao" data-x="1600">
         <header>
             <h1>Title 1</h1>
         </header>
     </slide>
-    <slide id="title-2">
+    <slide id="title-2" data-x="3200">
         <header>
             <h1>Title 2</h1>
         </header>
         <section>paragraph</section>
     </slide>
-    <slide>
+    <slide data-x="4800">
         <section>About</section>
     </slide>
 </deck>
@@ -1508,12 +1514,22 @@ Title 2
 
 Another line''',
     'part': 'whole',
+    'distribution': '',
     'out': '''<!DOCTYPE html>
 <html>
 <head>
+    <link async="async" href='//fonts.googleapis.com/css?family=Open+Sans:400,600,700' \
+rel='stylesheet' type='text/css' />
+    <link href="css/slides.css" rel="stylesheet" />
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jmpress/jmpress.js"></script>
+    <script src="js/jmpress/jmpress_init.js" defer="defer"></script>
+    <script src="js/adjust_slides.js" defer="defer"></script>
+    \n\
     <meta charset="utf-8" />
     <meta content="chrome=1:" http-equiv="X-UA-Compatible" />
     <meta content="width=device-width, maximum-scale=1.0, initial-scale=1.0, user-scalable=yes" name="viewport" />
+
 </head>
 <body>
 <div id="impress">
@@ -1531,7 +1547,8 @@ Another line''',
     </div>
 </div>
 </body>
-</html>''',
+</html>
+''',
 }
 
 case_1_pseudoxml = {
@@ -1711,18 +1728,18 @@ link to `Title 1`_
     'part': 'body',
     'out': '''
 <deck>
-    <slide>
+    <slide data-x="0">
         <section>
             <aside class="warning"><code>id</code> fields mess up with internal links.</aside>
         </section>
     </slide>
-    <slide id="another-id">
+    <slide id="another-id" data-x="1600">
         <header>
             <h1>Title 1</h1>
         </header>
         <section>paragraph</section>
     </slide>
-    <slide id="title-2">
+    <slide id="title-2" data-x="3200">
         <header>
             <h1>Title 2</h1>
         </header>

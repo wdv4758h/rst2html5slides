@@ -154,7 +154,8 @@ class SlideWriter(HTML5Writer):
                 ['--distribution'],
                 {
                     'dest': 'distribution',
-                    'metavar': '<function_name>'
+                    'metavar': '<function_name>',
+                    'default': 'linear',
                 }
             ),
             (
