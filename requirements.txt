@@ -1,2 +1,3 @@
 rst2html5
 micawber
+beautifulsoup4

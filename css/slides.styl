@@ -1,0 +1,244 @@
+@require 'normalize'
+
+normalize()
+
+@require 'pygments'
+.ln
+    font-size 0.7em
+    margin-right 1em
+
+cor_titulo = #007FFB
+cor_subtitulo = #777
+cor_texto = #545454
+literal_background = rgba(0, 0, 0, 0.15)
+
+vertical-align()
+    position absolute
+    top 50%
+    left 50%
+    margin 0
+    margin-right -50%
+    transform translate(-50%, -50%)
+
+html
+    text-rendering optimizeLegibility
+    font-family "Open Sans", Helvetica, Arial, sans-serif
+
+body
+    background black
+
+a
+    color cor_titulo
+    text-decoration none
+    padding 0 0.1em
+    background rgba(255, 255, 255, 0.5)
+    border-radius 0.2em
+    &:hover
+        background rgba(255, 255, 255, 1)
+
+slide
+    display block
+    position relative
+    width 1100px
+    height 700px
+    padding 40px 60px
+    box-sizing border-box
+    line-height 1.5
+    border 1px solid rgba(0, 0, 0, .3)
+    border-radius 10px
+    box-shadow 0 2px 6px rgba(0, 0, 0, .1)
+    color cor_texto
+    background-color white
+    line-height 36px
+    letter-spacing -1px
+    font-size 40px
+    font-family 'Open Sans', Arial, sans-serif
+    transition all 0.6s ease-in-out 0s
+    &:not(.active)
+        opacity 0.3
+    &:after
+        content ""
+        width 133px
+        height 41px
+        background url("../../imagens/logotipos/PronusSmallLogo.png") no-repeat
+        background-size contain
+        position absolute
+        bottom 0.5em
+        left 0.75em
+        z-index -1
+    header
+        margin-bottom 1em
+
+.capa
+.capitulo
+.pergunta
+    background cor_titulo
+    header
+        vertical-align()
+    h1
+        color white
+        font-size 1.5em
+        text-shadow 1px 1px 3px rgba(0, 0, 0, 0.6)
+    h2
+        color #24FF01
+        font-size 1.2em
+        text-shadow 1px 1px 3px rgba(0, 0, 0, 0.6)
+    &:after
+        background none
+    .pagination
+        display none
+    .small
+        font-size 0.85em
+
+.capa
+    background #0003FB
+
+.pergunta
+    background white
+    h1
+        color cor_titulo
+    h2
+        color cor_subtitulo
+
+h1
+h2
+    margin 0.25em 0
+    font-family 'Open Sans', Arial, sans-serif
+    line-height 1em
+    text-shadow 1px 1px 3px rgba(0, 0, 0, 0.3)
+
+
+h1
+    font-size 1.3em
+    color cor_titulo
+
+h2
+    font-size 1.1em
+    color cor_subtitulo
+
+ul
+ol
+    font-size 0.8em
+
+li
+    line-height 1.3em
+    margin-top 0.5em
+    p
+        font-size 1em
+
+
+section
+    display block
+    font-size 1.1em
+    line-height 1.5em
+    // margin-top 0.75em
+    position relative
+    min-height 480px
+    // img
+    //     &.no-scale
+    //         height auto
+
+
+div.pagination
+    position absolute
+    bottom 0.5em
+    right 1.5em
+    font-size 0.5em
+    color cor_titulo
+
+pre
+    font-size 0.5em
+    line-height 1.2em
+    background #fbfbee
+    border 1px solid #c6c6c6
+    box-shadow 3px 3px 4px rgba(0, 0, 0, 0.5)
+    padding 0.5em
+    code
+        background transparent
+        padding 0
+    &.small
+        line-height 1.4rem
+        font-size 1rem
+
+aside
+p
+    font-size 0.8em
+    margin-top 1em
+    line-height 1.25em
+    img
+        text-align center
+
+aside
+    font-size 0.6em
+
+
+img
+    position absolute
+    left 50%
+    transform translate(-50%)
+
+kbd
+code
+    padding 0.05em 0.2em
+    background literal_background
+    border-radius 5px
+
+kbd
+    background none
+
+.small
+    font-size 0.7em
+
+.bottom
+    position absolute
+    bottom 1em
+
+.mais-topo
+    margin-top 2em
+
+
+table
+    text-align center
+    font-size 0.6em
+    line-height 1.1em
+    margin 0 auto
+    img
+        position inherit
+        transform none
+    th
+    td
+        padding 0.5em
+        border 3px solid #b6b6b6
+    th
+        background literal_background
+    &.option_list td:first-child
+        white-space nowrap
+    &.emblems td:nth-child(3)
+        text-align left
+
+
+
+@media print
+
+    body
+        background white
+
+    slide
+        border-radius 0
+        border 3px solid rgba(0, 0, 0, .3)
+        &:not(.active)
+            opacity 1
+        &:after
+            z-index 1
+
+    .capa
+    .capitulo
+    .pergunta
+        background white
+        h1
+            color cor_titulo
+        h2
+            color cor_subtitulo
+        h1
+        h2
+            text-shadow 1px 1px 3px rgba(0, 0, 0, 0.3)

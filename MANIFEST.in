@@ -1,18 +1,13 @@
-graft conf
 graft src
-graft tests
-
-include .bumpversion.cfg
-include .coveragerc
-include .isort.cfg
-include .pylintrc
+graft css
+graft js
+graft template
 
 include AUTHORS.rst
 include CHANGELOG.rst
 include CONTRIBUTING.rst
 include LICENSE
 include README.rst
+include requirements.txt
 
-include tox.ini
-
-global-exclude *.py[co] __pycache__
+global-exclude *.py[co] __pycache__ *.orig *.styl *~

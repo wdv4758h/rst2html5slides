@@ -6,14 +6,26 @@
 from __future__ import unicode_literals
 
 import re
+import shutil
+from io import open
+from os import makedirs, devnull
+from os.path import join, dirname, basename, isfile, exists, pardir, splitext
 from collections import OrderedDict
 
 from docutils import nodes
+from docutils.io import FileOutput
 from docutils.parsers.rst import Directive, directives
 from docutils.parsers.rst.directives.html import MetaBody as Meta
 from docutils.transforms import Transform
 from genshi.builder import Element, tag
+from bs4 import BeautifulSoup
 from rst2html5 import HTML5Translator, HTML5Writer
+
+try:
+    from urllib.parse import urlparse
+except ImportError:  # Python 2
+    from urlparse import urlparse
+
 
 """
 Translates a restructuredText document to a HTML5 slideshow
@@ -186,6 +198,14 @@ class SlideWriter(HTML5Writer):
                     'metavar': '<slide_selector>'
                 },
             ),
+            (
+                'Output directory where all relative source files will be placed',
+                ['--output-dir'],
+                {
+                    'dest': 'output_dir',
+                    'metavar': '<output_dir>',
+                },
+            ),
         )
     )
 
@@ -193,11 +213,49 @@ class SlideWriter(HTML5Writer):
         HTML5Writer.__init__(self)
         self.translator_class = SlideTranslator
 
+    def _save_to_output_dir(self):
+
+        def has_href_or_src(elem):
+            return elem.has_attr('href') or elem.has_attr('src')
+
+        output_dir = self.document.settings.output_dir
+        source_dir = dirname(self.document.settings._source)
+        soup = BeautifulSoup(self.output)
+        for elem in soup.find_all(has_href_or_src):
+            attr = 'src' if elem.has_attr('src') else 'href'
+            path = elem[attr]
+            if urlparse(path).netloc:  # scheme is not always present, but netloc is
+                continue
+            source_path = join(source_dir, path)
+            if not isfile(source_path):
+                # try rst2html5slides css, js files
+                rel_source_path = join(dirname(__file__), pardir, path)
+                if not isfile(rel_source_path):
+                    self.document.reporter.error('file not found: %s' % source_path)
+                    continue
+                source_path = rel_source_path
+            relative_path = re.findall('^(?:\.+/)*(.*)', path)[0]
+            dest_path = join(output_dir, relative_path)
+            dest_dir = dirname(dest_path)
+            if not exists(dest_dir):
+                makedirs(dest_dir)
+            shutil.copy(source_path, dest_path)
+            elem[attr] = relative_path
+        self.output = soup.prettify()  # TODO: code a new prettify based on indent_output
+        destination_path = splitext(basename(self.document.settings._source))[0] + '.html'
+        destination_path = join(output_dir, destination_path)
+        with open(destination_path, 'w', encoding='utf-8') as f:
+            f.write(self.output)
+        return
+
     def translate(self):
-        self.parts['pseudoxml'] = self.document.pformat()  # get pseudoxml before HTML5.translate
-        self.document.reporter.debug('%s pseudoxml:\n %s' %
-                                     (self.__class__.__name__, self.parts['pseudoxml']))
+        if self.document.settings.output_dir:
+            self.document.settings.indent_output = False  # BeautifulSoup spoils indentation anyway
+            self.destination = FileOutput(destination_path=devnull, encoding='utf-8')
         HTML5Writer.translate(self)
+        if self.document.settings.output_dir:
+            self._save_to_output_dir()
+        return
 
     def get_transforms(self):
         return HTML5Writer.get_transforms(self) + [SlideTransform]
@@ -214,6 +272,8 @@ class SlideTranslator(HTML5Translator):
         self.rst_terms['slide_contents'] = ('section', 'default_visit', 'default_departure')
         self.rst_terms['title'] = (None, 'visit_title', 'depart_title')  # flatten titles
         self.rst_terms['presentation'] = (None, 'visit_presentation', None)
+        with open(join(dirname(__file__), '../template/jmpress.html'), encoding='utf-8') as f:
+            self.default_template = f.read()
         HTML5Translator.__init__(self, *args)
         self._reset()
         settings = self.document.settings
