@@ -18,7 +18,6 @@ from docutils.parsers.rst import Directive, directives
 from docutils.parsers.rst.directives.html import MetaBody as Meta
 from docutils.transforms import Transform
 from genshi.builder import Element, tag
-from bs4 import BeautifulSoup
 from rst2html5 import HTML5Translator, HTML5Writer
 
 try:
@@ -219,30 +218,56 @@ class SlideWriter(HTML5Writer):
         def has_href_or_src(elem):
             return elem.has_attr('href') or elem.has_attr('src')
 
+        def copy_file(origin, destination):
+            dest_dir = dirname(destination)
+            if not exists(dest_dir):
+                makedirs(dest_dir)
+            shutil.copy(origin, destination)
+
+        def roundrobin(*iterables):
+            """
+            roundrobin('ABC', 'D', 'EF') --> A D E B F C
+
+            see: https://docs.python.org/3.4/library/itertools.html#itertools-recipes
+            """
+            from itertools import cycle, islice
+            pending = len(iterables)
+            # small modification to run under both Python 3 and 2
+            next_attr = '__next__' if hasattr(iter(iterables[0]), '__next__') else 'next'
+            nexts = cycle(getattr(iter(it), next_attr) for it in iterables)
+            while pending:
+                try:
+                    for next in nexts:
+                        yield next()
+                except StopIteration:
+                    pending -= 1
+                    nexts = cycle(islice(nexts, pending))
+
         output_dir = self.document.settings.output_dir
         source_dir = dirname(self.document.settings._source)
-        soup = BeautifulSoup(self.output)
-        for elem in soup.find_all(has_href_or_src):
-            attr = 'src' if elem.has_attr('src') else 'href'
-            path = elem[attr]
+        output = self.output
+        href_pattern = re.compile('href=".*?"|src=".*?"')
+        path_pattern = re.compile('"(.*?)"')
+        hrefs = re.findall(href_pattern, output)
+        for i, href in enumerate(hrefs):
+            path = re.findall(path_pattern, href)[0]
             if urlparse(path).netloc:  # scheme is not always present, but netloc is
                 continue
             source_path = join(source_dir, path)
             if not isfile(source_path):
-                # try rst2html5slides css, js files
-                rel_source_path = join(dirname(__file__), pardir, path)
-                if not isfile(rel_source_path):
+                # try rst2html5slides' css, js files
+                inner_source_path = join(dirname(__file__), pardir, path)
+                if not isfile(inner_source_path):
                     self.document.reporter.error('file not found: %s' % source_path)
                     continue
-                source_path = rel_source_path
-            relative_path = re.findall('^(?:\.+/)*(.*)', path)[0]
-            dest_path = join(output_dir, relative_path)
-            dest_dir = dirname(dest_path)
-            if not exists(dest_dir):
-                makedirs(dest_dir)
-            shutil.copy(source_path, dest_path)
-            elem[attr] = relative_path
-        self.output = soup.prettify()  # TODO: code a new prettify based on indent_output
+                source_path = inner_source_path
+            href_path = re.findall('^(?:\.+/)*(.*)', path)[0]
+            hrefs[i] = re.sub(path_pattern, '"%s"' % href_path, href)
+            copy_file(source_path, join(output_dir, href_path))
+
+        # rebuild output
+        splitted = re.split(href_pattern, output)
+        self.output = ''.join(roundrobin(splitted, hrefs))
         destination_path = splitext(basename(self.document.settings._source))[0] + '.html'
         destination_path = join(output_dir, destination_path)
         with open(destination_path, 'w', encoding='utf-8') as f:
@@ -251,7 +276,6 @@ class SlideWriter(HTML5Writer):
 
     def translate(self):
         if self.document.settings.output_dir:
-            self.document.settings.indent_output = False  # BeautifulSoup spoils indentation anyway
             self.destination = FileOutput(destination_path=devnull, encoding='utf-8')
         HTML5Writer.translate(self)
         if self.document.settings.output_dir:
