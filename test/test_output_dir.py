@@ -39,6 +39,10 @@ Schema
 
 |tdd cycle|
 
+----
+
+|python logo|
+
 
 .. include:: junit.rst
 
@@ -50,6 +54,7 @@ Schema
 
 .. |logotipo| image:: imagens/logotipo.png
 .. |tdd cycle| image:: imagens/tdd_cycle.png
+.. |python logo| image:: https://www.python.org/static/community_logos/python-logo-master-v3-TM.png
 '''
 
 junit = '''JUnit
@@ -78,7 +83,7 @@ def test_output_dir():
         f.write(urandom(2 ** 11))
     with open(join(temp_dirname, 'imagens', 'logotipo.png'), 'wb') as f:
         f.write(urandom(2 ** 15))
-    publish_file(
+    output = publish_file(
         writer=SlideWriter(), source_path=source_path,
         destination_path=join(dest_dirname, 'presentation.html1'),
         settings_overrides={'output_dir': dest_dirname, 'stylesheet': [join('css', 'style.css')]}
@@ -89,5 +94,7 @@ def test_output_dir():
     assert exists(join(dest_dirname, 'imagens', 'tdd_cycle.png'))
     assert exists(join(dest_dirname, 'imagens', 'logotipo.png'))
     assert not exists(join(dest_dirname, 'imagens', 'not_used.png'))
+    assert str('<link href="css/style.css"') in output
+    assert str('src="https://www.python.org') in output
     rmtree(temp_dirname)
     rmtree(dest_dirname)
