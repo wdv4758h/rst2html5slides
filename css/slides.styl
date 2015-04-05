@@ -56,19 +56,12 @@ slide
     transition all 0.6s ease-in-out 0s
     &:not(.active)
         opacity 0.3
-    &:after
-        content ""
-        width 133px
-        height 41px
-        background url("../../imagens/logotipos/PronusSmallLogo.png") no-repeat
-        background-size contain
-        position absolute
-        bottom 0.5em
-        left 0.75em
-        z-index -1
     header
         margin-bottom 1em
 
+.cover
+.chapter
+.question
 .capa
 .capitulo
 .pergunta
@@ -88,11 +81,14 @@ slide
     .pagination
         display none
     .small
+    .smaller
         font-size 0.85em
 
+.cover
 .capa
     background #0003FB
 
+.question
 .pergunta
     background white
     h1
@@ -153,10 +149,11 @@ pre
     border 1px solid #c6c6c6
     box-shadow 3px 3px 4px rgba(0, 0, 0, 0.5)
     padding 0.5em
-    code
+    [data-language]
         background transparent
         padding 0
     &.small
+    &.smaller
         line-height 1.4rem
         font-size 1rem
 
@@ -187,6 +184,7 @@ kbd
     background none
 
 .small
+.smaller
     font-size 0.7em
 
 .bottom
@@ -231,6 +229,9 @@ table
         &:after
             z-index 1
 
+    .cover
+    .chapter
+    .question
     .capa
     .capitulo
     .pergunta

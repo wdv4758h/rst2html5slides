@@ -605,25 +605,20 @@ slide {
 slide:not(.active) {
   opacity: 0.3;
 }
-slide:after {
-  content: "";
-  width: 133px;
-  height: 41px;
-  background: url("../../imagens/logotipos/PronusSmallLogo.png") no-repeat;
-  background-size: contain;
-  position: absolute;
-  bottom: 0.5em;
-  left: 0.75em;
-  z-index: -1;
-}
 slide header {
   margin-bottom: 1em;
 }
+.cover,
+.chapter,
+.question,
 .capa,
 .capitulo,
 .pergunta {
   background: #007ffb;
 }
+.cover header,
+.chapter header,
+.question header,
 .capa header,
 .capitulo header,
 .pergunta header {
@@ -634,6 +629,9 @@ slide header {
   margin-right: -50%;
   transform: translate(-50%, -50%);
 }
+.cover h1,
+.chapter h1,
+.question h1,
 .capa h1,
 .capitulo h1,
 .pergunta h1 {
@@ -641,6 +639,9 @@ slide header {
   font-size: 1.5em;
   text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
 }
+.cover h2,
+.chapter h2,
+.question h2,
 .capa h2,
 .capitulo h2,
 .pergunta h2 {
@@ -648,30 +649,49 @@ slide header {
   font-size: 1.2em;
   text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
 }
+.cover:after,
+.chapter:after,
+.question:after,
 .capa:after,
 .capitulo:after,
 .pergunta:after {
   background: none;
 }
+.cover .pagination,
+.chapter .pagination,
+.question .pagination,
 .capa .pagination,
 .capitulo .pagination,
 .pergunta .pagination {
   display: none;
 }
+.cover .small,
+.chapter .small,
+.question .small,
 .capa .small,
 .capitulo .small,
-.pergunta .small {
+.pergunta .small,
+.cover .smaller,
+.chapter .smaller,
+.question .smaller,
+.capa .smaller,
+.capitulo .smaller,
+.pergunta .smaller {
   font-size: 0.85em;
 }
+.cover,
 .capa {
   background: #0003fb;
 }
+.question,
 .pergunta {
   background: #fff;
 }
+.question h1,
 .pergunta h1 {
   color: #007ffb;
 }
+.question h2,
 .pergunta h2 {
   color: #777;
 }
@@ -723,11 +743,12 @@ pre {
   box-shadow: 3px 3px 4px rgba(0,0,0,0.5);
   padding: 0.5em;
 }
-pre code {
+pre [data-language] {
   background: transparent;
   padding: 0;
 }
-pre.small {
+pre.small,
+pre.smaller {
   line-height: 1.4rem;
   font-size: 1rem;
 }
@@ -758,7 +779,8 @@ code {
 kbd {
   background: none;
 }
-.small {
+.small,
+.smaller {
   font-size: 0.7em;
 }
 .bottom {
@@ -806,24 +828,39 @@ table.emblems td:nth-child(3) {
   slide:after {
     z-index: 1;
   }
+  .cover,
+  .chapter,
+  .question,
   .capa,
   .capitulo,
   .pergunta {
     background: #fff;
   }
+  .cover h1,
+  .chapter h1,
+  .question h1,
   .capa h1,
   .capitulo h1,
   .pergunta h1 {
     color: #007ffb;
   }
+  .cover h2,
+  .chapter h2,
+  .question h2,
   .capa h2,
   .capitulo h2,
   .pergunta h2 {
     color: #777;
   }
+  .cover h1,
+  .chapter h1,
+  .question h1,
   .capa h1,
   .capitulo h1,
   .pergunta h1,
+  .cover h2,
+  .chapter h2,
+  .question h2,
   .capa h2,
   .capitulo h2,
   .pergunta h2 {
