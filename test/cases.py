@@ -822,6 +822,8 @@ meta_tag = {
 ''',
     'out': '''
     <meta charset="utf-8" />
+    <meta generator="rst2html5slides" />
+    <meta generator-homepage="https://pypi.python.org/pypi/rst2html5slides" />
     <meta content="André Felipe Dias" name="author" />
     <meta content="chrome=1" http-equiv="X-UA-Compatible" />
     <link href="impress.css" rel="stylesheet" />
@@ -1527,6 +1529,8 @@ rel="stylesheet" type="text/css" />
     <script src="js/adjust_slides.js" defer="defer"></script>
     \n\
     <meta charset="utf-8" />
+    <meta generator="rst2html5slides" />
+    <meta generator-homepage="https://pypi.python.org/pypi/rst2html5slides" />
     <meta content="chrome=1:" http-equiv="X-UA-Compatible" />
     <meta content="width=device-width, maximum-scale=1.0, initial-scale=1.0, user-scalable=yes" name="viewport" />
 

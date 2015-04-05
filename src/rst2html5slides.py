@@ -300,6 +300,8 @@ class SlideTranslator(HTML5Translator):
         with open(join(dirname(__file__), '../template/jmpress.html'), encoding='utf-8') as f:
             self.default_template = f.read()
         HTML5Translator.__init__(self, *args)
+        self.metatags.append(tag.meta(generator='rst2html5slides'))
+        self.metatags.append(tag.meta(generator_homepage='https://pypi.python.org/pypi/rst2html5slides'))
         self._reset()
         settings = self.document.settings
         if settings.distribution:
