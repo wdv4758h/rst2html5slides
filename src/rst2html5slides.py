@@ -9,7 +9,7 @@ import re
 import shutil
 from io import open
 from os import makedirs, devnull
-from os.path import join, dirname, basename, isfile, exists, pardir, splitext
+from os.path import join, dirname, basename, isfile, exists, curdir, splitext
 from collections import OrderedDict
 
 from docutils import nodes
@@ -255,8 +255,10 @@ class SlideWriter(HTML5Writer):
                 continue
             source_path = join(source_dir, path)
             if not isfile(source_path):
-                # try rst2html5slides' css, js files
-                inner_source_path = join(dirname(__file__), pardir, path)
+                # try rst2html5slides' css, js files.
+                # They will be at the same directory level after installation
+                # See setup.py data_files
+                inner_source_path = join(dirname(__file__), curdir, path)
                 if not isfile(inner_source_path):
                     self.document.reporter.error('file not found: %s' % source_path)
                     continue
@@ -297,7 +299,7 @@ class SlideTranslator(HTML5Translator):
         self.rst_terms['slide_contents'] = ('section', 'default_visit', 'default_departure')
         self.rst_terms['title'] = (None, 'visit_title', 'depart_title')  # flatten titles
         self.rst_terms['presentation'] = (None, 'visit_presentation', None)
-        with open(join(dirname(__file__), '../template/jmpress.html'), encoding='utf-8') as f:
+        with open(join(dirname(__file__), curdir, 'template/jmpress.html'), encoding='utf-8') as f:
             self.default_template = f.read()
         HTML5Translator.__init__(self, *args)
         self.metatags.append(tag.meta(generator='rst2html5slides'))

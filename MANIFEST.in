@@ -1,7 +1,4 @@
 graft src
-graft css
-graft js
-graft template
 
 include AUTHORS.rst
 include CHANGELOG.rst

@@ -47,7 +47,7 @@ setup(
     ],
     zip_safe=False,
     packages=find_packages("src"),
-    package_dir={"": "src"},
+    package_dir={"src": "src"},
     py_modules=[splitext(basename(i))[0] for i in glob.glob("src/*.py")],
     include_package_data=True,
     entry_points={
@@ -55,4 +55,10 @@ setup(
             'rst2html5slides = rst2html5slides:main',
         ],
     },
+    data_files=[
+        ('template', glob.glob('src/template/*')),
+        ('css', glob.glob('src/css/*.css')),
+        ('js', glob.glob('src/js/*.js')),
+        ('js/jmpress', glob.glob('src/js/jmpress/*')),
+    ],
 )
