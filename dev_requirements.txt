@@ -2,3 +2,4 @@ nose
 tox
 bumpversion
 isort
+BeautifulSoup4

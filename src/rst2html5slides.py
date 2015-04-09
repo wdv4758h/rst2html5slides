@@ -10,7 +10,6 @@ import shutil
 from io import open
 from os import makedirs, devnull
 from os.path import join, dirname, basename, isfile, exists, curdir, splitext
-from collections import OrderedDict
 
 from docutils import nodes
 from docutils.io import FileOutput
@@ -379,10 +378,11 @@ class SlideTranslator(HTML5Translator):
     def depart_document(self, node):
         self._distribute_slides()
         if len(self.context.stack[0]):
-            deck = getattr(tag, self.deck_selector['tag'])(*self.context.stack[0])
-            self._ordered_tag_attributes(deck,
-                                         OrderedDict([('class', self.deck_selector.get('class', None)),
-                                                      ('id', self.deck_selector.get('id', None))]))
+            deck = getattr(tag, self.deck_selector['tag'])(
+                *self.context.stack[0],
+                id=self.deck_selector.get('id', None),
+                class_=self.deck_selector.get('class', None)
+            )
             self.context.stack = ['\n', deck, '\n']
         # _reset is necessary to run the several test cases
         self._reset()
@@ -516,7 +516,7 @@ class SlideTranslator(HTML5Translator):
         data_attributes.setdefault('data-x', 0)
         incr_x = self.distribution['incr_x']
         for index, slide in enumerated_slides:
-            self._ordered_tag_attributes(slide, OrderedDict(sorted(data_attributes.items())))
+            slide(**data_attributes)
             data_attributes['data-x'] += incr_x
         return
 
@@ -539,7 +539,7 @@ class SlideTranslator(HTML5Translator):
             elif index % line_length == 0:  # break line
                 data_attributes['data-x'] = x_ref
                 data_attributes['data-y'] = data_attributes.setdefault('data-y', 0) + incr_y
-            self._ordered_tag_attributes(slide, OrderedDict(sorted(data_attributes.items())))
+            slide(**data_attributes)
             data_attributes['data-x'] += incr_x
         return
 
@@ -562,7 +562,7 @@ class SlideTranslator(HTML5Translator):
                 incr_x = -incr_x
                 data_attributes['data-rotate-z'] = rotate_z_ref \
                     if data_attributes['data-rotate-z'] != rotate_z_ref else (rotate_z_ref - 179.9)
-            self._ordered_tag_attributes(slide, OrderedDict(sorted(data_attributes.items())))
+            slide(**data_attributes)
             data_attributes['data-x'] += incr_x
 
 
