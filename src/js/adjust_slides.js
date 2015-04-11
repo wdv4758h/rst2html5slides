@@ -28,7 +28,8 @@
     $(function() {
         totalSlides = $('slide').length;
         $('slide').each(paginarSlide);
-        $('img').one('load', scaleImage).each(function () {
+        // .one('load') is not working on Firefox
+        $('img').on('load', scaleImage).each(function () {
             if (this.complete) {
                 $(this).trigger('load');
             }
