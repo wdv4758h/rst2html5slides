@@ -142,21 +142,6 @@ div.pagination
     font-size 0.5em
     color cor_titulo
 
-pre
-    font-size 0.5em
-    line-height 1.2em
-    background #fbfbee
-    border 1px solid #c6c6c6
-    box-shadow 3px 3px 4px rgba(0, 0, 0, 0.5)
-    padding 0.5em
-    [data-language]
-        background transparent
-        padding 0
-    &.small
-    &.smaller
-        line-height 1.4rem
-        font-size 1rem
-
 aside
 p
     font-size 0.8em
@@ -186,6 +171,7 @@ kbd
 .small
 .smaller
     font-size 0.7em
+    line-height 1em
 
 .bottom
     position absolute
@@ -197,8 +183,8 @@ kbd
 
 table
     text-align center
-    font-size 0.6em
-    line-height 1.1em
+    font-size 1.8rem
+    line-height 1.5em
     margin 0 auto
     img
         position inherit
@@ -213,7 +199,32 @@ table
         white-space nowrap
     &.emblems td:nth-child(3)
         text-align left
+    &[data-language]
+        text-align left
+        th
+        td
+            padding 0
+            margin 0
+            border none
+    &.small
+    &.smaller
+        font-size 1.3rem
+        pre
+            font-size 1rem
+            line-height 1.4rem
 
+pre
+    font-size 1.3rem
+    line-height 1.75rem
+    background #fbfbee
+    border 1px solid #c6c6c6
+    box-shadow 3px 3px 4px rgba(0, 0, 0, 0.5)
+    padding 0.5em
+    letter-spacing 0
+    &.small
+    &.smaller
+        font-size 1rem
+        line-height 1.4rem
 
 
 @media print

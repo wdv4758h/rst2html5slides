@@ -735,23 +735,6 @@ div.pagination {
   font-size: 0.5em;
   color: #007ffb;
 }
-pre {
-  font-size: 0.5em;
-  line-height: 1.2em;
-  background: #fbfbee;
-  border: 1px solid #c6c6c6;
-  box-shadow: 3px 3px 4px rgba(0,0,0,0.5);
-  padding: 0.5em;
-}
-pre [data-language] {
-  background: transparent;
-  padding: 0;
-}
-pre.small,
-pre.smaller {
-  line-height: 1.4rem;
-  font-size: 1rem;
-}
 aside,
 p {
   font-size: 0.8em;
@@ -782,6 +765,7 @@ kbd {
 .small,
 .smaller {
   font-size: 0.7em;
+  line-height: 1em;
 }
 .bottom {
   position: absolute;
@@ -792,8 +776,8 @@ kbd {
 }
 table {
   text-align: center;
-  font-size: 0.6em;
-  line-height: 1.1em;
+  font-size: 1.8rem;
+  line-height: 1.5em;
   margin: 0 auto;
 }
 table img {
@@ -813,6 +797,38 @@ table.option_list td:first-child {
 }
 table.emblems td:nth-child(3) {
   text-align: left;
+}
+table[data-language] {
+  text-align: left;
+}
+table[data-language] th,
+table[data-language] td {
+  padding: 0;
+  margin: 0;
+  border: none;
+}
+table.small,
+table.smaller {
+  font-size: 1.3rem;
+}
+table.small pre,
+table.smaller pre {
+  font-size: 1rem;
+  line-height: 1.4rem;
+}
+pre {
+  font-size: 1.3rem;
+  line-height: 1.75rem;
+  background: #fbfbee;
+  border: 1px solid #c6c6c6;
+  box-shadow: 3px 3px 4px rgba(0,0,0,0.5);
+  padding: 0.5em;
+  letter-spacing: 0;
+}
+pre.small,
+pre.smaller {
+  font-size: 1rem;
+  line-height: 1.4rem;
 }
 @media print {
   body {
