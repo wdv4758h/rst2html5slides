@@ -8,8 +8,8 @@ from __future__ import unicode_literals
 import re
 import shutil
 from io import open
-from os import makedirs, devnull
-from os.path import join, dirname, basename, isfile, exists, curdir, splitext
+from os import makedirs
+from os.path import join, dirname, basename, isfile, exists, curdir, split, splitext
 
 from docutils import nodes
 from docutils.io import FileOutput
@@ -37,6 +37,7 @@ class presentation(nodes.Element):
 
 
 class Presentation(Directive):
+
     '''
     This directive handles attributes global to the presentation.
     Usually, it is placed at the top of the document
@@ -64,6 +65,7 @@ class slide_contents(nodes.Element):
 
 
 class SlideTransform(Transform):
+
     '''
     State Machine to transform default doctree to one with slideshow structure:
     section, header, contents.
@@ -197,14 +199,6 @@ class SlideWriter(HTML5Writer):
                     'metavar': '<slide_selector>'
                 },
             ),
-            (
-                'Output directory where all relative source files will be placed',
-                ['--output-dir'],
-                {
-                    'dest': 'output_dir',
-                    'metavar': '<output_dir>',
-                },
-            ),
         )
     )
 
@@ -212,7 +206,7 @@ class SlideWriter(HTML5Writer):
         HTML5Writer.__init__(self)
         self.translator_class = SlideTranslator
 
-    def _save_to_output_dir(self):
+    def _save_hrefs_to_dir(self, dest_dir):
 
         def has_href_or_src(elem):
             return elem.has_attr('href') or elem.has_attr('src')
@@ -242,7 +236,6 @@ class SlideWriter(HTML5Writer):
                     pending -= 1
                     nexts = cycle(islice(nexts, pending))
 
-        output_dir = self.document.settings.output_dir
         source_dir = dirname(self.document.settings._source)
         output = self.output
         href_pattern = re.compile('href=".*?"|src=".*?"')
@@ -264,23 +257,26 @@ class SlideWriter(HTML5Writer):
                 source_path = inner_source_path
             href_path = re.findall('^(?:\.+/)*(.*)', path)[0]
             hrefs[i] = re.sub(path_pattern, '"%s"' % href_path, href)
-            copy_file(source_path, join(output_dir, href_path))
+            copy_file(source_path, join(dest_dir, href_path))
 
         # rebuild output
         splitted = re.split(href_pattern, output)
         self.output = ''.join(roundrobin(splitted, hrefs))
-        destination_path = splitext(basename(self.document.settings._source))[0] + '.html'
-        destination_path = join(output_dir, destination_path)
-        with open(destination_path, 'w', encoding='utf-8') as f:
-            f.write(self.output)
         return
 
     def translate(self):
-        if self.document.settings.output_dir:
-            self.destination = FileOutput(destination_path=devnull, encoding='utf-8')
+        destination_path = self.destination.destination_path
+        if destination_path not in ('<stdout>', '<string>'):  # there is a specified destination
+            dest_dir, extension = splitext(destination_path)
+            if extension:  # there is a filename in the destination
+                dest_dir, dest_filename = split(destination_path)
+            else:  # The specified destination is a directory. A new filename is necessary
+                dest_filename = splitext(basename(self.document.settings._source))[0] + '.html'
+            self.destination = FileOutput(destination_path=join(dest_dir, dest_filename),
+                                          encoding='utf-8')
         HTML5Writer.translate(self)
-        if self.document.settings.output_dir:
-            self._save_to_output_dir()
+        if destination_path not in ('<stdout>', '<string>'):
+            self._save_hrefs_to_dir(dest_dir)
         return
 
     def get_transforms(self):
@@ -320,7 +316,7 @@ class SlideTranslator(HTML5Translator):
         a single node followed by a single field list should also be compacted
         '''
         field_list_sibling = len([n for n in node.parent
-                                 if not isinstance(n, (nodes.field_list))]) == 1
+                                  if not isinstance(n, (nodes.field_list))]) == 1
         return not node['classes'] and \
             (HTML5Translator._compacted_paragraph(self, node) or field_list_sibling)
 
