@@ -7,9 +7,8 @@ from __future__ import unicode_literals
 
 import re
 import shutil
-from io import open
 from os import makedirs
-from os.path import join, dirname, basename, isfile, exists, curdir, split, splitext
+from os.path import join, dirname, basename, isfile, exists, curdir, split, splitext, abspath
 
 from docutils import nodes
 from docutils.io import FileOutput
@@ -166,7 +165,8 @@ class SlideWriter(HTML5Writer):
                 ['--increment'],
                 {
                     'dest': 'increment',
-                    'metavar': '<increment>'
+                    'metavar': '<increment>',
+                    'default': '1600 1600'
                 }
             ),
             (
@@ -186,6 +186,7 @@ class SlideWriter(HTML5Writer):
                 {
                     'dest': 'deck_selector',
                     'metavar': '<deck_selector>',
+                    'default': 'deck',
                 },
             ),
             (
@@ -196,7 +197,8 @@ class SlideWriter(HTML5Writer):
                 ['--slide-selector'],
                 {
                     'dest': 'slide_selector',
-                    'metavar': '<slide_selector>'
+                    'metavar': '<slide_selector>',
+                    'default': 'slide',
                 },
             ),
         )
@@ -206,10 +208,7 @@ class SlideWriter(HTML5Writer):
         HTML5Writer.__init__(self)
         self.translator_class = SlideTranslator
 
-    def _save_hrefs_to_dir(self, dest_dir):
-
-        def has_href_or_src(elem):
-            return elem.has_attr('href') or elem.has_attr('src')
+    def rebuild_output(self):
 
         def copy_file(origin, destination):
             dest_dir = dirname(destination)
@@ -236,30 +235,35 @@ class SlideWriter(HTML5Writer):
                     pending -= 1
                     nexts = cycle(islice(nexts, pending))
 
-        source_dir = dirname(self.document.settings._source)
         output = self.output
         href_pattern = re.compile('href=".*?"|src=".*?"')
         path_pattern = re.compile('"(.*?)"')
         hrefs = re.findall(href_pattern, output)
+        save_to_destination = self.destination.destination_path not in ('<stdout>', '<string>')
+        dest_dir = dirname(self.destination.destination_path)
+        if save_to_destination:
+            source_dir = dirname(self.document.settings._source)
         for i, href in enumerate(hrefs):
             path = re.findall(path_pattern, href)[0]
             if urlparse(path).netloc:  # scheme is not always present, but netloc is
                 continue
-            source_path = join(source_dir, path)
-            if not isfile(source_path):
-                # try rst2html5slides' css, js files.
-                # They will be at the same directory level after installation
-                # See setup.py data_files
-                inner_source_path = join(dirname(__file__), curdir, path)
-                if not isfile(inner_source_path):
-                    self.document.reporter.error('file not found: %s' % source_path)
-                    continue
-                source_path = inner_source_path
             href_path = re.findall('^(?:\.+/)*(.*)', path)[0]
             hrefs[i] = re.sub(path_pattern, '"%s"' % href_path, href)
-            copy_file(source_path, join(dest_dir, href_path))
-
-        # rebuild output
+            if save_to_destination:
+                source_path = join(source_dir, path)
+                if not isfile(source_path):
+                    # try css, js files relative to the template path
+                    if isfile(self.document.settings.template):
+                        template_dir = dirname(self.document.settings.template)
+                    else:
+                        template_dir = curdir
+                    rel_template_path = abspath(join(template_dir, path))
+                    if not isfile(rel_template_path):
+                        self.document.reporter.error('file not found: %s' % source_path)
+                        continue
+                    source_path = rel_template_path
+                copy_file(source_path, join(dest_dir, href_path))
+        # rebuild output references
         splitted = re.split(href_pattern, output)
         self.output = ''.join(roundrobin(splitted, hrefs))
         return
@@ -275,8 +279,7 @@ class SlideWriter(HTML5Writer):
             self.destination = FileOutput(destination_path=join(dest_dir, dest_filename),
                                           encoding='utf-8')
         HTML5Writer.translate(self)
-        if destination_path not in ('<stdout>', '<string>'):
-            self._save_hrefs_to_dir(dest_dir)
+        self.rebuild_output()
         return
 
     def get_transforms(self):
@@ -294,21 +297,10 @@ class SlideTranslator(HTML5Translator):
         self.rst_terms['slide_contents'] = ('section', 'default_visit', 'default_departure')
         self.rst_terms['title'] = (None, 'visit_title', 'depart_title')  # flatten titles
         self.rst_terms['presentation'] = (None, 'visit_presentation', None)
-        with open(join(dirname(__file__), curdir, 'template/jmpress.html'), encoding='utf-8') as f:
-            self.default_template = f.read()
         HTML5Translator.__init__(self, *args)
         self.metatags.append(tag.meta(generator='rst2html5slides'))
         self.metatags.append(tag.meta(generator_homepage='https://pypi.python.org/pypi/rst2html5slides'))
-        self._reset()
-        settings = self.document.settings
-        if settings.distribution:
-            self._get_distribution(settings.distribution)
-        if settings.deck_selector:
-            self._get_deck_selector(settings.deck_selector)
-        if settings.slide_selector:
-            self._get_slide_selector(settings.slide_selector)
-        if settings.increment:
-            self._get_increment(settings.increment)
+        self._reset_settings()
         return
 
     def _compacted_paragraph(self, node):
@@ -381,20 +373,7 @@ class SlideTranslator(HTML5Translator):
             )
             self.context.stack = ['\n', deck, '\n']
         # _reset is necessary to run the several test cases
-        self._reset()
-        return
-
-    def _reset(self):
-        self.deck_selector = {'tag': 'deck'}
-        self.slide_selector = {'tag': 'slide'}
-        self.slide_attributes = {}
-        self.distribution = {
-            'func': None,
-            'incr_x': 1600,
-            'incr_y': 1600,
-            'data-*': {},
-            'visited': 0,
-        }
+        self._reset_settings()
         return
 
     def visit_field(self, node):
@@ -425,6 +404,30 @@ class SlideTranslator(HTML5Translator):
         if 'increment' in node:
             self._get_increment(node['increment'])
         raise nodes.SkipNode
+
+    def _reset_settings(self):
+        self.deck_selector = {}
+        self.slide_selector = {}
+        self.slide_attributes = {}
+        self.distribution = {
+            'func': None,
+            'incr_x': 1600,
+            'incr_y': 1600,
+            'data-*': {},
+            'visited': 0,
+        }
+        settings = self.document.settings
+        if not settings.template:
+            settings.template = abspath(join(dirname(__file__), curdir, 'template/jmpress.html'))
+        if settings.distribution:
+            self._get_distribution(settings.distribution)
+        if settings.deck_selector:
+            self._get_deck_selector(settings.deck_selector)
+        if settings.slide_selector:
+            self._get_slide_selector(settings.slide_selector)
+        if settings.increment:
+            self._get_increment(settings.increment)
+        return
 
     def _get_deck_selector(self, value):
         tag_name = self.tag_name_re.findall(value)

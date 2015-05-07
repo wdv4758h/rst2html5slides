@@ -101,7 +101,11 @@ def test_destination_dir():
     assert exists(join(dest_dir, 'css', 'style.css'))
     assert exists(join(dest_dir, 'imagens', 'tdd_cycle.png'))
     assert exists(join(dest_dir, 'imagens', 'logotipo.png'))
+    assert exists(join(dest_dir, 'css', 'slides.css'))
+    assert exists(join(dest_dir, 'js'))
     assert not exists(join(dest_dir, 'imagens', 'not_used.png'))
+    assert str('<link href="css/slides.css"') in output
+    assert str('<script src="js/jquery.min.js">') in output
     assert str('<link href="css/style.css"') in output
     assert str('src="https://www.python.org') in output
     rmtree(dest_dir)
@@ -120,6 +124,10 @@ def test_destination_path():
     assert exists(join(dest_dir, 'imagens', 'tdd_cycle.png'))
     assert exists(join(dest_dir, 'imagens', 'logotipo.png'))
     assert not exists(join(dest_dir, 'imagens', 'not_used.png'))
+    assert exists(join(dest_dir, 'css', 'slides.css'))
+    assert exists(join(dest_dir, 'js'))
+    assert str('<link href="css/slides.css"') in output
+    assert str('<script src="js/jquery.min.js">') in output
     assert str('<link href="css/style.css"') in output
     assert str('src="https://www.python.org') in output
     rmtree(dest_dir)
@@ -138,6 +146,10 @@ def test_no_destination():
     assert not exists(join(dest_dir, 'imagens', 'tdd_cycle.png'))
     assert not exists(join(dest_dir, 'imagens', 'logotipo.png'))
     assert not exists(join(dest_dir, 'imagens', 'not_used.png'))
+    assert not exists(join(dest_dir, 'css', 'slides.css'))
+    assert not exists(join(dest_dir, 'js'))
+    assert str('<link href="css/slides.css"') in output
+    assert str('<script src="js/jquery.min.js">') in output
     assert '<link href="css/style.css"' in output
     assert 'src="https://www.python.org' in output
     rmtree(dest_dir)
