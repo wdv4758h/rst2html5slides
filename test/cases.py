@@ -19,7 +19,7 @@ Title 2
 * bullet 2''',
     'out': '''
 <deck>
-    <slide data-x="0">
+    <slide>
         <header>
             <h1>Title 1</h1>
         </header>
@@ -29,7 +29,7 @@ Title 2
             </ul>
         </section>
     </slide>
-    <slide data-x="1600">
+    <slide>
         <header>
             <h1>Title 2</h1>
         </header>
@@ -78,7 +78,6 @@ deck_slide_selector_parameters = {
     'slide_selector': 'div.step',
     'manual_slide_identification': True,
     'part': 'body',
-    'distribution': None,
     'out': '''
 <div class="impress-not-supported" id="impress">
     <div class="step">
@@ -124,7 +123,7 @@ Title 2
 ''',
     'out': '''
 <deck>
-    <slide class="segue dark nobackground" data-x="0">
+    <slide class="segue dark nobackground">
         <header>
             <h1>Title 1</h1>
         </header>
@@ -134,7 +133,7 @@ Title 2
             </ul>
         </section>
     </slide>
-    <slide data-x="1600">
+    <slide>
         <header>
             <h1>Title 2</h1>
         </header>
@@ -203,19 +202,19 @@ Title 2
     'part': 'body',
     'out': '''
 <deck>
-    <slide id="title-1" data-x="0">
+    <slide id="title-1">
         <header>
             <h1>Title 1</h1>
         </header>
         <section>paragraph</section>
     </slide>
-    <slide data-x="1600">
+    <slide>
         <section>This should be a new slide</section>
     </slide>
-    <slide class="special" data-x="3200">
+    <slide class="special">
         <section>This should also be a new slide</section>
     </slide>
-    <slide id="title-2" data-x="4800">
+    <slide id="title-2">
         <header>
             <h1>Title 2</h1>
         </header>
@@ -252,15 +251,15 @@ the class directive works from the second slide onward
     'part': 'body',
     'out': '''
 <deck>
-    <slide class="test step" data-x="0">
+    <slide class="test step">
         <section>first slide, no title. The class directive doesn't work here. You must use \
 <code>:class:</code> or <code>:classes:</code> to set up the class of this slide. \
 Those are workarounds. No other solution at the time being.</section>
     </slide>
-    <slide class="hint step" data-x="1600">
+    <slide class="hint step">
         <section>the class directive works from the second slide onward</section>
     </slide>
-    <slide class="special step" data-x="3200">
+    <slide class="special step">
         <section><code>classes</code> could also be used instead of <code>:class:</code></section>
     </slide>
 </deck>
@@ -278,12 +277,12 @@ Title 2
     'part': 'body',
     'out': '''
 <deck>
-    <slide id="title-1" data-x="0">
+    <slide id="title-1">
         <header>
             <h1>Title 1</h1>
         </header>
     </slide>
-    <slide id="title-2" data-x="1600">
+    <slide id="title-2">
         <header>
             <h1>Title 2</h1>
         </header>
@@ -329,13 +328,13 @@ Subsubtitle
     'part': 'body',
     'out': '''
 <deck>
-    <slide id="title-1" data-x="0">
+    <slide id="title-1">
         <header>
             <h1>Title 1</h1>
             <h2>Subtitle 1</h2>
         </header>
     </slide>
-    <slide id="title-2" data-x="1600">
+    <slide id="title-2">
         <header>
             <h1>Title 2</h1>
             <h2>Subtitle 2</h2>
@@ -429,7 +428,7 @@ single_slide_no_title = {
 * bullet 2''',
     'out': '''
 <deck>
-    <slide data-x="0">
+    <slide>
         <section>
             <p>paragraph</p>
             <ul>
@@ -470,7 +469,7 @@ Title 1
 * bullet''',
     'out': '''
 <deck>
-    <slide data-x="0">
+    <slide>
         <header>
             <h1>Title 1</h1>
         </header>
@@ -524,7 +523,7 @@ Subtitle 2
 ''',
     'out': '''
 <deck>
-    <slide class="segue dark nobackground" id="title-1" data-x="0">
+    <slide class="segue dark nobackground" id="title-1">
         <header>
             <h1>Title 1</h1>
             <h2>Subtitle</h2>
@@ -535,7 +534,7 @@ Subtitle 2
             </ul>
         </section>
     </slide>
-    <slide id="title-2" data-x="1600">
+    <slide id="title-2">
         <header>
             <h1>Title 2</h1>
             <h2>Subtitle 2</h2>
@@ -601,13 +600,13 @@ Subsubtitle
 ''',
     'out': '''
 <deck>
-    <slide data-x="0">
+    <slide>
         <section>There can't be three title levels at the first slide because the first two are \
 interpreted as document title / subtitle. \
 See <a href="http://docutils.sourceforge.net/docs/user/rst/quickstart.html#document-title-subtitle">\
 http://docutils.sourceforge.net/docs/user/rst/quickstart.html#document-title-subtitle</a></section>
     </slide>
-    <slide id="title-1" data-x="1600">
+    <slide id="title-1">
         <header>
             <h1>Title 1</h1>
             <h2>Subtitle</h2>
@@ -662,10 +661,10 @@ transition_to_section = {
 * bullet''',
     'out': '''
 <deck>
-    <slide data-x="0">
+    <slide>
         <section>paragraph</section>
     </slide>
-    <slide data-x="1600">
+    <slide>
         <section>
             <ul>
                 <li>bullet</li>
@@ -781,6 +780,7 @@ paragraph
 ----
 
 ..''',
+    'distribution': 'linear',
     'out': '''
 <deck>
     <slide data-x="0">
@@ -1324,7 +1324,6 @@ idem
 
 The tag here is supposed to be <div class="step">''',
     'part': 'body',
-    'distribution': None,
     'out': '''
 <deck class="deck_container" id="impress">
     <article class="slide">
@@ -1380,7 +1379,6 @@ Title 3
 * Bullet
 ''',
     'part': 'body',
-    'distribution': None,
     'out': '''
 <div class="deck-container">
     <article class="cover slide" data-scale="5" data-x="-1000" data-y="-500" id="opening">
@@ -1473,111 +1471,27 @@ automatic_slide_identification = {
     'part': 'body',
     'out': '''
 <deck>
-    <slide id="benvindo" data-x="0">
+    <slide id="benvindo">
         <section>Welcome</section>
     </slide>
-    <slide id="introducao" data-x="1600">
+    <slide id="introducao">
         <header>
             <h1>Title 1</h1>
         </header>
     </slide>
-    <slide id="title-2" data-x="3200">
+    <slide id="title-2">
         <header>
             <h1>Title 2</h1>
         </header>
         <section>paragraph</section>
     </slide>
-    <slide data-x="4800">
+    <slide>
         <section>About</section>
     </slide>
 </deck>
 ''',
 }
 
-
-case_1 = {
-    'rst': '''.. meta::
-    :http-equiv=X-UA-Compatible: chrome=1:
-    :viewport: width=device-width, maximum-scale=1.0, initial-scale=1.0, user-scalable=yes
-
-.. presentation::
-    :deck-selector: div#impress
-    :slide-selector: div.step
-
-Title
-=====
-
-Text
-
-.. class:: special
-
-Title 2
-=======
-
-Another line''',
-    'part': 'whole',
-    'distribution': '',
-    'out': '''<!DOCTYPE html>
-<html>
-<head>
-    <link async="async" href="//fonts.googleapis.com/css?family=Open+Sans:400,600,700" \
-rel="stylesheet" type="text/css" />
-    <link href="css/slides.css" rel="stylesheet" />
-    <script src="js/jquery.min.js"></script>
-    <script src="js/jmpress/jmpress.js"></script>
-    <script src="js/jmpress/jmpress_init.js" defer="defer"></script>
-    <script src="js/adjust_slides.js" defer="defer"></script>
-    \n\
-    <meta charset="utf-8" />
-    <meta generator="rst2html5slides" />
-    <meta generator-homepage="https://pypi.python.org/pypi/rst2html5slides" />
-    <meta content="chrome=1:" http-equiv="X-UA-Compatible" />
-    <meta content="width=device-width, maximum-scale=1.0, initial-scale=1.0, user-scalable=yes" name="viewport" />
-
-</head>
-<body>
-<div id="impress">
-    <div class="step" id="title">
-        <header>
-            <h1>Title</h1>
-        </header>
-        <section>Text</section>
-    </div>
-    <div class="special step" id="title-2">
-        <header>
-            <h1>Title 2</h1>
-        </header>
-        <section>Another line</section>
-    </div>
-</div>
-</body>
-</html>
-''',
-}
-
-case_1_pseudoxml = {
-    'rst': case_1['rst'],
-    'part': 'pseudoxml',
-    'out': '''<document source="<string>">
-    <meta content="chrome=1:" http-equiv="X-UA-Compatible">
-    <meta content="width=device-width, maximum-scale=1.0, initial-scale=1.0, user-scalable=yes" name="viewport">
-    <presentation deck-selector="div#impress" slide-selector="div.step">
-    <section ids="title" names="title">
-        <header>
-            <title>
-                Title
-        <slide_contents>
-            <paragraph>
-                Text
-    <section classes="special" ids="title-2" names="title\ 2">
-        <header>
-            <title>
-                Title 2
-        <slide_contents>
-            <paragraph>
-                Another line
-''',
-}
 
 # do use this way
 data_before_transition = {
@@ -1732,18 +1646,18 @@ link to `Title 1`_
     'part': 'body',
     'out': '''
 <deck>
-    <slide data-x="0">
+    <slide>
         <section>
             <aside class="warning"><code>id</code> fields mess up with internal links.</aside>
         </section>
     </slide>
-    <slide id="another-id" data-x="1600">
+    <slide id="another-id">
         <header>
             <h1>Title 1</h1>
         </header>
         <section>paragraph</section>
     </slide>
-    <slide id="title-2" data-x="3200">
+    <slide id="title-2">
         <header>
             <h1>Title 2</h1>
         </header>
@@ -1875,5 +1789,255 @@ Not even a warning is raised
             <paragraph>
                 An invalid distribution function name is simply ignored.
                 Not even a warning is raised
+''',
+}
+
+
+_simple_presentation = '''
+.. meta::
+    :http-equiv=X-UA-Compatible: chrome=1:
+    :viewport: width=device-width, maximum-scale=1.0, initial-scale=1.0, user-scalable=yes
+
+Title
+=====
+
+Text
+
+.. class:: special
+
+Title 2
+=======
+
+Another line'''
+
+
+presentation_None = {
+    'rst': _simple_presentation,
+    'part': 'whole',
+    'out': '''<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta generator="rst2html5slides" />
+    <meta generator-homepage="https://pypi.python.org/pypi/rst2html5slides" />
+    <meta content="chrome=1:" http-equiv="X-UA-Compatible" />
+    <meta content="width=device-width, maximum-scale=1.0, initial-scale=1.0, user-scalable=yes" name="viewport" />
+
+</head>
+<body>
+<deck>
+    <slide id="title">
+        <header>
+            <h1>Title</h1>
+        </header>
+        <section>Text</section>
+    </slide>
+    <slide class="special" id="title-2">
+        <header>
+            <h1>Title 2</h1>
+        </header>
+        <section>Another line</section>
+    </slide>
+</deck>
+</body>
+</html>''',
+}
+
+presentation_None_pseudoxml = {
+    'rst': _simple_presentation,
+    'part': 'pseudoxml',
+    'out': '''<document source="<string>">
+    <meta content="chrome=1:" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, maximum-scale=1.0, initial-scale=1.0, user-scalable=yes" name="viewport">
+    <section ids="title" names="title">
+        <header>
+            <title>
+                Title
+        <slide_contents>
+            <paragraph>
+                Text
+    <section classes="special" ids="title-2" names="title\ 2">
+        <header>
+            <title>
+                Title 2
+        <slide_contents>
+            <paragraph>
+                Another line
+''',
+}
+
+presentation_impress = {
+    'rst': _simple_presentation,
+    'presentation': 'impress.js',
+    'part': 'whole',
+    'out': '''<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/impress.css" rel="stylesheet" />
+    <script src="js/impress.js"></script>
+
+    <meta charset="utf-8" />
+    <meta generator="rst2html5slides" />
+    <meta generator-homepage="https://pypi.python.org/pypi/rst2html5slides" />
+    <meta content="chrome=1:" http-equiv="X-UA-Compatible" />
+    <meta content="width=device-width, maximum-scale=1.0, initial-scale=1.0, user-scalable=yes" name="viewport" />
+
+</head>
+<body>
+<div id="impress">
+    <div id="title" class="step" data-x="0">
+        <header>
+            <h1>Title</h1>
+        </header>
+        <section>Text</section>
+    </div>
+    <div id="title-2" class="special step" data-x="1600">
+        <header>
+            <h1>Title 2</h1>
+        </header>
+        <section>Another line</section>
+    </div>
+</div>
+</body>
+</html>
+''',
+}
+
+presentation_jmpress = {
+    'rst': _simple_presentation,
+    'presentation': 'jmpress.js',
+    'part': 'whole',
+    'out': '''<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/slides.css" rel="stylesheet" />
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jmpress/jmpress.js"></script>
+    <script src="js/jmpress/jmpress_init.js" defer="defer"></script>
+    <script src="js/adjust_slides.js" defer="defer"></script>
+
+    <meta charset="utf-8" />
+    <meta generator="rst2html5slides" />
+    <meta generator-homepage="https://pypi.python.org/pypi/rst2html5slides" />
+    <meta content="chrome=1:" http-equiv="X-UA-Compatible" />
+    <meta content="width=device-width, maximum-scale=1.0, initial-scale=1.0, user-scalable=yes" name="viewport" />
+
+</head>
+<body>
+<div id="jmpress">
+    <div id="title" class="step" data-x="0">
+        <header>
+            <h1>Title</h1>
+        </header>
+        <section>Text</section>
+    </div>
+    <div id="title-2" class="special step" data-x="1600">
+        <header>
+            <h1>Title 2</h1>
+        </header>
+        <section>Another line</section>
+    </div>
+</div>
+</body>
+</html>
+''',
+}
+
+presentation_deck = {
+    'rst': _simple_presentation,
+    'presentation': 'deck.js',
+    'part': 'whole',
+    'out': '''<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js ie6" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!-->  <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=1024, user-scalable=no">
+
+    <!-- Core and extension CSS files -->
+    <link rel="stylesheet" media="screen" href="css/deck.js/deck.core.css">
+    <link rel="stylesheet" media="screen" href="css/deck.js/deck.goto.css">
+    <link rel="stylesheet" media="screen" href="css/deck.js/deck.menu.css">
+    <link rel="stylesheet" media="screen" href="css/deck.js/deck.navigation.css">
+    <link rel="stylesheet" media="screen" href="css/deck.js/deck.status.css">
+    <link rel="stylesheet" media="screen" href="css/deck.js/deck.scale.css">
+
+    <!-- Style theme. More available in /themes/style/ or create your own. -->
+    <link id="style-theme-link" rel="stylesheet" media="screen" href="css/deck.js/web-2.0.css">
+
+    <!-- Transition theme. More available in /themes/transition/ or create your own. -->
+    <link id="transition-theme-link" rel="stylesheet" media="screen" href="css/deck.js/horizontal-slide.css">
+
+    <!-- Basic black and white print styles -->
+    <link rel="stylesheet" media="print" href="css/deck.js/print.css">
+
+    <script src="js/modernizr.custom.js"></script>
+
+    <meta charset="utf-8" />
+    <meta generator="rst2html5slides" />
+    <meta generator-homepage="https://pypi.python.org/pypi/rst2html5slides" />
+    <meta content="chrome=1:" http-equiv="X-UA-Compatible" />
+    <meta content="width=device-width, maximum-scale=1.0, initial-scale=1.0, user-scalable=yes" name="viewport" />
+
+</head>
+<body>
+<div id="deck">
+    <div id="title" class="step">
+        <header>
+            <h1>Title</h1>
+        </header>
+        <section>Text</section>
+    </div>
+    <div id="title-2" class="special step">
+        <header>
+            <h1>Title 2</h1>
+        </header>
+        <section>Another line</section>
+    </div>
+</div>
+
+
+<!-- deck.navigation snippet -->
+<div aria-role="navigation">
+    <a href="#" class="deck-prev-link" title="Previous">&#8592;</a>
+    <a href="#" class="deck-next-link" title="Next">&#8594;</a>
+</div>
+
+<!-- deck.status snippet -->
+<p class="deck-status" aria-role="status">
+    <span class="deck-status-current"></span>
+    /
+    <span class="deck-status-total"></span>
+</p>
+
+<!-- deck.goto snippet -->
+<form action="." method="get" class="goto-form">
+    <label for="goto-slide">Go to slide:</label>
+    <input type="text" name="slidenum" id="goto-slide" list="goto-datalist">
+    <datalist id="goto-datalist"></datalist>
+    <input type="submit" value="Go">
+</form>
+
+<script src="js/jquery.min.js"></script>
+
+<!-- Deck Core and extensions -->
+<script src="js/deck.js/deck.core.js"></script>
+<script src="js/deck.js/deck.menu.js"></script>
+<script src="js/deck.js/deck.goto.js"></script>
+<script src="js/deck.js/deck.status.js"></script>
+<script src="js/deck.js/deck.navigation.js"></script>
+<script src="js/deck.js/deck.scale.js"></script>
+
+<!-- Initialize the deck -->
+<script>
+$(function() {
+    $.deck('slide');
+});
+</script>
+
+</body>
+</html>
 ''',
 }

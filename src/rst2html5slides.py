@@ -141,10 +141,23 @@ class SlideTransform(Transform):
 
 class SlideWriter(HTML5Writer):
 
+    choices = ['impress.js', 'jmpress.js', 'deck.js', 'None']
+
     settings_spec = HTML5Writer.settings_spec + (
         'rst2html5slides Specific Options',
         None,
         (
+            (
+                'Choose a web presentation framework for the output. '
+                'Possible values are %s. '
+                'Default is %s.' % (', '.join(choices), choices[0]),
+                ['--presentation'],
+                {
+                    'choices': choices,
+                    'default': choices[0],
+                    'metavar': '<framework>'
+                }
+            ),
             (
                 'Specify the name of the slide distribution function. '
                 'Options are "linear", "grid" or "grid-rotate". '
@@ -152,9 +165,7 @@ class SlideWriter(HTML5Writer):
                 '"grid_rotate  3".',
                 ['--distribution'],
                 {
-                    'dest': 'distribution',
                     'metavar': '<function_name>',
-                    'default': 'linear',
                 }
             ),
             (
@@ -164,9 +175,7 @@ class SlideWriter(HTML5Writer):
                 'Default value is 1600 for X and Y increments.',
                 ['--increment'],
                 {
-                    'dest': 'increment',
                     'metavar': '<increment>',
-                    'default': '1600 1600'
                 }
             ),
             (
@@ -186,7 +195,6 @@ class SlideWriter(HTML5Writer):
                 {
                     'dest': 'deck_selector',
                     'metavar': '<deck_selector>',
-                    'default': 'deck',
                 },
             ),
             (
@@ -198,7 +206,6 @@ class SlideWriter(HTML5Writer):
                 {
                     'dest': 'slide_selector',
                     'metavar': '<slide_selector>',
-                    'default': 'slide',
                 },
             ),
         )
@@ -318,14 +325,14 @@ class SlideTranslator(HTML5Translator):
         elif 'id' in self.slide_attributes:
             node['ids'] = [self.slide_attributes['id']]
         node.attributes.update(self.slide_attributes)
-        if not self.distribution['func']:
+        if not self.distribution.get('func'):
             # (Only) slide data-* attributes are cumulative
             # otherwise impress.js defaults data-x,y,z to 0, data-scale to 1 etc.
             keys = list(self.slide_attributes.keys())
             for key in keys:
                 if not key.startswith('data-'):
                     del self.slide_attributes[key]
-        else:  # does not accumulate any slide attributes
+        else:  # do not accumulate any slide attributes
             self.slide_attributes = {}
         self.default_visit(node)
         return
@@ -406,27 +413,28 @@ class SlideTranslator(HTML5Translator):
         raise nodes.SkipNode
 
     def _reset_settings(self):
-        self.deck_selector = {}
-        self.slide_selector = {}
-        self.slide_attributes = {}
+        config = {
+            'impress.js': ('impress.html', 'div#impress', 'div.step', 'linear'),
+            'jmpress.js': ('jmpress.html', 'div#jmpress', 'div.step', 'linear'),
+            'deck.js': ('deck.html', 'div#deck', 'div.step', 'none'),
+            'None': ('default.html', 'deck', 'slide', 'none'),
+        }
         self.distribution = {
-            'func': None,
             'incr_x': 1600,
             'incr_y': 1600,
             'data-*': {},
             'visited': 0,
         }
+        self.deck_selector = {}
+        self.slide_selector = {}
+        self.slide_attributes = {}
         settings = self.document.settings
-        if not settings.template:
-            settings.template = abspath(join(dirname(__file__), curdir, 'template/jmpress.html'))
-        if settings.distribution:
-            self._get_distribution(settings.distribution)
-        if settings.deck_selector:
-            self._get_deck_selector(settings.deck_selector)
-        if settings.slide_selector:
-            self._get_slide_selector(settings.slide_selector)
-        if settings.increment:
-            self._get_increment(settings.increment)
+        template, deck_selector, slide_selector, distribution = config[settings.presentation]
+        settings.template = settings.template or abspath(join(dirname(__file__), curdir, 'template', template))
+        self._get_distribution(settings.distribution or distribution)
+        self._get_deck_selector(settings.deck_selector or deck_selector)
+        self._get_slide_selector(settings.slide_selector or slide_selector)
+        self._get_increment(settings.increment)
         return
 
     def _get_deck_selector(self, value):
@@ -451,13 +459,18 @@ class SlideTranslator(HTML5Translator):
         return
 
     def _get_increment(self, value):
+        if not value:
+            return
         value = value.split()
         self.distribution['incr_x'] = int(value[0])
         self.distribution['incr_y'] = int(value[1]) if len(value) > 1 else self.distribution['incr_x']
         return
 
     def _get_distribution(self, field_value):
+        # distribute all slides so far with current distribution function
         self._distribute_slides()
+        if not field_value:
+            return
         values = field_value.split()
         # distribution function names must end with '_distribution'
         self.distribution['func'] = getattr(self, values[0] + '_distribution', None)
@@ -472,7 +485,7 @@ class SlideTranslator(HTML5Translator):
         Distribute slides spatially according to some predefined function.
         data-* attributes are used to keep the coordinates.
         '''
-        if not self.distribution['func']:
+        if not (self.distribution.get('func') and self.context.stack):
             return
         initial_pos = self.distribution['visited']
         slides = (elem for item in self.context.stack[0][initial_pos::] for elem in item if isinstance(elem, Element))
@@ -506,6 +519,14 @@ class SlideTranslator(HTML5Translator):
 
         return {q[0].localname: convert(q[1]) for q in slide.attrib
                 if q[0].localname.startswith('data-')}
+
+    def none_distribution(self, enumerated_slides):
+        '''
+        Makes no positioning, but keep slide's data-* attributes
+        '''
+        data_attributes = self.distribution['data-*']
+        for index, slide in enumerated_slides:
+            slide(**data_attributes)
 
     def linear_distribution(self, enumerated_slides):
         '''

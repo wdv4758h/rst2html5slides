@@ -583,7 +583,7 @@ a {
 a:hover {
   background: #fff;
 }
-slide {
+div.step {
   display: block;
   position: relative;
   width: 1100px;
@@ -602,10 +602,10 @@ slide {
   font-family: 'Open Sans', Arial, sans-serif;
   transition: all 0.6s ease-in-out 0s;
 }
-slide:not(.active) {
+div.step:not(.active) {
   opacity: 0.3;
 }
-slide header {
+div.step header {
   margin-bottom: 1em;
 }
 .cover,
@@ -834,15 +834,15 @@ pre.smaller {
   body {
     background: #fff;
   }
-  slide {
+  div.step {
     border-radius: 0;
     border: 3px solid rgba(0,0,0,0.3);
     page-break-after: always;
   }
-  slide:not(.active) {
+  div.step:not(.active) {
     opacity: 1;
   }
-  slide:after {
+  div.step:after {
     z-index: 1;
   }
   .cover,

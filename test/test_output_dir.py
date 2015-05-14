@@ -95,7 +95,7 @@ def test_destination_dir():
     output = publish_file(
         writer=SlideWriter(), source_path=source_path,
         destination_path=dest_dir,
-        settings_overrides={'stylesheet': [join('css', 'style.css')]}
+        settings_overrides={'stylesheet': [join('css', 'style.css')], 'presentation': 'jmpress.js'}
     )
     assert exists(join(dest_dir, 'presentation.html'))
     assert exists(join(dest_dir, 'css', 'style.css'))
@@ -116,7 +116,7 @@ def test_destination_path():
     output = publish_file(
         writer=SlideWriter(), source_path=source_path,
         destination_path=join(dest_dir, 'slides.html'),
-        settings_overrides={'stylesheet': [join('css', 'style.css')]}
+        settings_overrides={'stylesheet': [join('css', 'style.css')], 'presentation': 'jmpress.js'}
     )
     assert exists(join(dest_dir, 'slides.html'))
     assert not exists(join(dest_dir, 'presentation.html'))
@@ -139,7 +139,8 @@ def test_no_destination():
     output = publish_string(
         writer=SlideWriter(), source=presentation, source_path=source_path,
         settings_overrides={'stylesheet': [join('css', 'style.css')],
-                            'output_encoding': 'unicode'}
+                            'output_encoding': 'unicode',
+                            'presentation': 'jmpress.js'}
     )
     assert not exists(join(dest_dir, 'presentation.html'))
     assert not exists(join(dest_dir, 'css', 'style.css'))
